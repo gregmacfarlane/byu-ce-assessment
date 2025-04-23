@@ -1,0 +1,32 @@
+project: 
+  type: book
+  output-dir: _book
+
+book:
+  title: "BYU Civil Engineering Program Assessment Manual"
+  author: "CE Undergraduate Committee"
+  date: "2025-04-01"
+  chapters:
+    - index.qmd
+    - 1_studentoutcomes.qmd
+    - 2_exit.qmd
+    - 3_fe.qmd
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+  results: hide
+
+
+format:
+  html: 
+    theme: cosmo
+    toc: true
+    number-sections: true
+  pdf: 
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+    output-file: manual.pdf
+    papersize: letterdefault

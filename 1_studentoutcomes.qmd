@@ -1,0 +1,62 @@
+# Student Outcomes {#sec-so}
+
+The program assesses each of its seven student outcomes using performance
+indicators and associated rubrics.
+
+
+::: {.panel-tabset}
+## SO 1 {#sec-so1}
+
+
+
+## SO 2 {#sec-so2}
+
+
+## SO 3 {#sec-so3}
+
+
+## SO 4 {#sec-so4}
+An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
+
+### Performance Indicators
+
+We evaluate this outcome based on three performance indicators. Students should:
+
+1.	Recognize personal and professional responsibilities towards others including employees, clients, the wider profession, and the public.
+2.	Recognize moral and ethical dilemmas in engineering situations and make judgments to identify appropriate resolutions.
+3.	Consider the impacts of an engineering solution in global, economic, environmental, and societal contexts.
+
+### Rubric
+
+| Indicator                  | Unsatisfactory                                                                | Developing                                                                           | Meets Expectations                                                             | Exceeds expectations                                                                                                                |
+|----------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Recognize responsibilities | Does not recognize or identify professional responsibilities.                 | Recognizes some professional responsibilities, but misses at least one.              | Recognizes professional responsibilities towards all key stakeholders          | Demonstrates interest in and  motivation to serve society through the profession.                                                   |
+| Make judgments             | Does not identify ethical dilemmas, and or develops inappropriate resolutions | Misidentifies ethical dilemmas, and or develops inadequate resolutions.              |  Properly identifies ethical dilemmas and identifies appropriate resolutions.  | Actively considers ethical challenges that may arise in professional contexts and seeks to mitigate  them.                          |
+| Consider impacts           | Fails to identify impacts in any contexts.                                    | Identifies impacts in some contexts, but fails to identify likely impacts in others. | Identifies likely impacts in a variety  of contexts.                           | Actively seeks to consider the ethical impact of engineering situations in global, economic, environmental, and societal  contexts. |
+
+### Assessment
+
+We assess this learning outcome in three courses: 
+
+  - CCE 102: Sustainable Infrastructure (Introductory)
+  - CE 291 R: Civil Engineering Seminar (Reinforcing)
+  - CE 472: Civil Engineering Capstone (Evaluation)
+
+
+
+## SO 5 {#sec-so5}
+
+
+## SO 6 {#sec-so6}
+
+
+## SO 7 {#sec-so7}
+
+:::
+
+
+
+## Assessment Schedule
+
+The program assesses each student outcome on a rolling three-year cycle.
+
