@@ -1,5 +1,21 @@
 # Student Outcomes {#sec-so}
 
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+library(sharepointr)
+library(kableExtra)
+get_file <- function(url, outcome, indicator, course) {
+  folder <- file.path("assessments", outcome, indicator) 
+  dir.create(folder, recursive = TRUE, showWarnings = FALSE)
+  download.file(url, file.path(folder, paste0(course, ".pdf")))
+}
+
+library(wesanderson)
+pal <- wes_palette("AsteroidCity1", 4)[c(3, 2, 1, 4)]
+theme_set(theme_minimal())
+```
+
 The program assesses each of its seven student outcomes using performance
 indicators and associated rubrics.
 
@@ -18,7 +34,7 @@ indicators and associated rubrics.
 ## SO 4 {#sec-so4}
 An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
 
-### Performance Indicators
+### Performance Indicators {.unnumbered}
 
 We evaluate this outcome based on three performance indicators. Students should:
 
@@ -26,7 +42,7 @@ We evaluate this outcome based on three performance indicators. Students should:
 2.	Recognize moral and ethical dilemmas in engineering situations and make judgments to identify appropriate resolutions.
 3.	Consider the impacts of an engineering solution in global, economic, environmental, and societal contexts.
 
-### Rubric
+### Rubric {.unnumbered}
 
 | Indicator                  | Unsatisfactory                                                                | Developing                                                                           | Meets Expectations                                                             | Exceeds expectations                                                                                                                |
 |----------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
@@ -34,13 +50,66 @@ We evaluate this outcome based on three performance indicators. Students should:
 | Make judgments             | Does not identify ethical dilemmas, and or develops inappropriate resolutions | Misidentifies ethical dilemmas, and or develops inadequate resolutions.              |  Properly identifies ethical dilemmas and identifies appropriate resolutions.  | Actively considers ethical challenges that may arise in professional contexts and seeks to mitigate  them.                          |
 | Consider impacts           | Fails to identify impacts in any contexts.                                    | Identifies impacts in some contexts, but fails to identify likely impacts in others. | Identifies likely impacts in a variety  of contexts.                           | Actively seeks to consider the ethical impact of engineering situations in global, economic, environmental, and societal  contexts. |
 
-### Assessment
+### Assessment {.unnumbered}
 
 We assess this learning outcome in three courses: 
 
   - CCE 102: Sustainable Infrastructure (Introductory)
   - CE 291 R: Civil Engineering Seminar (Reinforcing)
   - CE 472: Civil Engineering Capstone (Evaluation)
+
+We evaluated this outcome most recently in Winter 2025. All graduating students take CE 472 in Winter semester. Students take CE 291 R each semester from their sophomore year onward. CCE 102 may be taken in Fall or Winter semesters, so this is approximately a 50% sample of the students in the program. CCE 102 also includes students who are in the CFM and the FM programs.
+
+```{r so4-clean, include = FALSE}
+so4 <- read_csv("data/Student Outcome 4_ Ethics, Faith and Sustainability(Sheet1).csv") |> 
+  set_names(c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt", 
+    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
+    "exceeds3", "meets3", "developing3", "unsatisfactory3")) |> 
+  select(id:unsatisfactory) |> 
+  pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  mutate(
+    Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
+    labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
+    indicator = factor(indicator, labels = c("Consider Impacts", "Make Judgments", "Recognize Responsibilities")),
+    course = case_when(
+      str_detect(course, "CCE 102") ~ "CCE 102",
+      str_detect(course, "CE 291") ~ "CE 291",
+      str_detect(course, "CE 472") ~ "CE 472",
+      TRUE ~ NA_character_
+    ) 
+  ) |> 
+    group_by(course, indicator) |>
+    mutate(total = sum(Number)) |>
+    mutate(Percent = Number / total * 100)
+```
+
+@fig-s04 shows the share of students at each performance level for each indicator for each course, 
+alongside the threshold of 75%. By taking CE 472, 75% of students meet the expectations for each indicator.
+
+```{r}
+#| label: fig-s04
+#| fig-cap: Winter 2025 Assessment of Student Outcome 4
+#| fig-width: 7
+ggplot(so4, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+  geom_col() + 
+  labs(x = "Percent of students", y = "Performance") +
+  facet_grid(~ indicator) + 
+  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  scale_fill_manual("Performance", values = pal)
+```
+
+```{r get-files, eval = FALSE}
+# download the files in the pdf document field
+for(i in 1:nrow(so4)) {
+  get_file(
+    url = so4$`Upload a PDF document that contains the assessment prompt or a complete description of the assignment.`[i],
+    outcome = "SO4",
+    indicator = so4$`Which performance indicator does this assessment address?`[i],
+    course = so4$`Which course is this assessment given in?`[i]
+  )
+}
+
+```
 
 
 
