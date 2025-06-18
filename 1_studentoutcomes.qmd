@@ -19,6 +19,34 @@ theme_set(theme_minimal())
 The program assesses each of its seven student outcomes using performance
 indicators and associated rubrics.
 
+## Assessment Schedule
+
+Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
+
+
+
+```{r}
+#| label: tbl-so-schedule
+#| tbl-cap: Assessment Schedule
+schedule <- tribble(
+  ~Outcome, ~`W 2025`, ~`Sp 2025`, ~`F 2025`, ~`W 2026`, ~`Sp 2026`, ~`F 2026`, ~`W 2027`, ~`Sp 2027`, ~`F 2027`, ~`W 2028`, ~`Sp 2028`, 
+  "SO1: Complex Problems",    NA, NA,    NA, NA, NA,             "A", "E", NA,   "C", NA, NA,
+  "SO2: Design",              NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
+  "SO3: Communications",      NA, NA,    NA, NA, NA,             "A", "E", NA,   "C", NA, NA, 
+  "SO4: Ethics",              "Assess", "Evaluate", "Change", NA, NA,   NA, NA, NA,    NA, "A", "E",
+  "SO5: Teamwork",            NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
+  "SO6: Experiments / Data",  "Assess", "Evaluate", "Change", NA, NA,   NA, NA, NA,    NA, "A", "E",
+  "SO7: Acquire Knowledge",   NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
+  "ABET Schedule",            NA, NA,    NA, NA, "Self-study",   "Visit",  "Response", NA,   NA, NA, NA
+) |> 
+  mutate(across(everything(), ~ifelse(is.na(.), "", .)))
+kbl(schedule, col.names = c("Outcome", rep(c("Winter", "Sp/Su", "Fall"), 3), c("Winter", "Sp/Su")), 
+    na = "") |>
+  add_header_above(c(" " = 1, "2024-25" = 2, "2025-26" = 3, "2026-27" = 3, "2027-28" = 3)) |>
+  group_rows("ABET", 8, 8) |> 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
 
 ::: {.panel-tabset}
 ## SO 1 {#sec-so1}
@@ -124,8 +152,4 @@ for(i in 1:nrow(so4)) {
 :::
 
 
-
-## Assessment Schedule
-
-The program assesses each student outcome on a rolling three-year cycle.
 
