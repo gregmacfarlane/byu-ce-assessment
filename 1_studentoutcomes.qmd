@@ -24,7 +24,6 @@ indicators and associated rubrics.
 Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
 
 
-
 ```{r}
 #| label: tbl-so-schedule
 #| tbl-cap: Assessment Schedule
@@ -47,19 +46,71 @@ kbl(schedule, col.names = c("Outcome", rep(c("Winter", "Sp/Su", "Fall"), 3), c("
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
+We attempt to assess each student outcome three times:
+  1. At an Introductory level, ideally in a 100- or 200-level classroom setting.
+  2. At a Reinforcing level, ideally in a 200-or 300-level classroom setting.
+  3. At an Evaluation level, as close to graduation as possible.
+
+A matrix mapping each student outcome to the courses is shown in @tbl-so-courses.
+
+```{r}
+#| label: tbl-so-courses
+# | tbl-cap: Learning Outcomes Matrix
+
+learning_outcomes <- tribble(
+  ~`outcome`,               ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
+  "1. Complex problems",   NA,      "I",      NA,             NA,      "R",     NA,     NA,      NA,     "E",       NA,      NA,
+  "2. Design",             NA,      NA,      NA,              NA,      NA,      NA,     NA,       NA,      NA,       "R",      "E",
+  "3. Communication",      NA,      NA,      "I",             NA,      NA,      NA,     "R",      NA,      NA,       NA,       "E",
+  "4. Ethics",             "I",     NA,      NA,              NA,      NA,      NA,     NA,       "R",     NA,       NA,       "E",
+  "5. Teamwork",           "I",     NA,      NA,              NA,      NA,      NA,     NA,       "R",     NA,       NA,       "E",
+  "6. Experiments and data",NA,     NA,      NA,              NA,      NA,      "R",    "R",      NA,      "E*",     NA,      NA,
+  "7. Acquire knowledge",   NA,      NA,     "I",             NA,      NA,      NA,     NA,      "R",     NA,       NA,      "E"
+) |>
+  mutate(across(everything(), ~ifelse(is.na(.), "", .)))
+
+# Rotate column names except first
+rotated_names <- names(learning_outcomes)
+rotated_names[-1] <- rotated_names[-1] <- paste0(
+  "<div style='
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    text-align: left;
+    height: 120px;
+    margin: auto;'>",
+  rotated_names[-1],
+  "</div>"
+)
+colnames(learning_outcomes) <- rotated_names
+kbl(learning_outcomes, col.names = c(" ", names(learning_outcomes)[2:length(names(learning_outcomes))]), 
+    escape = FALSE, na = "") |>
+  kable_styling(bootstrap_options = c("striped", "responsive")) |> 
+  column_spec(1, border_right = TRUE, extra_css = "text-align: left;") |>  # Left-align first column
+  column_spec(2:ncol(learning_outcomes), extra_css = "text-align: center;")
+```
 
 ::: {.panel-tabset}
-## SO 1 {#sec-so1}
+## SO 1 Complex Problems {#sec-so1}
+An ability to identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics.​
 
+### Performance Indicators {.unnumbered}
 
+### Assessment {.unnumbered}
 
-## SO 2 {#sec-so2}
+## SO 2 Design {#sec-so2}
+An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
 
+### Performance Indicators {.unnumbered}
+### Assessment {.unnumbered}
 
-## SO 3 {#sec-so3}
+## SO 3 Communication {#sec-so3}
+An ability to communicate effectively with a range of audiences.
 
+### Performance Indicators {.unnumbered}
+### Assessment {.unnumbered}
 
-## SO 4 {#sec-so4}
+## SO 4 Ethics {#sec-so4}
 An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
 
 ### Performance Indicators {.unnumbered}
@@ -141,13 +192,23 @@ for(i in 1:nrow(so4)) {
 
 
 
-## SO 5 {#sec-so5}
+## SO 5 Teamwork {#sec-so5}
+An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.
 
+### Performance Indicators {.unnumbered}
+### Assessment {.unnumbered}
 
-## SO 6 {#sec-so6}
+## SO 6 Experiments and Data {#sec-so6}
+An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions
 
+### Performance Indicators {.unnumbered}
+### Assessment {.unnumbered}
 
-## SO 7 {#sec-so7}
+## SO 7 Acquire Knowledge {#sec-so7}
+An ability to acquire and apply new knowledge as needed, using appropriate learning strategies.​
+
+### Performance Indicators {.unnumbered}
+### Assessment {.unnumbered}
 
 :::
 
