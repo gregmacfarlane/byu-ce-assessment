@@ -3,6 +3,7 @@
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(readxl)
+# pak::pkg_install("elipousson/sharepointr")
 library(sharepointr)
 library(kableExtra)
 get_file <- function(url, outcome, indicator, course) {
