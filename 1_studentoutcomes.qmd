@@ -40,23 +40,23 @@ schedule <- tribble(
 ) |> 
   mutate(across(everything(), ~ifelse(is.na(.), "", .)))
 kbl(schedule, col.names = c("Outcome", rep(c("Winter", "Sp/Su", "Fall"), 3), c("Winter", "Sp/Su")), 
-    na = "") |>
+    na = "", format = "html") |>
   add_header_above(c(" " = 1, "2024-25" = 2, "2025-26" = 3, "2026-27" = 3, "2027-28" = 3)) |>
   group_rows("ABET", 8, 8) |> 
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
 We attempt to assess each student outcome three times:
+
   1. At an Introductory level, ideally in a 100- or 200-level classroom setting.
   2. At a Reinforcing level, ideally in a 200-or 300-level classroom setting.
   3. At an Evaluation level, as close to graduation as possible.
 
-A matrix mapping each student outcome to the courses is shown in @tbl-so-courses.
+A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
 
 ```{r}
-#| label: tbl-so-courses
+#| label: tbl-socourses
 # | tbl-cap: Learning Outcomes Matrix
-
 learning_outcomes <- tribble(
   ~`outcome`,               ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
   "1. Complex problems",   NA,      "I",      NA,             NA,      "R",     NA,     NA,      NA,     "E",       NA,      NA,
@@ -202,7 +202,68 @@ An ability to function effectively on a team whose members together provide lead
 An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions
 
 ### Performance Indicators {.unnumbered}
+
+We evaluate this outcome based on four performance indicators. Students should:
+
+1. Identify conditions: Identify what conditions need to be controlled or varied in an experiment in order to obtain data needed to test a hypothesis. 
+2. Select methods: Select methods, materials, and/or equipment that will generate the desired data. 
+3. Conduct: Conduct the experiment and keep appropriate records. 
+4. Analyze and conclude: Analyze data using scientific techniques and draw supported conclusions. 
+
+### Rubric {.unnumbered}
+| Indicator                | Unsatisfactory                                                                                                                     | Developing                                                                                                                                     | Meets Expectations                                                                                                                                   | Exceeds expectations                                                                                                                                                                                         |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  Identify conditions   | Does not distinguish controls and variables; attempts multiple variables in one experiment                                         | Identifies some controls and variables                                                                                                         | Correctly identifies all controls and variables                                                                                                      | Correctly identifies all controls and variables as well as possible confounding conditions                                                                                                                   |
+|  Select methods        | Does not match methods to experiment                                                                                               | Selects some adequate methods, materials, or equipment                                                                                         | Selects adequate methods, materials, and equipment; can justify choice                                                                               | Selects adequate methods, materials, and equipment; can justify choice; may use standards                                                                                                                    |
+|  Conduct               | Careless setup or execution of experiment; little or no recordkeeping; inattentive to experiment                                   | Some problems in setup or execution; keeps some records                                                                                        | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors                                         | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors or limitations                                                                                  |
+|  Analyze and conclude  | Little or no analysis of data; incorrect analysis of data; no conclusion; concludes without data; concludes contradictory to data  | Shows some analysis by figures, equations, statistics, etc., though perhaps with mistakes; may conclude without data or contradictory to data  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions; acknowledges civil engineering applications of results  |
+
+
 ### Assessment {.unnumbered}
+We assess this learning outcome at three levels
+
+  - CCE 270: Computer Methods (Introductory)
+  - CE 232: Fluid Mechanics (Reinforcing)
+  - CE Breadth classes (Evaluation):
+    - CCE 306: Civil Engineering Materials
+    - CE 341: Soil Mechanics
+    - CE 351: Environmental Engineering
+
+All CE students must take one of the three breadth classes where we assess this outcome, 
+though many will take more than one.  We evaluated this outcome most recently in Winter 2025. 
+
+
+```{r so6-clean}
+so6 <- read_csv("data/Student Outcome 6_ Experiments and Data.csv") |>
+  select(course, indicator, exceeds:unsatisfactory) |>
+  pivot_longer(-c(course, indicator), values_to = "Percent", names_to = "Performance") |>
+  mutate(
+    course = factor(course, 
+      levels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351"),
+      labels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351")
+    ),
+    Performance = factor(Performance, 
+      levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
+      labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")
+    ),
+    indicator = factor(indicator, 
+      levels = c("identify", "select", "conduct", "analyze"),
+      labels = c("Identify Conditions", "Select Methods", 
+        "Conduct", "Analyze")
+    )
+  )
+```
+
+```{r}
+ggplot(so6, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
+    geom_col() +
+    labs(x = "Percent of students", y = "Performance") +
+    facet_grid(~indicator) +
+    geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+scale_fill_manual("Performance", values = pal)
+```
+
 
 ## SO 7 Acquire Knowledge {#sec-so7}
 An ability to acquire and apply new knowledge as needed, using appropriate learning strategies.​
