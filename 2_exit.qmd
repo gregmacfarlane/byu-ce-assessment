@@ -15,10 +15,53 @@ students. The purposes of this survey is to collect data on the following items:
 
 ## Exit Interviews {#sec-interview}
 
-Each April, the undergraduate committee samples graduating seniors and interviews them in personal conversation. The purpose of this interview is to qualitatively assess student-observed program strengths and weakness.
+Each April, the undergraduate committee samples graduating students and
+interviews them in personal conversation. The purpose of this interview is to
+qualitatively assess student-observed program strengths and weakness.
 
-The CE undergraduate coordinator assigns three to four graduating seniors to each member of the committee. The committee members arrange to speak privately with each student for fifteen to twenty minutes. The student should be invited to direct the discussion, but possible questions include: 
+The CE undergraduate coordinator assigns three to four graduating seniors to
+each member of the committee. The committee members arrange to speak privately
+with each student for fifteen to twenty minutes. The student should be invited
+to direct the discussion, but possible questions include: 
 
   - What are the most positive learning experiences you have had?
   - Have you had any less successful learning experiences?
 
+Each committee member makes notes of the student's responses. The committee coordinator
+consolidates these notes into a single document and adds them to the assessment record.
+
+### Class of 2025
+Students described the civil engineering program as offering strong overall
+preparation, with a solid breadth of coursework and particularly effective
+introductory classes that sparked interest in the major. Many felt well prepared
+for the FE exam and appreciated practical, real-world applications in courses
+like CE 471, as well as hands-on experiences through competition teams,
+research, study abroad, and TA roles. Faculty were consistently viewed as
+enthusiastic, accessible, and invested in student success, especially in smaller
+upper-division classes where interaction was more direct. The program fostered a
+strong sense of belonging through clubs, study groups, and shared spaces,
+supported by active (though sometimes inconsistent) faculty involvement.
+Students valued flexible curriculum elements like the junior core options, and
+many appreciated opportunities to integrate faith meaningfully into their
+education. Physical spaces such as labs and common areas also contributed
+positively to collaboration and community.
+
+At the same time, students identified several persistent challenges. Seminar was
+widely seen as repetitive and inefficient, with too many guest speakers and not
+enough practical skill development, and its scheduling sometimes conflicted with
+internships. There were concerns about uneven course quality, disruptions from
+instructor turnover, limited TA support in upper-division courses, and heavy
+workloads that restricted extracurricular involvement. Technical skills like
+CAD, Revit, and Excel were not consistently reinforced, leading to skill loss
+over time. Writing requirements—particularly ENGL 316—were viewed as overly
+burdensome and less relevant than discipline-specific alternatives like CE 471,
+with some students suggesting earlier placement in the curriculum. Capstone
+grading was sometimes perceived as overly nitpicky, and some assignments felt
+like busywork. Students also noted scheduling limitations (e.g., course
+conflicts, weaker winter offerings), a lack of advanced or graduate-level
+electives, and a need for clearer guidance on electives and career pathways.
+Additional suggestions included improving inclusivity and representation
+(especially for women), expanding interdisciplinary and coding opportunities,
+increasing faculty engagement in student organizations, and addressing
+administrative friction points such as curriculum changes and the graduate
+application process.
