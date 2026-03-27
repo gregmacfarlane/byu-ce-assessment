@@ -8,8 +8,10 @@ This manual documents these processes and provides a record of historical assess
 The program uses three categories of assessments:
 
   1. Direct assessment of student outcomes in course assignment (see @sec-so)
-  2. Graduation surveys and exit interviews (see @sec-exit)
-  3. The share of participating students who pass the Fundamentals of Engineering Examination (FE) (see @sec-fe)
+  2. The share of participating students who pass the Fundamentals of Engineering Examination (FE) (see @sec-fe)
+  3. Graduation surveys and exit interviews (see @sec-exit)
+  4. Student course evaluations (see @sec-eval)
+  5. Statistics on student performance (see @sec-stats)
 
 ## Improvement Actions
 Each summer, the CE undergraduate committee evaluates recent assessment data and recommends actions to adjust one or more of the following:

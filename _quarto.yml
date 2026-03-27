@@ -13,6 +13,8 @@ book:
     - 1_studentoutcomes.qmd
     - 2_exit.qmd
     - 3_fe.qmd
+    - 4_studentevals.qmd
+    - 5_progress.qmd
 execute:
   echo: false
   warning: false
