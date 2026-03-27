@@ -17,7 +17,7 @@ specified numer of enrollments. This includes all students who entered the
 university in 2016-17 through 2020-21 school years. This time period is defined
 as five years of entering students, four complete academic years ago. 
 
-![Enrollments to graduation for CE program students. Cohorts entering from 2016-17 through 2020-21 school years.](data/graduation.png){#fig-graduation}
+![Enrollments to graduation for CE program students. Cohorts entering from 2016-17 through 2020-21 school years.](data/graduation/graduation-2016-2021.png){#fig-graduation}
 
 For this period, 274 of 448 total students graduated within twelve enrollments,
 for a share of **61 percent**. The time to graduation for each student is not
@@ -50,5 +50,3 @@ ggplot(aes(x = `Five-year aggregated cohorts ending`, y = Share)) +
 It should be noted that if a student entered the university in 2020-21 and only enrolls in fall and winter
 semesters, they would have only completed ten enrollments by the 2024-25 school year.
 :::
-
-## D, E, and W Progress {#sec-progress}
