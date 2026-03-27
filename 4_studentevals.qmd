@@ -1,0 +1,16 @@
+# Student Course Evaluations {#sec-eval}
+
+In completing the evaluation of each course, students indicate how well they felt 
+the course advanced the Aims of a BYU Education, which are that a BYU Education should be
+
+  - Spiritually strenghening
+  - Intellectually enlarging
+  - Character building
+  - Leading to lifelong learning and service
+
+Students rate each course on a five-point scale. @fig-eval shows the Department averages for each course
+over the last few years. These evaluations have remained largely stable across all categories, but these numbers
+unfortunately cannot be disaggregated by program. 
+
+![Department course evaluation averages.](data/student_ratings.png){#fig-eval}
+
