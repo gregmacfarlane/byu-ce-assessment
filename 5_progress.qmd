@@ -1,0 +1,54 @@
+# Student Progress {#sec-progress}
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Time to graduation {#sec-stats}
+
+The University tracks time to graduation for each student in number of enrollments, or the number of 
+semesters and terms that a student enrolls in courses. This controls for mission deferments but not for
+transfers. The relevant statistic is the share of students who graduate within twelve enrollments.
+
+@fig-graduation shows the share of CE program students who graduate within the
+specified numer of enrollments. This includes all students who entered the
+university in 2016-17 through 2020-21 school years. This time period is defined
+as five years of entering students, four complete academic years ago. 
+
+![Enrollments to graduation for CE program students. Cohorts entering from 2016-17 through 2020-21 school years.](data/graduation.png){#fig-graduation}
+
+For this period, 274 of 448 total students graduated within twelve enrollments,
+for a share of **61 percent**. The time to graduation for each student is not
+given to us by the university. But we can track the aggregate statistic over
+time. @fig-graduation-longitudinal shows the share of CE program students who
+graduate within twelve enrollments for five year aggregated cohorts. This number
+has been dropping for as long as data are available. 
+
+```{r}
+#| label: fig-graduation-longitudinal
+#| fig-cap: Percent graduated within twelve enrollments, five year aggregated cohorts in year ending.
+#| fig-width: 7
+#| fig-height: 4
+#| out-width: 100%
+#| out-height: 100%
+
+# read in the data
+graduation <- read_excel("data/graduation/cohorts_in_12.xlsx") 
+
+# plot the data
+graduation |>
+    mutate(Share = `Graduated in 12` / Total ) |>
+ggplot(aes(x = `Five-year aggregated cohorts ending`, y = Share)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Share of students who graduate within twelve enrollments")
+```
+
+:::{.callout-note}
+It should be noted that if a student entered the university in 2020-21 and only enrolls in fall and winter
+semesters, they would have only completed ten enrollments by the 2024-25 school year.
+:::
+
+## D, E, and W Progress {#sec-progress}
