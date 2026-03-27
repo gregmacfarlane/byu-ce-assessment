@@ -1,8 +1,9 @@
 # Exit Surveys and Interviews {#sec-exit}
 
+
 ## Exit Surveys {#sec-survey}
 Each December and April, the program sends a survey to all of our graduating
-students. The purposes of this survey is to collect data on the following items:
+students. The purpose of this survey is to collect data on the following items:
 
   1. Student contact information for alumni tracking 
   2. Prospective employment or graduate school plans
