@@ -94,7 +94,31 @@ kbl(learning_outcomes, col.names = c(" ", names(learning_outcomes)[2:length(name
 ## SO 1 Complex Problems {#sec-so1}
 An ability to identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics.​
 
+:::{.callout-note collapse="true"}
+The ABET definition of "Complex Problems" is 
+
+> Complex engineering problems include one or more of the following characteristics: involving wide-ranging or conflicting technical issues, having no obvious solution, addressing problems not encompassed by current standards and codes, including many component parts or sub-problems, involving multiple disciplines, or having significant consequences in a range of contexts.
+
+It is understood that just because a problem is "hard" does not mean it is complex. Similarly, a problem may have 
+many sub-steps, but if they are not integrated or coordinated, that does not make it complex.
+:::
+
+
 ### Performance Indicators {.unnumbered}
+
+We evaluate this outcome based on three performance indicators. Students should:
+
+1.	Identify the problem parameters and given values.
+2.	Formulate a solution strategy.
+3.	Evaluate the best alternative from many possible solutions.
+
+### Rubric {.unnumbered}
+
+| Indicator    | Unsatisfactory                           | Developing                              | Meets Expectations                                        | Exceeds Expectations                                                                        |
+|--------------|------------------------------------------|-----------------------------------------|-----------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| 1. Identify  | Fails to identify given parameters       | Identifies some given parameters        | Identifies all provided parameters                        | Identifies all parameters including unreasonable parameters or those requiring assumptions. |
+| 2. Formulate | Fails to formulate a solution strategy.  | Formulates a strategy with limitations. | Formulates a solution strategy based in accepted methods. | Formulates a strategy that adjusts for the weaknesses of existing techniques.               |
+| 3. Evaluate  | Fails to evaluate alternative solutions  | Evaluates an alternative solution       | Evaluates alternative solutions.                          | Evaluates alternatives with a consideration of human needs.                              |
 
 ### Assessment {.unnumbered}
 
@@ -102,7 +126,76 @@ An ability to identify, formulate, and solve complex engineering problems by app
 An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
 
 ### Performance Indicators {.unnumbered}
+We evaluate this outcome based on four performance indicators. Students should:
+
+1.	Develop the criteria against which the design will be judged. They may include safety requirements, performance expectations, or industry standards.
+2.	Select appropriate computational, experimental, or qualitative methods to develop the design, taking it from problem to solution. 
+3.	Justify the selection of a preferred solution from among multiple alternatives.
+4.	Consider public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
+
+
+| Indicator                  | Unsatisfactory                                                     | Developing                                             | Meets Expectations                                                 | Exceeds Expectations                                                       |
+|----------------------------|--------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------|----------------------------------------------------------------------------|
+| 1. Develop design criteria | Little recognition of criteria or selection of irrelevant criteria | Partial recognition of relevant criteria               | Thorough recognition of relevant criteria                          | Thorough recognition of relevant criteria, plus optional ones              |
+| 2. Select methods          | Poor matching of methods to problem                                | Partial selection or justification of relevant methods | Selection and justification of methods relevant to solving problem | Selection and justification of relevant methods, acknowledging limitations |
+| 3. Recommend design        | No design, wrong design, or unjustified design                     | Partially acceptable design and justification          | Acceptable design justified by methods and criteria                | Acceptable, justified design chosen from multiple alternatives             |
+| 4. Consider factors        | Unsatisfactory                                                     |                                                        | Meets Expectations                                                 |                                                                            |
+| Public Health              | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Safety                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Welfare                    | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Global                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Cultural                   | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Social                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Environmental              | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+| Economic                   | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+
+
 ### Assessment {.unnumbered}
+
+```{r so2-clean, include = FALSE}
+so2 <- read_csv("data/Student Outcome 2_ Design(Sheet1).csv",
+  skip = 1,
+  col_names = c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt",
+    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
+    "exceeds3", "meets3", "developing3", "unsatisfactory3"),
+  col_types = cols(id = col_double(), start_time = col_datetime(format = ""), completion_time = col_datetime(format = ""),
+    email = col_character(), name = col_character(), course = col_character(), description = col_character(), 
+    prompt = col_character(), indicator = col_character(), exceeds = col_double(), meets = col_double(), 
+    developing = col_double(), unsatisfactory = col_double(), exceeds2 = col_double(), meets2 = col_double(), 
+    developing2 = col_double(), unsatisfactory2 = col_double(), exceeds3 = col_double(), meets3 = col_double(), 
+    developing3 = col_double(), unsatisfactory3 = col_double())) 
+
+so2_clean <- so2 |> 
+  select(id:unsatisfactory) |> 
+  pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  mutate(
+    Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
+    labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
+    indicator = factor(indicator, labels = c("Develop design criteria", "Recommend design")),
+    course = case_when(
+      str_detect(course, "CE 424") ~ "CE 424",
+      str_detect(course, "CE 472") ~ "CE 472",
+      TRUE ~ NA_character_
+    ) 
+  ) |> 
+    group_by(course, indicator) |>
+    mutate(total = sum(Number)) |>
+    mutate(Percent = Number / total * 100)
+```
+
+```{r}
+#| label: fig-s02
+#| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 2
+#| fig-width: 7
+ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+  geom_col() + 
+  labs(x = "Course", y = "Percent of students") +  facet_grid(~ indicator) + 
+  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual("Performance", values = pal)
+```
+
+
 
 ## SO 3 Communication {#sec-so3}
 An ability to communicate effectively with a range of audiences.
@@ -196,6 +289,13 @@ for(i in 1:nrow(so4)) {
 An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.
 
 ### Performance Indicators {.unnumbered}
+We evaluate this outcome based on three performance indicators. Students should: 
+1.	Show leadership through accountability and service 
+2.	Contribute to a collaborative and inclusive environment where all team members feel a sense of belonging. 
+3.	Meet team objectives through establishing goals and planning tasks. 
+ 
+We assess student performance on these indicators using the following rubric. 
+
 ### Assessment {.unnumbered}
 
 ## SO 6 Experiments and Data {#sec-so6}
