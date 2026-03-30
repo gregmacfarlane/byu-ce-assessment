@@ -236,7 +236,8 @@ We evaluated this outcome most recently in Winter 2025. All graduating students 
 so4 <- read_csv("data/Student Outcome 4_ Ethics, Faith and Sustainability(Sheet1).csv") |> 
   set_names(c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt", 
     "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
-    "exceeds3", "meets3", "developing3", "unsatisfactory3")) |> 
+    "exceeds3", "meets3", "developing3", "unsatisfactory3")) 
+so4_clean <- so4 |> 
   select(id:unsatisfactory) |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
   mutate(
@@ -245,7 +246,7 @@ so4 <- read_csv("data/Student Outcome 4_ Ethics, Faith and Sustainability(Sheet
     indicator = factor(indicator, labels = c("Consider Impacts", "Make Judgments", "Recognize Responsibilities")),
     course = case_when(
       str_detect(course, "CCE 102") ~ "CCE 102",
-      str_detect(course, "CE 291") ~ "CE 291",
+      str_detect(course, "CE 291") ~ "CE 291R",
       str_detect(course, "CE 472") ~ "CE 472",
       TRUE ~ NA_character_
     ) 
@@ -262,11 +263,12 @@ alongside the threshold of 75%. By taking CE 472, 75% of students meet the expec
 #| label: fig-s04
 #| fig-cap: Winter 2025 Assessment of Student Outcome 4
 #| fig-width: 7
-ggplot(so4, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+ggplot(so4_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
   geom_col() + 
-  labs(x = "Percent of students", y = "Performance") +
+  labs(x = "Course", y = "Percent of students") +
   facet_grid(~ indicator) + 
   geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_manual("Performance", values = pal)
 ```
 
@@ -274,10 +276,10 @@ ggplot(so4, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
 # download the files in the pdf document field
 for(i in 1:nrow(so4)) {
   get_file(
-    url = so4$`Upload a PDF document that contains the assessment prompt or a complete description of the assignment.`[i],
+    url = so4$prompt[i],
     outcome = "SO4",
-    indicator = so4$`Which performance indicator does this assessment address?`[i],
-    course = so4$`Which course is this assessment given in?`[i]
+    indicator = so4$indicator[i],
+    course = so4$course[i]
   )
 }
 
@@ -297,6 +299,58 @@ We evaluate this outcome based on three performance indicators. Students should:
 We assess student performance on these indicators using the following rubric. 
 
 ### Assessment {.unnumbered}
+  
+| Indicator                       | Unsatisfactory                                            | Developing                                                                            | Meets Expectations                                                                     | Exceeds expectations                                                                             |
+|---------------------------------|-----------------------------------------------------------|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 1. Accountability and service   | Does not accomplish assigned tasks                        | Accomplishes assigned tasks but is delayed or requires reminders                      | Accomplishes tasks on time                                                             | Accomplishes tasks on time, and helps team members accomplish their roles                        |
+| 2. Contribute to team belonging | No or negative involvement in team activities.            | Involved in team activities and makes some effort to engage others.                   | Actively involved in team activities and encourages engagement from others             | Drives team activities and motivates productive engagement from others                           |
+| 3. Meet team objectives         | Fails to identify reasonable goals or appropriate tasks.  | Develops goals and tasks that are infeasible, or that required substantial revision.  | Develops goals and a task plan that results in meeting the assignment expectations.    | Develops goals and a resilient task plan that results in exceeding the assignment expectations.  |
+
+
+```{r so5-clean, include = FALSE}
+so5 <- read_csv("data/Student Outcome 5_ Teamwork(Sheet1).csv", 
+  skip = 1,
+  col_names = c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt",
+    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
+    "exceeds3", "meets3", "developing3", "unsatisfactory3"),
+  col_types = cols(id = col_double(), start_time = col_datetime(format = ""), completion_time = col_datetime(format = ""),
+    email = col_character(), name = col_character(), course = col_character(), description = col_character(), 
+    prompt = col_character(), indicator = col_character(), exceeds = col_double(), meets = col_double(), 
+    developing = col_double(), unsatisfactory = col_double(), exceeds2 = col_double(), meets2 = col_double(), 
+    developing2 = col_double(), unsatisfactory2 = col_double(), exceeds3 = col_double(), meets3 = col_double(), 
+    developing3 = col_double(), unsatisfactory3 = col_double())) 
+
+so5_clean <- so5 |> 
+  select(id:unsatisfactory) |> 
+  pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  mutate(
+    Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
+    labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
+    indicator = factor(indicator, labels = c("Accountability", "Belonging", "Objectives")),
+    course = case_when(
+      str_detect(course, "CCE 102") ~ "CCE 102",
+      str_detect(course, "CE 291") ~ "CE 291",
+      str_detect(course, "CE 472") ~ "CE 472",
+      TRUE ~ NA_character_
+    ) 
+  ) |> 
+    group_by(course, indicator) |>
+    mutate(total = sum(Number)) |>
+    mutate(Percent = Number / total * 100)
+```
+
+```{r}
+#| label: fig-s05
+#| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 5
+#| fig-width: 7
+ggplot(so5_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+  geom_col() + 
+  labs(x = "Course", y = "Percent of students") +  facet_grid(~ indicator) + 
+  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual("Performance", values = pal)
+```
+
 
 ## SO 6 Experiments and Data {#sec-so6}
 An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions
@@ -334,7 +388,8 @@ though many will take more than one.  We evaluated this outcome most recently in
 
 
 ```{r so6-clean}
-so6 <- read_csv("data/Student Outcome 6_ Experiments and Data.csv") |>
+so6 <- read_csv("data/Student Outcome 6_ Experiments and Data.csv")
+so6_clean <- so6 |>
   select(course, indicator, exceeds:unsatisfactory) |>
   pivot_longer(-c(course, indicator), values_to = "Percent", names_to = "Performance") |>
   mutate(
@@ -355,9 +410,9 @@ so6 <- read_csv("data/Student Outcome 6_ Experiments and Data.csv") |>
 ```
 
 ```{r}
-ggplot(so6, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
+ggplot(so6_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
     geom_col() +
-    labs(x = "Percent of students", y = "Performance") +
+    labs(x = "Course", y = "Percent of students") +
     facet_grid(~indicator) +
     geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
