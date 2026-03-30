@@ -47,11 +47,10 @@ kbl(schedule, col.names = c("Outcome", rep(c("Winter", "Sp/Su", "Fall"), 3), c("
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 ```
 
-We attempt to assess each student outcome three times:
+We attempt to assess each student outcome at two levels:
 
-  1. At an Introductory level, ideally in a 100- or 200-level classroom setting.
-  2. At a Reinforcing level, ideally in a 200-or 300-level classroom setting.
-  3. At an Evaluation level, as close to graduation as possible.
+  1. At a Formative level, in lower-division courses. There may be more than one formative assessment of a student outcome.
+  3. At a Summative level, in an upper-division course as close to graduation as possible.
 
 A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
 
@@ -60,13 +59,13 @@ A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
 # | tbl-cap: Learning Outcomes Matrix
 learning_outcomes <- tribble(
   ~`outcome`,               ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
-  "1. Complex problems",   NA,      "I",      NA,             NA,      "R",     NA,     NA,      NA,     "E",       NA,      NA,
-  "2. Design",             NA,      NA,      NA,              NA,      NA,      NA,     NA,       NA,      NA,       "R",      "E",
-  "3. Communication",      NA,      NA,      "I",             NA,      NA,      NA,     "R",      NA,      NA,       NA,       "E",
-  "4. Ethics",             "I",     NA,      NA,              NA,      NA,      NA,     NA,       "R",     NA,       NA,       "E",
-  "5. Teamwork",           "I",     NA,      NA,              NA,      NA,      NA,     NA,       "R",     NA,       NA,       "E",
-  "6. Experiments and data",NA,     NA,      NA,              NA,      NA,      "R",    "R",      NA,      "E*",     NA,      NA,
-  "7. Acquire knowledge",   NA,      NA,     "I",             NA,      NA,      NA,     NA,      "R",     NA,       NA,      "E"
+  "1. Complex problems",   NA,      "F",      NA,             NA,      "F",     NA,     NA,      NA,     "S",       NA,      NA,
+  "2. Design",             NA,      NA,      NA,              NA,      NA,      NA,     NA,       NA,      NA,       "F",      "S",
+  "3. Communication",      NA,      NA,      "F",             NA,      NA,      NA,     "F",      NA,      NA,       NA,       "S",
+  "4. Sthics",             "F",     NA,      NA,              NA,      NA,      NA,     NA,       "F",     NA,       NA,       "S",
+  "5. Teamwork",           "F",     NA,      NA,              NA,      NA,      NA,     NA,       "F",     NA,       NA,       "S",
+  "6. Sxperiments and data",NA,     NA,      NA,              NA,      NA,      "F",    "F",      NA,      "S*",     NA,      NA,
+  "7. Acquire knowledge",   NA,      NA,     "F",             NA,      NA,      NA,     NA,      "F",     NA,       NA,      "S"
 ) |>
   mutate(across(everything(), ~ifelse(is.na(.), "", .)))
 
