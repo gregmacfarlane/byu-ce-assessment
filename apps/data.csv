@@ -1,0 +1,99 @@
+﻿category,number,institution,abet,abet_se,ratio,scaled,student,period
+Mathematics and Statistics,8,9.9,9.3,2.4,1.06,0.25,Enrolled,Fall 2025
+Ethics and Professional Practice,4,10.1,10.4,3.6,0.97,-0.08,Enrolled,Fall 2025
+Engineering Economics,5,9.9,9.6,3.2,1.03,0.09,Enrolled,Fall 2025
+Statics,8,10.2,9.2,2.5,1.11,0.4,Enrolled,Fall 2025
+Dynamics,4,9.8,9.4,3.5,1.04,0.11,Enrolled,Fall 2025
+Mechanics of Materials,7,9.4,9.3,2.3,1.01,0.04,Enrolled,Fall 2025
+Materials,5,10.1,9.4,2.8,1.07,0.25,Enrolled,Fall 2025
+Fluid Mechanics,6,10.6,9.4,2.8,1.13,0.43,Enrolled,Fall 2025
+Surveying,6,10,9.3,2.5,1.08,0.28,Enrolled,Fall 2025
+Water Resources and Environmental Engineering,10,9.9,9.2,1.9,1.08,0.37,Enrolled,Fall 2025
+Structural Engineering,10,9.2,9.1,1.8,1.01,0.06,Enrolled,Fall 2025
+Geotechnical Engineering,10,9.5,9.1,2,1.04,0.2,Enrolled,Fall 2025
+Transportation Engineering,9,9.6,9.2,2,1.04,0.2,Enrolled,Fall 2025
+Construction Engineering,8,8.9,9.2,2.6,0.97,-0.12,Enrolled,Fall 2025
+Mathematics and Statistics,8,10.6,9.3,2.4,1.14,0.54,Enrolled,Winter 2025
+Ethics and Professional Practice,4,11,10.2,3.4,1.08,0.24,Enrolled,Winter 2025
+Engineering Economics,5,10,9.8,3.2,1.02,0.06,Enrolled,Winter 2025
+Statics,8,10.4,9.2,2.6,1.13,0.46,Enrolled,Winter 2025
+Dynamics,4,11.3,9.5,3.7,1.19,0.49,Enrolled,Winter 2025
+Mechanics of Materials,7,10.5,9.2,2.4,1.14,0.54,Enrolled,Winter 2025
+Materials,5,9.9,9.4,2.8,1.05,0.18,Enrolled,Winter 2025
+Fluid Mechanics,6,11.2,9.6,2.8,1.17,0.57,Enrolled,Winter 2025
+Surveying,6,9.4,9.2,2.4,1.02,0.08,Enrolled,Winter 2025
+Water Resources and Environmental Engineering,10,10.1,9.2,1.9,1.1,0.47,Enrolled,Winter 2025
+Structural Engineering,10,9.6,9.1,1.8,1.05,0.28,Enrolled,Winter 2025
+Geotechnical Engineering,10,10.2,9.1,1.9,1.12,0.58,Enrolled,Winter 2025
+Transportation Engineering,9,10.6,9.4,2,1.13,0.6,Enrolled,Winter 2025
+Construction Engineering,8,10.1,9.5,2.4,1.06,0.25,Enrolled,Winter 2025
+Mathematics and Statistics,8,10.6,9.3,2.4,1.14,0.54,Enrolled,Fall 2024
+Ethics and Professional Practice,4,11,10.2,3.4,1.08,0.24,Enrolled,Fall 2024
+Engineering Economics,5,10,9.8,3.2,1.02,0.06,Enrolled,Fall 2024
+Statics,8,10.4,9.2,2.6,1.13,0.46,Enrolled,Fall 2024
+Dynamics,4,11.3,9.5,3.7,1.19,0.49,Enrolled,Fall 2024
+Mechanics of Materials,7,10.5,9.2,2.4,1.14,0.54,Enrolled,Fall 2024
+Materials,5,9.9,9.4,2.8,1.05,0.18,Enrolled,Fall 2024
+Fluid Mechanics,6,11.2,9.6,2.8,1.17,0.57,Enrolled,Fall 2024
+Surveying,6,9.4,9.2,2.4,1.02,0.08,Enrolled,Fall 2024
+Water Resources and Environmental Engineering,10,10.1,9.2,1.9,1.1,0.47,Enrolled,Fall 2024
+Structural Engineering,10,9.6,9.1,1.8,1.05,0.28,Enrolled,Fall 2024
+Geotechnical Engineering,10,10.2,9.1,1.9,1.12,0.58,Enrolled,Fall 2024
+Transportation Engineering,9,10.6,9.4,2,1.13,0.6,Enrolled,Fall 2024
+Construction Engineering,8,10.1,9.5,2.4,1.06,0.25,Enrolled,Fall 2024
+Mathematics and Statistics,8,11,9.2,2.4,1.2,0.75,Enrolled,Winter 2024
+Ethics and Professional Practice,4,11,10.1,3.4,1.09,0.26,Enrolled,Winter 2024
+Engineering Economics,5,10.1,9.6,3.1,1.05,0.16,Enrolled,Winter 2024
+Statics,8,9.4,9.1,2.5,1.03,0.12,Enrolled,Winter 2024
+Dynamics,4,10.4,9.4,3.6,1.11,0.28,Enrolled,Winter 2024
+Mechanics of Materials,7,9.5,9.1,2.4,1.04,0.17,Enrolled,Winter 2024
+Materials,5,10.3,9.3,2.8,1.11,0.36,Enrolled,Winter 2024
+Fluid Mechanics,6,9.8,9.5,2.8,1.03,0.11,Enrolled,Winter 2024
+Surveying,6,9.7,9.1,2.4,1.07,0.25,Enrolled,Winter 2024
+Water Resources and Environmental Engineering,10,9.9,9.1,1.9,1.09,0.42,Enrolled,Winter 2024
+Structural Engineering,10,8.9,8.9,1.8,1,0,Enrolled,Winter 2024
+Geotechnical Engineering,10,10.5,9,2,1.17,0.75,Enrolled,Winter 2024
+Transportation Engineering,9,10.6,9.2,2,1.15,0.7,Enrolled,Winter 2024
+Construction Engineering,8,9,9.2,2.5,0.98,-0.08,Enrolled,Winter 2024
+Mathematics and Statistics,8,10.5,9.4,2.4,1.12,0.46,Enrolled,Fall 2023
+Ethics and Professional Practice,4,10.6,9.9,3.4,1.07,0.21,Enrolled,Fall 2023
+Engineering Economics,5,10.4,9.6,3.2,1.08,0.25,Enrolled,Fall 2023
+Statics,8,9.6,9.1,2.5,1.05,0.2,Enrolled,Fall 2023
+Dynamics,4,11,9.3,3.6,1.18,0.47,Enrolled,Fall 2023
+Mechanics of Materials,7,9.6,9.1,2.3,1.05,0.22,Enrolled,Fall 2023
+Materials,5,9.4,9.3,2.8,1.01,0.04,Enrolled,Fall 2023
+Fluid Mechanics,6,10.5,9.3,2.7,1.13,0.44,Enrolled,Fall 2023
+Surveying,6,9.5,8.9,2.5,1.07,0.24,Enrolled,Fall 2023
+Water Resources and Environmental Engineering,10,9.8,9.1,1.9,1.08,0.37,Enrolled,Fall 2023
+Structural Engineering,10,9.5,9,1.8,1.06,0.28,Enrolled,Fall 2023
+Geotechnical Engineering,10,10.2,9.1,2,1.12,0.55,Enrolled,Fall 2023
+Transportation Engineering,9,9.8,9.2,1.9,1.07,0.32,Enrolled,Fall 2023
+Construction Engineering,8,9.4,9.2,2.3,1.02,0.09,Enrolled,Fall 2023
+Mathematics and Statistics,8,10.1,9.3,2.4,1.09,0.33,Enrolled,Winter 2023
+Ethics and Professional Practice,4,10.7,10.8,3.7,0.99,-0.03,Enrolled,Winter 2023
+Engineering Economics,5,10.4,9.8,3.2,1.06,0.19,Enrolled,Winter 2023
+Statics,8,10.3,9.1,2.6,1.13,0.46,Enrolled,Winter 2023
+Dynamics,4,10.7,9.6,3.5,1.11,0.31,Enrolled,Winter 2023
+Mechanics of Materials,7,9.2,9,2.3,1.02,0.09,Enrolled,Winter 2023
+Materials,5,10.2,9.5,2.8,1.07,0.25,Enrolled,Winter 2023
+Fluid Mechanics,6,9.9,9.4,2.7,1.05,0.19,Enrolled,Winter 2023
+Surveying,6,9.6,9.1,2.5,1.05,0.2,Enrolled,Winter 2023
+Water Resources and Environmental Engineering,10,9.8,9.1,1.9,1.08,0.37,Enrolled,Winter 2023
+Structural Engineering,10,9.5,8.9,1.8,1.07,0.33,Enrolled,Winter 2023
+Geotechnical Engineering,10,9.9,9.2,2,1.08,0.35,Enrolled,Winter 2023
+Transportation Engineering,9,9.9,9.2,2,1.08,0.35,Enrolled,Winter 2023
+Construction Engineering,8,9.8,9.3,2.5,1.05,0.2,Enrolled,Winter 2023
+Mathematics and Statistics,8,10,9.2,2.3,1.09,0.35,Enrolled,Fall 2022
+Ethics and Professional Practice,4,11.4,10.5,3.6,1.09,0.25,Enrolled,Fall 2022
+Engineering Economics,5,10.1,9.5,3.2,1.06,0.19,Enrolled,Fall 2022
+Statics,8,9.8,8.9,2.6,1.1,0.35,Enrolled,Fall 2022
+Dynamics,4,9.9,9.2,3.6,1.08,0.19,Enrolled,Fall 2022
+Mechanics of Materials,7,8.9,8.9,2.2,1,0,Enrolled,Fall 2022
+Materials,5,9.9,9.1,2.8,1.09,0.29,Enrolled,Fall 2022
+Fluid Mechanics,6,10.4,9.2,2.8,1.13,0.43,Enrolled,Fall 2022
+Surveying,6,8.7,8.8,2.7,0.99,-0.04,Enrolled,Fall 2022
+Water Resources and Environmental Engineering,10,9.4,9,2,1.04,0.2,Enrolled,Fall 2022
+Structural Engineering,10,8.5,8.7,1.8,0.98,-0.11,Enrolled,Fall 2022
+Geotechnical Engineering,10,8.6,9,2,0.96,-0.2,Enrolled,Fall 2022
+Transportation Engineering,9,8.6,9,1.9,0.96,-0.21,Enrolled,Fall 2022
+Construction Engineering,8,8.3,9.1,2.4,0.91,-0.33,Enrolled,Fall 2022

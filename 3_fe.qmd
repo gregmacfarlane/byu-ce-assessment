@@ -1,4 +1,25 @@
 # Fundamentals of Engineering {#sec-fe}
+```{r setup-fe, include=FALSE}
+library(tidyverse)
+library(readxl)
+
+knitr::opts_chunk$set(echo = FALSE)
+semester_to_date <- function(semester) {
+  year <- as.numeric(stringr::str_extract(semester, "[0-9]+"))
+  type <- stringr::str_extract(semester, "[a-zA-Z]+")
+  
+  date_str <- dplyr::case_when(
+    type == "Winter" ~ stringr::str_c(year, "-06-01"),
+    type == "Fall"   ~ stringr::str_c(year, "-12-01"),
+    TRUE             ~ NA_character_
+  )
+  
+  lubridate::ymd(date_str)
+}
+
+theme_set(theme_bw())
+pal <- c("#FF6127", "#002E5D")
+```
 
 The Fundamentals of Engineering (FE) examination provides important external
 evidence of our program's effectiveness in training competent civil engineering
@@ -6,5 +27,39 @@ professionals. University policies prohibit us from requiring students to take
 the exam before graduation, but we strongly recommend that our students do so
 and offer an FE preparation course to help them.
 
-We obtain the number of graduates who take and pass the exam each year directly
-from NCEES.
+```{r}
+fe <- readxl::read_xlsx("data/fe.xlsx", sheet = "raw_total") |>
+    mutate( period = semester_to_date(period))
+
+```
+
+The share of students passing the FE exam shown in @fig-fe-exam. BYU students pass the exam at a rate considerably higher than the 
+comparator group. This data is for students currently enrolled in the program, or graduating in the 12 months 
+prior to taking the exam. We do not include alumni who take the FE more than one year after graduation 
+in this assessment.
+
+```{r}
+#| label: fig-fe-exam
+#| fig-cap: FE Exam pass rate by semester, BYU Civil and ABET comparator group.
+fe |>
+    filter(category == "Pct Passing") |>
+    pivot_longer(cols = c(`BYU-Civil`, `ABET-Civil`), names_to = "group", values_to = "pct_passing") |>
+    ggplot(aes(x = period, y = pct_passing, color = group)) +
+    geom_line() + scale_y_continuous(labels = scales::percent)  +
+    xlab("Period of Examination [six months ending]") + ylab("Percent Passing") + scale_color_manual("Group", values = pal)
+```
+
+
+We also use the FE exam to assess discipline and topic subscores. 
+
+::: {#fig-fe-subscores}
+```{r poisson-arrivals}
+if(knitr::is_html_output()){
+  knitr::include_app("https://019d4550-8785-50dd-0b75-24fc8358dff6.share.connect.posit.cloud/", height = "600px")
+} else {
+
+}
+```
+
+ FE Exam category subscores from Fall 2022 onwards. Interactive application on [ShinyApps](https://019d4550-8785-50dd-0b75-24fc8358dff6.share.connect.posit.cloud/).
+::: 
