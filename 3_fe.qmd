@@ -27,16 +27,16 @@ professionals. University policies prohibit us from requiring students to take
 the exam before graduation, but we strongly recommend that our students do so
 and offer an FE preparation course to help them.
 
-```{r}
+```{r fe}
 fe <- readxl::read_xlsx("data/fe.xlsx", sheet = "raw_total") |>
     mutate( period = semester_to_date(period))
-
 ```
 
-The share of students passing the FE exam shown in @fig-fe-exam. BYU students pass the exam at a rate considerably higher than the 
-comparator group. This data is for students currently enrolled in the program, or graduating in the 12 months 
-prior to taking the exam. We do not include alumni who take the FE more than one year after graduation 
-in this assessment.
+The share of students passing the FE exam is shown in @fig-fe-exam. BYU students
+pass the exam at a rate considerably higher than other ABET-accredited civil engineering programs. This data
+is for students currently enrolled in the program, or graduating in the 12
+months prior to taking the exam. We do not include alumni who take the FE more
+than one year after graduation in this assessment.
 
 ```{r}
 #| label: fig-fe-exam
@@ -50,10 +50,16 @@ fe |>
 ```
 
 
-We also use the FE exam to assess discipline and topic subscores. 
+We also use the FE exam to assess discipline and topic subscores. @fig-fe-subscores provides an
+interactive graphic where you can choose an FE exam category and compare BYU civil engineering students
+and recent alumni against an "ABET comparator" group of similar institutions. BYU students generally exceed 
+the ABET comparator group mean in all categories for almost all periods, but fall within a single standard
+deviation of that mean. There are a few exceptions to this performance, with BYU students modestly below the ABET
+comparator mean in some categories for some periods. These include the "Ethics and Professional Practice" and the 
+"Construction Engineering" categories.
 
 ::: {#fig-fe-subscores}
-```{r poisson-arrivals}
+```{r fe-shiny}
 if(knitr::is_html_output()){
   knitr::include_app("https://019d4550-8785-50dd-0b75-24fc8358dff6.share.connect.posit.cloud/", height = "600px")
 } else {
@@ -63,3 +69,25 @@ if(knitr::is_html_output()){
 
  FE Exam category subscores from Fall 2022 onwards. Interactive application on [ShinyApps](https://019d4550-8785-50dd-0b75-24fc8358dff6.share.connect.posit.cloud/).
 ::: 
+
+::: {.callout-note title="Assessment Practices" collapse="true"}
+NCEES makes aggregated FE scores available to colleges for assessment purposes. The
+College of Engineering at BYU has a login name to this system, which is shared with
+the department academic advisor. 
+
+Each August and each February, the assessment coordinator retrieves the most recent sores
+from the advisor and adds them to data records in this repository. There are two places where
+these data are stored: 
+
+  - The `data/fe.xlsx` spreadsheet contains the data from the advisor's login as well as a worksheet of the 
+  general exam pass rates.
+  - The `apps/data.csv` files contains the exam subscores in machine-readable format.
+
+To update the report, the assessment coordinator does the following:
+
+  1. Runs the chunks on this page to update the FE pass rate figure.
+  2. Generates the shiny app in the `apps` folder with the new data.
+  3. Uploads the shiny app to the posit connect cloud and updates the links to the app
+    in the report.
+  4. Edits the report text to reflect any additional evaluation of the assessment data.
+:::
