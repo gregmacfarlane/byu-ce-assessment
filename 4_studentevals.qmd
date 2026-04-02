@@ -14,3 +14,13 @@ unfortunately cannot be disaggregated by program.
 
 ![Department course evaluation averages.](data/student_ratings.png){#fig-eval}
 
+::: {.callout-note title="Assessment Practices" collapse="true"}
+The program coordinator has access to a dashboard at [data.byu.edu](https://data.byu.edu) that presents the 
+aggregated course evaluation data.
+
+Each May, the assessment coordinator retrieves the most recent course evaluation
+data from the portal and updates the image in the `data/student_ratings.png` file and renders the page.
+:::
+
+The department also uses student evaluation data to identify strengths and
+weaknesses in faculty development. This information is not used in program assessment.
