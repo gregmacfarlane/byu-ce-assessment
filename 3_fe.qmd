@@ -75,7 +75,7 @@ NCEES makes aggregated FE scores available to colleges for assessment purposes. 
 College of Engineering at BYU has a login name to this system, which is shared with
 the department academic advisor. 
 
-Each August and each February, the assessment coordinator retrieves the most recent sores
+Each August and each February, the assessment coordinator retrieves the most recent scores
 from the advisor and adds them to data records in this repository. There are two places where
 these data are stored: 
 
