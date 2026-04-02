@@ -28,8 +28,11 @@ to direct the discussion, but possible questions include:
   - What are the most positive learning experiences you have had?
   - Have you had any less successful learning experiences?
 
-Each committee member makes notes of the student's responses. The committee coordinator
-consolidates these notes into a single document and adds them to the assessment record.
+Each committee member makes notes of the student's responses. The assessmentcoordinator
+consolidates these notes into a coherent statment and posts it in the space below.
+
+::: {.panel-tabset}
+### Class of 2026
 
 ### Class of 2025
 Students described the civil engineering program as offering strong overall
@@ -66,3 +69,4 @@ Additional suggestions included improving inclusivity and representation
 increasing faculty engagement in student organizations, and addressing
 administrative friction points such as curriculum changes and the graduate
 application process.
+:::
