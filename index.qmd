@@ -1,4 +1,4 @@
-# Introduction
+# Introduction {.unnumbered}
 
 This document describes the processes and methods we use to assess and evaluate the BYU Civil Engineering (BS) program. ABET criterion 4 states: 
 
@@ -7,7 +7,7 @@ This document describes the processes and methods we use to assess and evaluate 
 This manual documents these processes and provides a record of historical assessment data. 
 The program uses five categories of assessments:
 
-  1. Direct assessment of student outcomes in course assignment (see @sec-so)
+  1. Direct assessment of student outcomes in course activities (see @sec-so)
   2. Student performance on the Fundamentals of Engineering (FE) exam (see @sec-fe)
   3. Graduation surveys and exit interviews (see @sec-exit)
   4. Student course evaluations (see @sec-eval)
