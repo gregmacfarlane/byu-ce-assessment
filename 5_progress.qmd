@@ -14,7 +14,7 @@ transfers. The relevant statistic is the share of students who graduate within t
 
 @fig-graduation shows the share of CE program students who graduate within the
 specified numer of enrollments. This includes all students who entered the
-university in 2016-17 through 2020-21 school years. This time period is defined
+university in the 2016-17 through 2020-21 school years. This time period is defined
 as five years of entering students, four complete academic years ago. 
 
 ![Enrollments to graduation for CE program students. Cohorts entering from 2016-17 through 2020-21 school years.](data/graduation/graduation-2016-2021.png){#fig-graduation}
@@ -43,10 +43,29 @@ graduation |>
 ggplot(aes(x = `Five-year aggregated cohorts ending`, y = Share)) +
   geom_line() +
   scale_y_continuous(labels = scales::percent) +
-  labs(y = "Share of students who graduate within twelve enrollments")
+  labs(y = "Students graduating within twelve enrollments") + 
+  theme_bw()
 ```
 
-:::{.callout-note}
+:::{.callout-warning}
 It should be noted that if a student entered the university in 2020-21 and only enrolls in fall and winter
-semesters, they would have only completed ten enrollments by the 2024-25 school year.
+semesters, they would have only completed ten enrollments by the end of the 2024-25 academicyear.
 :::
+
+:::{.callout-note title="Assessment Practices" collapse="true"}
+The program coordinator has access to a dashboard at [data.byu.edu](https://data.byu.edu) that presents the time to graduation
+data. The dashboard is located at the above website under `Student Success Indicators > Enrollments to Graduation`. The resulting
+dashboard allows the user to filter to specific programs and other student types. 
+
+New data should be added to this report each June. The program assessment coordinator should obtain the new data and update this page.
+
+The image showing the cohort progression should be for five years of students, ending four academic years ago.
+The image should be saved in the `data/graduation` folder and the link updated in this report.
+The numeric information beneath this image should be added to the table in `data/graduation/cohorts_in_12.xlsx`, and
+the page should be rendered.
+
+
+:::
+
+## DEW Rates {#sec-dewrates}
+The university has asked us to track courses and students that earn a D, E, or W grade. We are developing tools to track this information. 
