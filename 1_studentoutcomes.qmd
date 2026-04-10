@@ -20,7 +20,6 @@ theme_set(theme_minimal())
 The program assesses each of its seven student outcomes using performance
 indicators and associated rubrics.
 
-## Assessment Schedule
 
 Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
 
@@ -56,7 +55,7 @@ A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
 
 ```{r}
 #| label: tbl-socourses
-# | tbl-cap: Learning Outcomes Matrix
+#| tbl-cap: Learning Outcomes Matrix
 learning_outcomes <- tribble(
   ~`outcome`,               ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
   "1. Complex problems",   NA,      "F",      NA,             NA,      "F",     NA,     NA,      NA,     "S",       NA,      NA,
@@ -90,21 +89,78 @@ kbl(learning_outcomes, col.names = c(" ", names(learning_outcomes)[2:length(name
   column_spec(2:ncol(learning_outcomes), extra_css = "text-align: center;")
 ```
 
-::: {.panel-tabset}
-## SO 1 Complex Problems {#sec-so1}
-An ability to identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics.​
+::: {.callout-note title="Assessment Practices" collapse="true"}
+The program assessment coordinator creates a Microsoft Forms survey for each student outcome. In the semester
+that a course is assessed, the program assessment coordinator sends the survey to the instructor at least twice:
 
-:::{.callout-note collapse="true"}
+  1. Before the semester begins, to remind the instructor of their assessment responsibilities and to invite them to consider
+  activities that will be used for the assessment.
+  2. At the end of the semester, to collect the final assessment data.
+
+The survey asks instructors to provide **for each indicator**:
+  
+  - A brief description of the indicator; e.g., "Final exam question"
+  - The assessment instrument as given to students; e.g. the text of the final exam question with accompanying diagrams or data. This must be provided as a PDF file.
+  - The number of students assessed at each level of the rubric for the indicator.
+
+The assessment coordinator collects the assessment data from the Forms databases and transfers them into this repository.
+The coordinator cleans the data as necessary to create the assessment figures and commits the rendered page.
+:::
+
+
+::: {.callout-note title="Best Practices for Instructors" collapse="false"}
+Activities used for student outcomes assessment should be clearly labeled on the
+syllabus; i.e., "HW 4.1. This problem is used to assess student outcome X in our
+program assessments." This accomplishes two things. First, it helps instructors
+to understand what activities are used in assessment as the course is taught by
+others. Second, it communicates to the students that their performance on the
+activity is used for more than their own grade.
+
+A single activity may be used to assess multiple student outcomes, or multiple
+indicators of a single outcome. But each indicator should be assessed separately
+based on the rubric for that indicator. For example,
+a term project may provide assessment data on both "Communication: Write"
+indicator and on the "Design: Recommend design" indicators. But student performance
+on the indicator should be assessed separately, based on the rubric.
+
+It is not required that the rubrics listed in this section be determinative of
+the grade the students receive on the activity. That is, an instructor may still
+elect to issue full marks for work assessed at a "Developing" level, as an
+example. However, it is best practice to conform the rubric used in grading to
+the rubric used in the assessment, so that students are fully informed of our
+expectations for their performance. In the term project example above, an instructor
+may choose to award more points for the "Communication: Write" indicator than
+for the "Design: Recommend design" indicator based on their goals for the course.
+
+Instructors should select work that students complete **independently** if at
+all possible.  Team project reports or other collaborative efforts make it
+difficult to assess student performance.  When assessing teamwork-related
+indicators using team projects, instructors should make an effort to understand
+how individual students performed.
+
+Learning Suite contains tools that allow instructors to link assignments to course learning outcomes.
+Doing this automates many features of collecting assessment data.
+:::
+
+## Complex Problems {#sec-so1}
+> An ability to identify, formulate, and solve complex engineering problems by
+> applying principles of engineering, science, and mathematics.​
+
+:::{.callout-warning title="ABET Definition"}
 The ABET definition of "Complex Problems" is 
 
-> Complex engineering problems include one or more of the following characteristics: involving wide-ranging or conflicting technical issues, having no obvious solution, addressing problems not encompassed by current standards and codes, including many component parts or sub-problems, involving multiple disciplines, or having significant consequences in a range of contexts.
+> Complex engineering problems include one or more of the following
+> characteristics: involving wide-ranging or conflicting technical issues, having
+> no obvious solution, addressing problems not encompassed by current standards
+> and codes, including many component parts or sub-problems, involving multiple
+> disciplines, or having significant consequences in a range of contexts.
 
 It is understood that just because a problem is "hard" does not mean it is complex. Similarly, a problem may have 
 many sub-steps, but if they are not integrated or coordinated, that does not make it complex.
 :::
 
 
-### Performance Indicators {.unnumbered}
+### Performance Indicators and Rubric {#sec-so1-performance}
 
 We evaluate this outcome based on three performance indicators. Students should:
 
@@ -112,20 +168,82 @@ We evaluate this outcome based on three performance indicators. Students should:
 2.	Formulate a solution strategy.
 3.	Evaluate the best alternative from many possible solutions.
 
-### Rubric {.unnumbered}
+We assess student performance on this indicators using the rubric in @tbl-so1-rubric.
 
-| Indicator    | Unsatisfactory                           | Developing                              | Meets Expectations                                        | Exceeds Expectations                                                                        |
-|--------------|------------------------------------------|-----------------------------------------|-----------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| 1. Identify  | Fails to identify given parameters       | Identifies some given parameters        | Identifies all provided parameters                        | Identifies all parameters including unreasonable parameters or those requiring assumptions. |
-| 2. Formulate | Fails to formulate a solution strategy.  | Formulates a strategy with limitations. | Formulates a solution strategy based in accepted methods. | Formulates a strategy that adjusts for the weaknesses of existing techniques.               |
-| 3. Evaluate  | Fails to evaluate alternative solutions  | Evaluates an alternative solution       | Evaluates alternative solutions.                          | Evaluates alternatives with a consideration of human needs.                              |
+```{r}
+#| label: tbl-so1-rubric
+#| tbl-cap: Rubric for Complex Problems
+rubric_so1 <-  tribble(
+  ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
+  "Identify", "Fails to identify given parameters.", "Identifies some given parameters.", "Identifies all provided parameters.", "Identifies all parameters including unreasonable parameters or those requiring assumptions.",
+  "Formulate", "Fails to formulate a solution strategy.", "Formulates a strategy with limitations.", "Formulates a solution strategy based in accepted methods.", "Formulates a strategy that adjusts for the weaknesses of existing techniques.",
+  "Evaluate", "Fails to evaluate alternative solutions.", "Evaluates an alternative solution.", "Evaluates alternative solutions.", "Evaluates alternatives with a consideration of human needs."
+)
+kbl(rubric_so1) |>
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"))
+```
 
-### Assessment {.unnumbered}
+### Assessment {#sec-so1-assessment}
 
-## SO 2 Design {#sec-so2}
-An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
+We assess this student outcome in the following courses with the listed assessments:
 
-### Performance Indicators {.unnumbered}
+Formative
+
+-	CCE 103: Engineering Mechanics – Statics 
+    -	Identify: Final exam question
+    -	Formulate: Final exam question
+-	CCE 203: Engineering Mechanics – Materials 
+    -	Identify: Final exam question
+    -	Formulate: Final exam question
+
+Summative
+
+-	CE 321: Structural Analysis 
+    -	Identify: Truss analysis project
+    -	Formulate: Truss analysis project
+    -	Evaluate: Truss analysis project
+-	CE 331: Hydrology 
+    -	Identify: Term project
+    -	Formulate: Term project
+    -	Evaluate: Term project
+-	CE 341: Soil Mechanics 
+    -	Identify: Final exam question
+    -	Formulate: Final exam question
+    -	Evaluate: Final exam question
+-	CE 351: Environmental Engineering 
+    -	Identify: Final exam question
+    -	Formulate: Final exam question
+    -	Evaluate: Final exam question
+-	CE 361: Transportation Engineering 
+    -	Identify: Pavement management homework
+    -	Formulate: Pavement management homework
+    -	Evaluate: Pavement management homework
+
+
+We will assess this student outcome in the 2026-27 academic year.
+
+## Design {#sec-so2}
+> An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
+
+
+:::{.callout-warning title="ABET Definition"}
+The ABET definition of "Design" is
+
+ > Engineering design is a process of devising a system, component, or process
+ > to meet desired needs and specifications within constraints. It is an
+ > iterative, creative, decision-making process in which the basic sciences,
+ > mathematics, and engineering sciences are applied to convert resources into
+ > solutions. Engineering design involves identifying opportunities, developing
+ > requirements, performing analysis and synthesis, generating multiple solutions,
+ > evaluating solutions against requirements, considering risks, and making
+ > trade-offs, for the purpose of obtaining a high-quality solution under the
+ > given circumstances. For illustrative purposes only, examples of possible
+ > constraints include aesthetics, codes, constructability, cost, ergonomics,
+ > extensibility, functionality, interoperability, legal considerations,
+ > maintainability, manufacturability, marketability, policy, regulations,
+ > schedule, standards, sustainability, or usability.
+:::
+
 We evaluate this outcome based on four performance indicators. Students should:
 
 1.	Develop the criteria against which the design will be judged. They may include safety requirements, performance expectations, or industry standards.
@@ -133,24 +251,38 @@ We evaluate this outcome based on four performance indicators. Students should:
 3.	Justify the selection of a preferred solution from among multiple alternatives.
 4.	Consider public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
 
+We assess student performance on this indicators using the rubric in @tbl-so2-rubric.
 
-| Indicator                  | Unsatisfactory                                                     | Developing                                             | Meets Expectations                                                 | Exceeds Expectations                                                       |
-|----------------------------|--------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------|----------------------------------------------------------------------------|
-| 1. Develop design criteria | Little recognition of criteria or selection of irrelevant criteria | Partial recognition of relevant criteria               | Thorough recognition of relevant criteria                          | Thorough recognition of relevant criteria, plus optional ones              |
-| 2. Select methods          | Poor matching of methods to problem                                | Partial selection or justification of relevant methods | Selection and justification of methods relevant to solving problem | Selection and justification of relevant methods, acknowledging limitations |
-| 3. Recommend design        | No design, wrong design, or unjustified design                     | Partially acceptable design and justification          | Acceptable design justified by methods and criteria                | Acceptable, justified design chosen from multiple alternatives             |
-| 4. Consider factors        | Unsatisfactory                                                     |                                                        | Meets Expectations                                                 |                                                                            |
-| Public Health              | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Safety                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Welfare                    | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Global                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Cultural                   | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Social                     | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Environmental              | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
-| Economic                   | Did not Consider                                                   |                                                        | Considered                                                         |                                                                            |
+```{r}
+#| label: tbl-so2-rubric
+#| tbl-cap: Rubric for Design
+rubric_so2 <-  tribble(
+  ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
+  "Develop design criteria", "Little recognition of criteria or selection of irrelevant criteria.", "Partial recognition of relevant criteria.", "Thorough recognition of relevant criteria.", "Thorough recognition of relevant criteria, plus optional ones.",
+  "Select methods", "Poor matching of methods to problem.", "Partial selection or justification of relevant methods.", "Selection and justification of methods relevant to solving problem.", "Selection and justification of relevant methods, acknowledging limitations.",
+  "Recommend design", "No design, wrong design, or unjustified design.", "Partially acceptable design and justification.", "Acceptable design justified by methods and criteria.", "Acceptable, justified design chosen from multiple alternatives."
+)
+rubric_so2b <-  tibble(
+  Indicator = c("Public Health", "Safety", "Welfare", "Global", "Cultural", "Social", "Environmental", "Economic"),
+  `Unsatisfactory` = c("Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider"),
+  `Meets Expectations` = c("Considers", "Considers", "Considers", "Considers", "Considers", "Considers", "Considers", "Considers"),
+)
+
+bind_rows(
+  rubric_so2, 
+  tibble(Indicator = "Consider factors", `Unsatisfactory` = "Unsatisfactory", `Meets Expectations` = "Meets Expectations"),
+  rubric_so2b
+) |>
+  mutate(across(everything(), ~replace_na(., ""))) |>
+kbl() |>
+  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
+  row_spec(nrow(rubric_so2) + 1, bold = TRUE, hline_after = TRUE)
 
 
-### Assessment {.unnumbered}
+```
+
+
+### Assessment {#sec-so2-assessment}
 
 ```{r so2-clean, include = FALSE}
 so2 <- read_csv("data/Student Outcome 2_ Design(Sheet1).csv",
@@ -197,13 +329,13 @@ ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
 
 
 
-## SO 3 Communication {#sec-so3}
+## Communication {#sec-so3}
 An ability to communicate effectively with a range of audiences.
 
 ### Performance Indicators {.unnumbered}
 ### Assessment {.unnumbered}
 
-## SO 4 Ethics {#sec-so4}
+## Ethics {#sec-so4}
 An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
 
 ### Performance Indicators {.unnumbered}
@@ -287,7 +419,7 @@ for(i in 1:nrow(so4)) {
 
 
 
-## SO 5 Teamwork {#sec-so5}
+## Teamwork {#sec-so5}
 An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.
 
 ### Performance Indicators {.unnumbered}
@@ -352,7 +484,7 @@ ggplot(so5_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
 ```
 
 
-## SO 6 Experiments and Data {#sec-so6}
+## Experiments and Data {#sec-so6}
 An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions
 
 ### Performance Indicators {.unnumbered}
@@ -426,7 +558,6 @@ An ability to acquire and apply new knowledge as needed, using appropriate learn
 ### Performance Indicators {.unnumbered}
 ### Assessment {.unnumbered}
 
-:::
 
 
 
