@@ -48,6 +48,14 @@ The unencrypted Quarto output is written to `_book`, and the encrypted static si
 
 The `.staticrypt.json` file stores the Staticrypt salt only; it does not contain the password and should remain in the repository so encrypted pages use a stable salt across builds. Do not commit real passwords. Local `.env` files are ignored.
 
+To publish the encrypted site to GitHub Pages through Quarto, run:
+
+```
+STATICRYPT_PASSWORD="use-a-long-password" npm run publish:protected
+```
+
+This renders the normal Quarto book to `_book`, encrypts it into `_book_protected`, then runs `quarto publish gh-pages --profile protected --no-render --no-browser`. The `protected` Quarto profile points publishing at `_book_protected` without re-rendering over the encrypted files.
+
 ## Viewing the Book
 
 After rendering, you can view the book in your web browser by opening the generated HTML files located in the `_book` directory (if specified in your configuration).
