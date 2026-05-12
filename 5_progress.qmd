@@ -91,7 +91,8 @@ ggplot(advisement_topics, aes(x = appointments, y = appointment_topic)) +
 
 From May 2025 to May 2026, the department advisor held `r nrow(appointments)` appointments with enrolled CE majors.
 @fig-advisement shows the number of advisement appointments by the primary topic identified from the student's appointment question.
-
+It should be noted that this data only include students who registered for an appointment with the advisor; students who
+came to open hours without an appointment are not included.
 
 :::{.callout-note title="Assessment Practices" collapse="true"}
 The department academic advisor provides an annual summary of student
