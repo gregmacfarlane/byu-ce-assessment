@@ -43,45 +43,58 @@ constraints.
 
 ```{r}
 #| label: fig-advisement
-#| fig-cap: Number of advisement appointments by class standing for CE students enrolled in the 2025-26 academic year.
+#| fig-cap: Number of advisement appointments by primary topic for CE students from May 2025 to May 2026.
 #| 
-# get list of CE student netID from enrollment 
-ce_students <- read_xlsx("data/advisement/CCE Winter 2026 Enrollment.xlsx") |>
-  filter(`Major Code` == "392850") |>
-  select(name = `Student Name`, netid = `Net ID`, class = `Class  Standing`, hours = `Total BYU Class Hours`) |>
-  mutate(
-    # put class in a factor ordered by class standing
-    class = factor(class, levels = c("Freshman", "Sophomore", "Junior", "Senior")),
-    hours = cut(hours, breaks = c(-Inf, 20, 40, 60, 100, Inf), labels = c("Less than 20", "20-40", "40-60", "60-100", "More than 100"))
-  )
 
 # get list of Emily's advisement appointments
 appointments <- read_csv("data/advisement/Advising Appointments May 2025-May 2026.csv") |>
-  # extract email addresses from title
+  filter(MAJOR == "Civil Engineering") |>
+  select(MAJOR, QUESTION) |>
     mutate(
-      netid = str_extract(Title, "[[:alnum:]._%+-]+(?=@)"),
-      name = Title |>
-       str_remove("^Booked:\\s*") |>
-       str_remove("\\s+[[:alnum:]._%+-]+@.*$") |>
-       str_squish()
-    ) |>
-    select(Title, netid, name)
+      question_clean = str_to_lower(QUESTION),
 
-ce_appointments  <- appointments |>
-  inner_join(ce_students, by = "netid") 
+      graduation_topic = str_detect(
+        question_clean,
+        "graduat|apply for graduation|grad plan|grad check|finish|last semester|walk"
+      ),
 
-ggplot(ce_appointments, aes(x = hours)) +
-  geom_bar() + xlab("BYU Credit Hours") + ylab("Number of Advising Appointments") 
+      course_planning_topic = str_detect(
+        question_clean,
+        "course|class|schedule|register|registration|prereq|prerequisite|plan|semester|fall|winter|spring|summer"
+      ),
+    transfer_petition_topic = str_detect(
+      question_clean,
+      "transfer|transcript|equivalen|substitut|petition|waiv|course petition|transfer credit|dual enrollment|ap credit|ib credit"
+    ),
+      aip_topic = str_detect(
+        question_clean,
+        "aip|academic improvement|academic standing|probation|warning|suspension|dismissal|gpa"
+      ),
+
+      appointment_topic = case_when(
+        graduation_topic ~ "Graduation",
+        transfer_petition_topic ~ "Transfer / course petition",
+        aip_topic ~ "Academic Improvement Plan / AIP",
+        course_planning_topic ~ "Course planning",
+        TRUE ~ "Other / unclear"
+      )
+    )
+
+advisement_topics <- appointments |>
+  count(appointment_topic, name = "appointments") |>
+  mutate(appointment_topic = fct_reorder(appointment_topic, appointments))
+
+ggplot(advisement_topics, aes(x = appointments, y = appointment_topic)) +
+  geom_col() +
+  labs(x = "Number of advising appointments", y = NULL)
 ```
 
-From May 2025 to May 2026, the department advisor held `r nrow(ce_appointments)` with enrolled CE majors.
-@fig-advisement shows the number of advisement appointments by class standing for CE students enrolled in the 2025-26 academic year.
-Overall, more students would likely benefit from meeting with the advisor earlier in their career. The program should
-develop incentives or other strategies to encourage students to meet with the advisor early.
+From May 2025 to May 2026, the department advisor held `r nrow(appointments)` appointments with enrolled CE majors.
+@fig-advisement shows the number of advisement appointments by the primary topic identified from the student's appointment question.
 
 
 :::{.callout-note title="Assessment Practices" collapse="true"}
-The department academic advisor should provide an annual summary of student
+The department academic advisor provides an annual summary of student
 advisement activity to the undergraduate committee each summer. The summary
 should report aggregate statistics only and should not include personally
 identifying student information.
