@@ -22,6 +22,32 @@ quarto render
 
 This will generate the output files in the specified format as defined in the `_quarto.yml` configuration.
 
+You can also use the npm script:
+
+```
+npm run render
+```
+
+## Building the Password-Protected Book
+
+This project uses Staticrypt to encrypt the rendered HTML pages for static hosting. Install the Node dependencies once:
+
+```
+npm install
+```
+
+Then render and encrypt the site with a password supplied through the `STATICRYPT_PASSWORD` environment variable:
+
+```
+STATICRYPT_PASSWORD="use-a-long-password" npm run build:protected
+```
+
+Alternatively, create a local `.env` file containing `STATICRYPT_PASSWORD=use-a-long-password` and run `npm run build:protected`. The `.env` file is ignored by git.
+
+The unencrypted Quarto output is written to `_book`, and the encrypted static site is written to `_book_protected`. Deploy the contents of `_book_protected` when the site should be password-protected.
+
+The `.staticrypt.json` file stores the Staticrypt salt only; it does not contain the password and should remain in the repository so encrypted pages use a stable salt across builds. Do not commit real passwords. Local `.env` files are ignored.
+
 ## Viewing the Book
 
 After rendering, you can view the book in your web browser by opening the generated HTML files located in the `_book` directory (if specified in your configuration).

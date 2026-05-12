@@ -1,0 +1,12 @@
+{
+  "name": "byu-ce-assessment",
+  "private": true,
+  "scripts": {
+    "render": "quarto render",
+    "protect": "node scripts/protect-site.mjs",
+    "build:protected": "npm run render && npm run protect"
+  },
+  "devDependencies": {
+    "staticrypt": "^3.5.4"
+  }
+}

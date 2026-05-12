@@ -1,5 +1,8 @@
 /.quarto/
 *_files/
 _book/
+_book_protected/
+node_modules/
+.env
 **/*.quarto_ipynb
 data/advisement/*
