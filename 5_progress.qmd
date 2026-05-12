@@ -4,7 +4,97 @@ library(tidyverse)
 library(readxl)
 
 knitr::opts_chunk$set(echo = FALSE)
+ggplot2::theme_set(ggplot2::theme_bw())
 ```
+
+The CE program is interested in ensuring that students are progressing in the major. We do this
+by advocading for students to meet regularly with the department academic advisor; monitoring
+courses with high rates of D, E, or W grades; and tracking student time to graduation.
+
+## Student Advisement {#sec-advisement}
+
+Student advisement is an important part of student progress in the major. The
+department academic advisor helps students understand program requirements,
+sequence prerequisites, plan for graduation, and resolve registration barriers.
+The advisor also providesearly guidance to prospective students, new admits,
+transfer students, and students returning from leave or mission deferment.
+
+The university requires students to meet with the department academic advisor to clear
+for graduation. The university also requires students to meet with the department
+academic advisor to register for courses after being placed on academic probation 
+to develop an academic improvement plan. Beyond these required meetings, faculty
+encourage students to meet with the advisor early to discuss course selection and
+major requirements.
+
+The program uses advisement information as contextual evidence when evaluating
+student progress statistics. Advisement patterns can help the undergraduate
+committee identify barriers in the curriculum, confusing prerequisite sequences,
+course availability problems, or points where students need clearer information.
+These data are not used to assess individual student performance.
+
+Each year, the undergraduate committee should review aggregate advisement
+statistics with the department academic advisor. Relevant statistics may include
+the number of advising appointments, the number of unique students advised,
+appointment timing during the academic year, common advising topics, and the
+number of graduation plans reviewed. When available, the advisor should also
+identify recurring issues that affect student progress, such as bottleneck
+courses, transfer-credit questions, prerequisite problems, or registration
+constraints.
+
+```{r}
+#| label: fig-advisement
+#| fig-cap: Number of advisement appointments by class standing for CE students enrolled in the 2025-26 academic year.
+#| 
+# get list of CE student netID from enrollment 
+ce_students <- read_xlsx("data/advisement/CCE Winter 2026 Enrollment.xlsx") |>
+  filter(`Major Code` == "392850") |>
+  select(name = `Student Name`, netid = `Net ID`, class = `Class  Standing`, hours = `Total BYU Class Hours`) |>
+  mutate(
+    # put class in a factor ordered by class standing
+    class = factor(class, levels = c("Freshman", "Sophomore", "Junior", "Senior")),
+    hours = cut(hours, breaks = c(-Inf, 20, 40, 60, 100, Inf), labels = c("Less than 20", "20-40", "40-60", "60-100", "More than 100"))
+  )
+
+# get list of Emily's advisement appointments
+appointments <- read_csv("data/advisement/Advising Appointments May 2025-May 2026.csv") |>
+  # extract email addresses from title
+    mutate(
+      netid = str_extract(Title, "[[:alnum:]._%+-]+(?=@)"),
+      name = Title |>
+       str_remove("^Booked:\\s*") |>
+       str_remove("\\s+[[:alnum:]._%+-]+@.*$") |>
+       str_squish()
+    ) |>
+    select(Title, netid, name)
+
+ce_appointments  <- appointments |>
+  inner_join(ce_students, by = "netid") 
+
+ggplot(ce_appointments, aes(x = hours)) +
+  geom_bar() + xlab("BYU Credit Hours") + ylab("Number of Advising Appointments") 
+```
+
+From May 2025 to May 2026, the department advisor held `r nrow(ce_appointments)` with enrolled CE majors.
+@fig-advisement shows the number of advisement appointments by class standing for CE students enrolled in the 2025-26 academic year.
+Overall, more students would likely benefit from meeting with the advisor earlier in their career. The program should
+develop incentives or other strategies to encourage students to meet with the advisor early.
+
+
+:::{.callout-note title="Assessment Practices" collapse="true"}
+The department academic advisor should provide an annual summary of student
+advisement activity to the undergraduate committee each summer. The summary
+should report aggregate statistics only and should not include personally
+identifying student information.
+
+The undergraduate committee should use the advisement summary alongside the
+time-to-graduation and DEW-rate data when evaluating student progress in the
+major. If advisement data point to recurring curricular or administrative
+barriers, the committee should document the issue and any recommended action in
+the annual program stewardship report.
+:::
+
+## DEW Rates {#sec-dewrates}
+The university has asked us to track courses and students that earn a D, E, or W grade. We are developing tools to track this information. 
 
 ## Time to graduation {#sec-stats}
 
@@ -43,7 +133,7 @@ graduation |>
 ggplot(aes(x = `Five-year aggregated cohorts ending`, y = Share)) +
   geom_line() +
   scale_y_continuous(labels = scales::percent) +
-  labs(y = "Students graduating within twelve enrollments") + 
+  labs(y = "Students graduating within twelve enrollments by admission year.") + 
   theme_bw()
 ```
 
@@ -66,6 +156,3 @@ the page should be rendered.
 
 
 :::
-
-## DEW Rates {#sec-dewrates}
-The university has asked us to track courses and students that earn a D, E, or W grade. We are developing tools to track this information. 
