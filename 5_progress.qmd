@@ -118,17 +118,17 @@ transfers. The relevant statistic is the share of students who graduate within t
 
 @fig-graduation shows the share of CE program students who graduate within the
 specified numer of enrollments. This includes all students who entered the
-university in the 2016-17 through 2020-21 school years. This time period is defined
+university in the 2017-18 through 2021-22 school years. This time period is defined
 as five years of entering students, four complete academic years ago. 
 
-![Enrollments to graduation for CE program students. Cohorts entering from 2016-17 through 2020-21 school years.](data/graduation/graduation-2016-2021.png){#fig-graduation}
+![Enrollments to graduation for CE program students. Cohorts entering from 2017-18 through 2021-22 school years.](data/graduation/graduation-2017-2022.png){#fig-graduation}
 
-For this period, 274 of 448 total students graduated within twelve enrollments,
-for a share of **61 percent**. The time to graduation for each student is not
+For this period, 273 of 435 total students graduated within twelve enrollments,
+for a share of **63 percent**. The time to graduation for each student is not
 given to us by the university. But we can track the aggregate statistic over
 time. @fig-graduation-longitudinal shows the share of CE program students who
 graduate within twelve enrollments for five year aggregated cohorts. This number
-has been dropping for as long as data are available. 
+is a modest increase over the previous year, but there is an overall negative trend.
 
 ```{r}
 #| label: fig-graduation-longitudinal
@@ -139,7 +139,7 @@ has been dropping for as long as data are available.
 #| out-height: 100%
 
 # read in the data
-graduation <- read_excel("data/graduation/cohorts_in_12.xlsx") 
+graduation <- read_csv("data/graduation/cohorts_in_12.csv") 
 
 # plot the data
 graduation |>
