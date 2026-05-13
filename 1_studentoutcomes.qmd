@@ -10,6 +10,80 @@ get_file <- function(url, outcome, indicator, course) {
   download.file(url, file.path(folder, paste0(course, ".pdf")))
 }
 
+read_assessment_data <- function(file, ...) {
+  normalize_names <- function(x) {
+    x |>
+      str_replace_all("\u00a0", " ") |>
+      str_squish() |>
+      str_to_lower()
+  }
+
+  standardize_names <- function(x) {
+    normalized <- normalize_names(x)
+    case_when(
+      normalized == "id" ~ "id",
+      normalized == "start time" ~ "start_time",
+      normalized == "completion time" ~ "completion_time",
+      normalized == "email" ~ "email",
+      normalized == "name" ~ "name",
+      normalized == "course" ~ "course",
+      normalized == "semester" ~ "semester",
+      normalized == "assessment" ~ "assessment",
+      normalized == "indicator" ~ "indicator",
+      str_detect(normalized, "^which course is this assessment given in\\?") ~ "course",
+      str_detect(normalized, "^provide a brief description") ~ "description",
+      str_detect(normalized, "^upload a pdf document") ~ "prompt",
+      str_detect(normalized, "^which performance indicator") ~ "indicator",
+      TRUE ~ x
+    )
+  }
+
+  data <- readr::read_csv(file, ..., show_col_types = FALSE)
+  normalized_names <- normalize_names(names(data))
+  score_columns <- tibble(
+    column = names(data),
+    performance = case_when(
+      str_detect(normalized_names, "^exceeds") ~ "exceeds",
+      str_detect(normalized_names, "^meets") ~ "meets",
+      str_detect(normalized_names, "^developing") ~ "developing",
+      str_detect(normalized_names, "^unsatisfactory") ~ "unsatisfactory",
+      TRUE ~ NA_character_
+    )
+  ) |>
+    filter(!is.na(performance))
+
+  collapse_scores <- function(performance_level) {
+    columns <- score_columns |>
+      filter(performance == performance_level) |>
+      pull(column)
+
+    if (length(columns) == 0) {
+      return(rep(NA_real_, nrow(data)))
+    }
+
+    data |>
+      transmute(across(all_of(columns), ~ readr::parse_number(as.character(.x)))) |>
+      reduce(coalesce)
+  }
+
+  metadata_columns <- c(
+    "id", "start_time", "completion_time", "email", "name", "course",
+    "semester", "description", "assessment", "prompt", "indicator"
+  )
+
+  data |>
+    select(-all_of(score_columns$column)) |>
+    rename_with(standardize_names) |>
+    select(any_of(metadata_columns)) |>
+    bind_cols(tibble(
+      exceeds = collapse_scores("exceeds"),
+      meets = collapse_scores("meets"),
+      developing = collapse_scores("developing"),
+      unsatisfactory = collapse_scores("unsatisfactory")
+    )) |>
+    filter(if_any(everything(), ~ !is.na(.x) & as.character(.x) != ""))
+}
+
 library(wesanderson)
 pal <- wes_palette("AsteroidCity1", 4)[c(3, 2, 1, 4)]
 theme_set(theme_minimal())
@@ -283,34 +357,34 @@ kbl() |>
 ### Assessment {#sec-so2-assessment}
 
 ```{r so2-clean, include = FALSE}
-so2 <- read_csv("data/Student Outcome 2_ Design(Sheet1).csv",
-  skip = 1,
-  col_names = c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt",
-    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
-    "exceeds3", "meets3", "developing3", "unsatisfactory3"),
-  col_types = cols(id = col_double(), start_time = col_datetime(format = ""), completion_time = col_datetime(format = ""),
-    email = col_character(), name = col_character(), course = col_character(), description = col_character(), 
-    prompt = col_character(), indicator = col_character(), exceeds = col_double(), meets = col_double(), 
-    developing = col_double(), unsatisfactory = col_double(), exceeds2 = col_double(), meets2 = col_double(), 
-    developing2 = col_double(), unsatisfactory2 = col_double(), exceeds3 = col_double(), meets3 = col_double(), 
-    developing3 = col_double(), unsatisfactory3 = col_double())) 
+so2 <- read_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv")
 
 so2_clean <- so2 |> 
-  select(id:unsatisfactory) |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  filter(!is.na(Number)) |>
   mutate(
     Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
     labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
-    indicator = factor(indicator, labels = c("Develop design criteria", "Recommend design")),
+    indicator = case_when(
+      str_detect(indicator, "Develop design criteria") ~ "Develop design criteria",
+      str_detect(indicator, "Select methods") ~ "Select methods",
+      str_detect(indicator, "Recommend design") ~ "Recommend design",
+      str_detect(indicator, "Consider factors") ~ "Consider factors",
+      TRUE ~ indicator
+    ),
     course = case_when(
+      str_detect(course, "CE 421") ~ "CE 421",
       str_detect(course, "CE 424") ~ "CE 424",
       str_detect(course, "CE 472") ~ "CE 472",
+      str_detect(course, "CE 453") ~ "CE 453",
+      str_detect(course, "CE 461") ~ "CE 461",
+      str_detect(course, "CE 433") ~ "CE 433",
       TRUE ~ NA_character_
     ) 
   ) |> 
     group_by(course, indicator) |>
     mutate(total = sum(Number)) |>
-    mutate(Percent = Number / total * 100)
+    mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
 ```
 
 ```{r}
@@ -363,13 +437,10 @@ We assess this learning outcome in three courses:
 We evaluated this outcome most recently in Winter 2025. All graduating students take CE 472 in Winter semester. Students take CE 291 R each semester from their sophomore year onward. CCE 102 may be taken in Fall or Winter semesters, so this is approximately a 50% sample of the students in the program. CCE 102 also includes students who are in the CFM and the FM programs.
 
 ```{r so4-clean, include = FALSE}
-so4 <- read_csv("data/Student Outcome 4_ Ethics, Faith and Sustainability(Sheet1).csv") |> 
-  set_names(c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt", 
-    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
-    "exceeds3", "meets3", "developing3", "unsatisfactory3")) 
+so4 <- read_assessment_data("data/Student Outcome 4_ Ethics, Faith and Sustainability(Sheet1).csv")
 so4_clean <- so4 |> 
-  select(id:unsatisfactory) |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  filter(!is.na(Number)) |>
   mutate(
     Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
     labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
@@ -383,7 +454,7 @@ so4_clean <- so4 |>
   ) |> 
     group_by(course, indicator) |>
     mutate(total = sum(Number)) |>
-    mutate(Percent = Number / total * 100)
+    mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
 ```
 
 @fig-s04 shows the share of students at each performance level for each indicator for each course, 
@@ -438,21 +509,11 @@ We assess student performance on these indicators using the following rubric.
 
 
 ```{r so5-clean, include = FALSE}
-so5 <- read_csv("data/Student Outcome 5_ Teamwork(Sheet1).csv", 
-  skip = 1,
-  col_names = c("id", "start_time", "completion_time", "email", "name", "course", "description", "prompt",
-    "indicator", "exceeds", "meets", "developing", "unsatisfactory", "exceeds2", "meets2", "developing2", "unsatisfactory2",
-    "exceeds3", "meets3", "developing3", "unsatisfactory3"),
-  col_types = cols(id = col_double(), start_time = col_datetime(format = ""), completion_time = col_datetime(format = ""),
-    email = col_character(), name = col_character(), course = col_character(), description = col_character(), 
-    prompt = col_character(), indicator = col_character(), exceeds = col_double(), meets = col_double(), 
-    developing = col_double(), unsatisfactory = col_double(), exceeds2 = col_double(), meets2 = col_double(), 
-    developing2 = col_double(), unsatisfactory2 = col_double(), exceeds3 = col_double(), meets3 = col_double(), 
-    developing3 = col_double(), unsatisfactory3 = col_double())) 
+so5 <- read_assessment_data("data/Student Outcome 5_ Teamwork(Sheet1).csv")
 
 so5_clean <- so5 |> 
-  select(id:unsatisfactory) |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  filter(!is.na(Number)) |>
   mutate(
     Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
     labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
@@ -466,7 +527,7 @@ so5_clean <- so5 |>
   ) |> 
     group_by(course, indicator) |>
     mutate(total = sum(Number)) |>
-    mutate(Percent = Number / total * 100)
+    mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
 ```
 
 ```{r}
@@ -518,10 +579,11 @@ though many will take more than one.  We evaluated this outcome most recently in
 
 
 ```{r so6-clean}
-so6 <- read_csv("data/Student Outcome 6_ Experiments and Data.csv")
+so6 <- read_assessment_data("data/Student Outcome 6_ Experiments and Data.csv")
 so6_clean <- so6 |>
   select(course, indicator, exceeds:unsatisfactory) |>
   pivot_longer(-c(course, indicator), values_to = "Percent", names_to = "Performance") |>
+  filter(!is.na(Percent)) |>
   mutate(
     course = factor(course, 
       levels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351"),
@@ -555,7 +617,5 @@ An ability to acquire and apply new knowledge as needed, using appropriate learn
 
 ### Performance Indicators {.unnumbered}
 ### Assessment {.unnumbered}
-
-
 
 
