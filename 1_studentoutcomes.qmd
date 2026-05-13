@@ -617,19 +617,20 @@ An ability to function effectively on a team whose members together provide lead
 
 ### Performance Indicators {.unnumbered}
 We evaluate this outcome based on three performance indicators. Students should: 
-1.	Show leadership through accountability and service 
-2.	Contribute to a collaborative and inclusive environment where all team members feel a sense of belonging. 
-3.	Meet team objectives through establishing goals and planning tasks. 
+
+1. Show leadership through accountability and service.
+2. Contribute to a collaborative and inclusive environment where all team members feel a sense of belonging.
+3. Meet team objectives through establishing goals and planning tasks.
  
 We assess student performance on these indicators using the following rubric. 
 
-### Assessment {.unnumbered}
-  
-| Indicator                       | Unsatisfactory                                            | Developing                                                                            | Meets Expectations                                                                     | Exceeds expectations                                                                             |
-|---------------------------------|-----------------------------------------------------------|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| 1. Accountability and service   | Does not accomplish assigned tasks                        | Accomplishes assigned tasks but is delayed or requires reminders                      | Accomplishes tasks on time                                                             | Accomplishes tasks on time, and helps team members accomplish their roles                        |
-| 2. Contribute to team belonging | No or negative involvement in team activities.            | Involved in team activities and makes some effort to engage others.                   | Actively involved in team activities and encourages engagement from others             | Drives team activities and motivates productive engagement from others                           |
-| 3. Meet team objectives         | Fails to identify reasonable goals or appropriate tasks.  | Develops goals and tasks that are infeasible, or that required substantial revision.  | Develops goals and a task plan that results in meeting the assignment expectations.    | Develops goals and a resilient task plan that results in exceeding the assignment expectations.  |
+### Rubric {.unnumbered}
+
+| Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
+|---|---|---|---|---|
+| 1. Accountability and service | Does not accomplish assigned tasks. | Accomplishes assigned tasks but is delayed or requires reminders. | Accomplishes tasks on time. | Accomplishes tasks on time, and helps team members accomplish their roles. |
+| 2. Contribute to team belonging | No or negative involvement in team activities. | Involved in team activities and makes some effort to engage others. | Actively involved in team activities and encourages engagement from others. | Drives team activities and motivates productive engagement from others. |
+| 3. Meet team objectives | Fails to identify reasonable goals or appropriate tasks. | Develops goals and tasks that are infeasible, or that required substantial revision. | Develops goals and a task plan that results in meeting the assignment expectations. | Develops goals and a resilient task plan that results in exceeding the assignment expectations. |
 
 
 ```{r so5-clean, include = FALSE}
