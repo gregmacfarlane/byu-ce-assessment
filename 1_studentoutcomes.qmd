@@ -84,6 +84,79 @@ read_assessment_data <- function(file, ...) {
     filter(if_any(everything(), ~ !is.na(.x) & as.character(.x) != ""))
 }
 
+read_factor_assessment_data <- function(file, ...) {
+  normalize_names <- function(x) {
+    x |>
+      str_replace_all("\u00a0", " ") |>
+      str_squish() |>
+      str_to_lower()
+  }
+
+  standardize_names <- function(x) {
+    normalized <- normalize_names(x)
+    case_when(
+      normalized == "id" ~ "id",
+      normalized == "start time" ~ "start_time",
+      normalized == "completion time" ~ "completion_time",
+      normalized == "email" ~ "email",
+      normalized == "name" ~ "name",
+      str_detect(normalized, "^which course is this assessment given in\\?") ~ "course",
+      str_detect(normalized, "^provide a brief description") ~ "description",
+      str_detect(normalized, "^upload a pdf document") ~ "prompt",
+      str_detect(normalized, "^which performance indicator") ~ "indicator",
+      str_detect(normalized, "^enter the total number of students") ~ "total",
+      TRUE ~ x
+    )
+  }
+
+  factor_labels <- c(
+    "public health1" = "Public health",
+    "safety1" = "Safety",
+    "welfare" = "Welfare",
+    "global issues" = "Global",
+    "cultural issues" = "Cultural",
+    "social issues" = "Social",
+    "environmental issues" = "Environmental",
+    "economic issues" = "Economic"
+  )
+
+  data <- readr::read_csv(file, ..., show_col_types = FALSE)
+  normalized_names <- normalize_names(names(data))
+  factor_columns <- tibble(
+    column = names(data),
+    normalized = normalized_names
+  ) |>
+    filter(normalized %in% names(factor_labels)) |>
+    mutate(design_factor = factor_labels[normalized])
+
+  if (nrow(factor_columns) == 0) {
+    stop("No design factor assessment columns were found in ", file, call. = FALSE)
+  }
+
+  metadata_columns <- c(
+    "id", "start_time", "completion_time", "email", "name", "course",
+    "description", "prompt", "indicator", "total"
+  )
+
+  data |>
+    rename_with(standardize_names) |>
+    filter(str_detect(indicator, regex("Consider factors", ignore_case = TRUE))) |>
+    select(any_of(metadata_columns), all_of(factor_columns$column)) |>
+    pivot_longer(
+      cols = all_of(factor_columns$column),
+      names_to = "factor_column",
+      values_to = "meets"
+    ) |>
+    mutate(
+      design_factor = factor_labels[normalize_names(factor_column)],
+      total = readr::parse_number(as.character(total)),
+      meets = readr::parse_number(as.character(meets)),
+      unsatisfactory = total - meets
+    ) |>
+    select(any_of(metadata_columns), design_factor, meets, unsatisfactory) |>
+    filter(!is.na(total), !is.na(meets))
+}
+
 library(wesanderson)
 pal <- wes_palette("AsteroidCity1", 4)[c(3, 2, 1, 4)]
 theme_set(theme_minimal())
@@ -358,6 +431,7 @@ kbl() |>
 
 ```{r so2-clean, include = FALSE}
 so2 <- read_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv")
+so2_factors <- read_factor_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv")
 
 so2_clean <- so2 |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
@@ -385,6 +459,39 @@ so2_clean <- so2 |>
     group_by(course, indicator) |>
     mutate(total = sum(Number)) |>
     mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
+
+so2_factors_clean <- so2_factors |>
+  mutate(
+    course = case_when(
+      str_detect(course, "CE 421") ~ "CE 421",
+      str_detect(course, "CE 424") ~ "CE 424",
+      str_detect(course, "CE 472") ~ "CE 472",
+      str_detect(course, "CE 453") ~ "CE 453",
+      str_detect(course, "CE 461") ~ "CE 461",
+      str_detect(course, "CE 433") ~ "CE 433",
+    TRUE ~ NA_character_
+    ),
+    design_factor = factor(
+      design_factor,
+      levels = c("Public health", "Safety", "Welfare", "Global", "Cultural", "Social", "Environmental", "Economic")
+    )
+  ) |>
+  group_by(course, design_factor) |>
+  summarise(
+    meets = sum(meets, na.rm = TRUE),
+    unsatisfactory = sum(unsatisfactory, na.rm = TRUE),
+    total = sum(total, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  pivot_longer(c(unsatisfactory, meets), names_to = "Performance", values_to = "Number") |>
+  mutate(
+    Performance = factor(
+      Performance,
+      levels = c("unsatisfactory", "meets"),
+      labels = c("Unsatisfactory", "Meets Expectations")
+    ),
+    Percent = if_else(total > 0, Number / total * 100, NA_real_)
+  )
 ```
 
 ```{r}
@@ -397,6 +504,23 @@ ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
   geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_manual("Performance", values = pal)
+```
+
+```{r}
+#| label: fig-s02-factors
+#| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 2 design factors.
+#| fig-width: 7
+ggplot(so2_factors_clean, aes(y = Percent, x = course, fill = Performance)) +
+  geom_col() + 
+  labs(x = "Course", y = "Percent of students") +
+  facet_grid(~ design_factor) +
+  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(
+    "Performance",
+    values = c("Unsatisfactory" = pal[1], "Meets Expectations" = pal[3])
+  )
 ```
 
 
@@ -617,5 +741,3 @@ An ability to acquire and apply new knowledge as needed, using appropriate learn
 
 ### Performance Indicators {.unnumbered}
 ### Assessment {.unnumbered}
-
-
