@@ -305,7 +305,7 @@ many sub-steps, but if they are not integrated or coordinated, that does not mak
 :::
 
 
-### Performance Indicators and Rubric {#sec-so1-performance}
+### Performance Indicators {#sec-so1-performance}
 
 We evaluate this outcome based on three performance indicators. Students should:
 
@@ -313,11 +313,11 @@ We evaluate this outcome based on three performance indicators. Students should:
 2.	Formulate a solution strategy.
 3.	Evaluate the best alternative from many possible solutions.
 
-We assess student performance on this indicators using the rubric in @tbl-so1-rubric.
+We assess these performance indicators with the rubric in @tbl-so1-rubric.
 
 ```{r}
 #| label: tbl-so1-rubric
-#| tbl-cap: Rubric for Complex Problems
+#| tbl-cap: "Rubric to assess student outcome 1: Complex Problems"
 rubric_so1 <-  tribble(
   ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
   "Identify", "Fails to identify given parameters.", "Identifies some given parameters.", "Identifies all provided parameters.", "Identifies all parameters including unreasonable parameters or those requiring assumptions.",
@@ -396,11 +396,11 @@ We evaluate this outcome based on four performance indicators. Students should:
 3.	Justify the selection of a preferred solution from among multiple alternatives.
 4.	Consider public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
 
-We assess student performance on this indicators using the rubric in @tbl-so2-rubric.
+We assess these performance indicators with the rubric in @tbl-so2-rubric.
 
 ```{r}
 #| label: tbl-so2-rubric
-#| tbl-cap: Rubric for Design
+#| tbl-cap: "Rubric to assess student outcome 2: Design"
 rubric_so2 <-  tribble(
   ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
   "Develop design criteria", "Little recognition of criteria or selection of irrelevant criteria.", "Partial recognition of relevant criteria.", "Thorough recognition of relevant criteria.", "Thorough recognition of relevant criteria, plus optional ones.",
@@ -542,13 +542,14 @@ We evaluate this outcome based on three performance indicators. Students should:
 2.	Recognize moral and ethical dilemmas in engineering situations and make judgments to identify appropriate resolutions.
 3.	Consider the impacts of an engineering solution in global, economic, environmental, and societal contexts.
 
-### Rubric {.unnumbered}
+We assess these performance indicators with the rubric in @tbl-so4-rubric.
 
 | Indicator                  | Unsatisfactory                                                                | Developing                                                                           | Meets Expectations                                                             | Exceeds expectations                                                                                                                |
 |----------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Recognize responsibilities | Does not recognize or identify professional responsibilities.                 | Recognizes some professional responsibilities, but misses at least one.              | Recognizes professional responsibilities towards all key stakeholders          | Demonstrates interest in and  motivation to serve society through the profession.                                                   |
 | Make judgments             | Does not identify ethical dilemmas, and or develops inappropriate resolutions | Misidentifies ethical dilemmas, and or develops inadequate resolutions.              |  Properly identifies ethical dilemmas and identifies appropriate resolutions.  | Actively considers ethical challenges that may arise in professional contexts and seeks to mitigate  them.                          |
 | Consider impacts           | Fails to identify impacts in any contexts.                                    | Identifies impacts in some contexts, but fails to identify likely impacts in others. | Identifies likely impacts in a variety  of contexts.                           | Actively seeks to consider the ethical impact of engineering situations in global, economic, environmental, and societal  contexts. |
+: Rubric to assess student outcome 4: Ethics {#tbl-so4-rubric}
 
 ### Assessment {.unnumbered}
 
@@ -622,15 +623,14 @@ We evaluate this outcome based on three performance indicators. Students should:
 2. Contribute to a collaborative and inclusive environment where all team members feel a sense of belonging.
 3. Meet team objectives through establishing goals and planning tasks.
  
-We assess student performance on these indicators using the following rubric. 
-
-### Rubric {.unnumbered}
+We assess these performance indicators with the rubric in @tbl-so5-rubric.
 
 | Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
 |---|---|---|---|---|
 | 1. Accountability and service | Does not accomplish assigned tasks. | Accomplishes assigned tasks but is delayed or requires reminders. | Accomplishes tasks on time. | Accomplishes tasks on time, and helps team members accomplish their roles. |
 | 2. Contribute to team belonging | No or negative involvement in team activities. | Involved in team activities and makes some effort to engage others. | Actively involved in team activities and encourages engagement from others. | Drives team activities and motivates productive engagement from others. |
 | 3. Meet team objectives | Fails to identify reasonable goals or appropriate tasks. | Develops goals and tasks that are infeasible, or that required substantial revision. | Develops goals and a task plan that results in meeting the assignment expectations. | Develops goals and a resilient task plan that results in exceeding the assignment expectations. |
+: Rubric to assess student outcome 5: Teamwork {#tbl-so5-rubric}
 
 
 ```{r so5-clean, include = FALSE}
@@ -680,13 +680,15 @@ We evaluate this outcome based on four performance indicators. Students should:
 3. Conduct: Conduct the experiment and keep appropriate records. 
 4. Analyze and conclude: Analyze data using scientific techniques and draw supported conclusions. 
 
-### Rubric {.unnumbered}
+We assess these performance indicators with the rubric in @tbl-so6-rubric.
+
 | Indicator                | Unsatisfactory                                                                                                                     | Developing                                                                                                                                     | Meets Expectations                                                                                                                                   | Exceeds expectations                                                                                                                                                                                         |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |  Identify conditions   | Does not distinguish controls and variables; attempts multiple variables in one experiment                                         | Identifies some controls and variables                                                                                                         | Correctly identifies all controls and variables                                                                                                      | Correctly identifies all controls and variables as well as possible confounding conditions                                                                                                                   |
 |  Select methods        | Does not match methods to experiment                                                                                               | Selects some adequate methods, materials, or equipment                                                                                         | Selects adequate methods, materials, and equipment; can justify choice                                                                               | Selects adequate methods, materials, and equipment; can justify choice; may use standards                                                                                                                    |
 |  Conduct               | Careless setup or execution of experiment; little or no recordkeeping; inattentive to experiment                                   | Some problems in setup or execution; keeps some records                                                                                        | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors                                         | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors or limitations                                                                                  |
 |  Analyze and conclude  | Little or no analysis of data; incorrect analysis of data; no conclusion; concludes without data; concludes contradictory to data  | Shows some analysis by figures, equations, statistics, etc., though perhaps with mistakes; may conclude without data or contradictory to data  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions; acknowledges civil engineering applications of results  |
+: Rubric to assess student outcome 6: Experiments and Data {#tbl-so6-rubric}
 
 
 ### Assessment {.unnumbered}
