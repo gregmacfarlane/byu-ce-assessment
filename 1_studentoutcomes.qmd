@@ -168,7 +168,7 @@ indicators and associated rubrics.
 Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
 
 
-| Outcome | 2024-25 Winter | 2024-25 Sp/Su | 2025-26 Fall | 2025-26 Winter | 2025-26 Sp/Su | 2026-27 Fall | 2026-27 Winter | 2026-27 Sp/Su | 2027-28 Fall | 2027-28 Winter | 2027-28 Sp/Su |
+| Outcome | 25 Winter | 25 Sp/Su | 25 Fall | 26 Winter | 26 Sp/Su | 26 Fall | 27 Winter | 27 Sp/Su | 27 Fall | 28 Winter | 28 Sp/Su |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | SO1: Complex Problems |  |  |  |  |  | A | E |  | C |  |  |
 | SO2: Design |  |  | A | A | E | C |  |  |  |  |  |
