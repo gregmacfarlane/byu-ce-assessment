@@ -3,7 +3,6 @@
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(readxl)
-library(kableExtra)
 get_file <- function(url, outcome, indicator, course) {
   folder <- file.path("assessments", outcome, indicator) 
   dir.create(folder, recursive = TRUE, showWarnings = FALSE)
@@ -169,27 +168,17 @@ indicators and associated rubrics.
 Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
 
 
-```{r}
-#| label: tbl-so-schedule
-#| tbl-cap: Assessment Schedule
-schedule <- tribble(
-  ~Outcome, ~`W 2025`, ~`Sp 2025`, ~`F 2025`, ~`W 2026`, ~`Sp 2026`, ~`F 2026`, ~`W 2027`, ~`Sp 2027`, ~`F 2027`, ~`W 2028`, ~`Sp 2028`, 
-  "SO1: Complex Problems",    NA, NA,    NA, NA, NA,             "A", "E", NA,   "C", NA, NA,
-  "SO2: Design",              NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
-  "SO3: Communications",      NA, NA,    NA, NA, NA,             "A", "E", NA,   "C", NA, NA, 
-  "SO4: Ethics",              "Assess", "Evaluate", "Change", NA, NA,   NA, NA, NA,    NA, "A", "E",
-  "SO5: Teamwork",            NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
-  "SO6: Experiments / Data",  "Assess", "Evaluate", "Change", NA, NA,   NA, NA, NA,    NA, "A", "E",
-  "SO7: Acquire Knowledge",   NA, NA,    "A", "A", "E",           "C", NA, NA,    NA, NA, NA,
-  "ABET Schedule",            NA, NA,    NA, NA, "Self-study",   "Visit",  "Response", NA,   NA, NA, NA
-) |> 
-  mutate(across(everything(), ~ifelse(is.na(.), "", .)))
-kbl(schedule, col.names = c("Outcome", rep(c("Winter", "Sp/Su", "Fall"), 3), c("Winter", "Sp/Su")), 
-    na = "", format = "html") |>
-  add_header_above(c(" " = 1, "2024-25" = 2, "2025-26" = 3, "2026-27" = 3, "2027-28" = 3)) |>
-  group_rows("ABET", 8, 8) |> 
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
-```
+| Outcome | 2024-25 Winter | 2024-25 Sp/Su | 2025-26 Fall | 2025-26 Winter | 2025-26 Sp/Su | 2026-27 Fall | 2026-27 Winter | 2026-27 Sp/Su | 2027-28 Fall | 2027-28 Winter | 2027-28 Sp/Su |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| SO1: Complex Problems |  |  |  |  |  | A | E |  | C |  |  |
+| SO2: Design |  |  | A | A | E | C |  |  |  |  |  |
+| SO3: Communications |  |  |  |  |  | A | E |  | C |  |  |
+| SO4: Ethics | Assess | Evaluate | Change |  |  |  |  |  |  | A | E |
+| SO5: Teamwork |  |  | A | A | E | C |  |  |  |  |  |
+| SO6: Experiments / Data | Assess | Evaluate | Change |  |  |  |  |  |  | A | E |
+| SO7: Acquire Knowledge |  |  | A | A | E | C |  |  |  |  |  |
+| ABET Schedule |  |  |  |  | Self-study | Visit | Response |  |  |  |  |
+: Assessment Schedule {#tbl-so-schedule}
 
 We attempt to assess each student outcome at two levels:
 
@@ -198,41 +187,16 @@ We attempt to assess each student outcome at two levels:
 
 A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
 
-```{r}
-#| label: tbl-socourses
-#| tbl-cap: Learning Outcomes Matrix
-learning_outcomes <- tribble(
-  ~`outcome`,               ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
-  "1. Complex problems",   NA,      "F",      NA,             NA,      "F",     NA,     NA,      NA,     "S",       NA,      NA,
-  "2. Design",             NA,      NA,      NA,              NA,      NA,      NA,     NA,       NA,      NA,       "F",      "S",
-  "3. Communication",      NA,      NA,      "F",             NA,      NA,      NA,     "F",      NA,      NA,       NA,       "S",
-  "4. Sthics",             "F",     NA,      NA,              NA,      NA,      NA,     NA,       "F",     NA,       NA,       "S",
-  "5. Teamwork",           "F",     NA,      NA,              NA,      NA,      NA,     NA,       "F",     NA,       NA,       "S",
-  "6. Sxperiments and data",NA,     NA,      NA,              NA,      NA,      "F",    "F",      NA,      "S*",     NA,      NA,
-  "7. Acquire knowledge",   NA,      NA,     "F",             NA,      NA,      NA,     NA,      "F",     NA,       NA,      "S"
-) |>
-  mutate(across(everything(), ~ifelse(is.na(.), "", .)))
-
-# Rotate column names except first
-rotated_names <- names(learning_outcomes)
-rotated_names[-1] <- rotated_names[-1] <- paste0(
-  "<div style='
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-    text-align: left;
-    height: 120px;
-    margin: auto;'>",
-  rotated_names[-1],
-  "</div>"
-)
-colnames(learning_outcomes) <- rotated_names
-kbl(learning_outcomes, col.names = c(" ", names(learning_outcomes)[2:length(names(learning_outcomes))]), 
-    escape = FALSE, na = "") |>
-  kable_styling(bootstrap_options = c("striped", "responsive")) |> 
-  column_spec(1, border_right = TRUE, extra_css = "text-align: left;") |>  # Left-align first column
-  column_spec(2:ncol(learning_outcomes), extra_css = "text-align: center;")
-```
+| Outcome | CCE102 | CCE103 | Software | Measurements | CCE203 | CE232 | CCE270 | CE291 | Breadth | Design | Capstone |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| 1. Complex problems |  | F |  |  | F |  |  |  | S |  |  |
+| 2. Design |  |  |  |  |  |  |  |  |  | F | S |
+| 3. Communication |  |  | F |  |  |  | F |  |  |  | S |
+| 4. Sthics | F |  |  |  |  |  |  | F |  |  | S |
+| 5. Teamwork | F |  |  |  |  |  |  | F |  |  | S |
+| 6. Sxperiments and data |  |  |  |  |  | F | F |  | S* |  |  |
+| 7. Acquire knowledge |  |  | F |  |  |  |  | F |  |  | S |
+: Learning Outcomes Matrix {#tbl-socourses}
 
 ::: {.callout-note title="Assessment Practices" collapse="true"}
 The program assessment coordinator creates a Microsoft Forms survey for each student outcome. In the semester
@@ -315,18 +279,12 @@ We evaluate this outcome based on three performance indicators. Students should:
 
 We assess these performance indicators with the rubric in @tbl-so1-rubric.
 
-```{r}
-#| label: tbl-so1-rubric
-#| tbl-cap: "Rubric to assess student outcome 1: Complex Problems"
-rubric_so1 <-  tribble(
-  ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
-  "Identify", "Fails to identify given parameters.", "Identifies some given parameters.", "Identifies all provided parameters.", "Identifies all parameters including unreasonable parameters or those requiring assumptions.",
-  "Formulate", "Fails to formulate a solution strategy.", "Formulates a strategy with limitations.", "Formulates a solution strategy based in accepted methods.", "Formulates a strategy that adjusts for the weaknesses of existing techniques.",
-  "Evaluate", "Fails to evaluate alternative solutions.", "Evaluates an alternative solution.", "Evaluates alternative solutions.", "Evaluates alternatives with a consideration of human needs."
-)
-kbl(rubric_so1) |>
-  kable_styling(bootstrap_options = c("hover", "condensed", "responsive"))
-```
+| Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
+|:---|:---|:---|:---|:---|
+| Identify | Fails to identify given parameters. | Identifies some given parameters. | Identifies all provided parameters. | Identifies all parameters including unreasonable parameters or those requiring assumptions. |
+| Formulate | Fails to formulate a solution strategy. | Formulates a strategy with limitations. | Formulates a solution strategy based in accepted methods. | Formulates a strategy that adjusts for the weaknesses of existing techniques. |
+| Evaluate | Fails to evaluate alternative solutions. | Evaluates an alternative solution. | Evaluates alternative solutions. | Evaluates alternatives with a consideration of human needs. |
+: Rubric to assess student outcome 1: Complex Problems {#tbl-so1-rubric}
 
 ### Assessment {#sec-so1-assessment}
 
@@ -398,33 +356,21 @@ We evaluate this outcome based on four performance indicators. Students should:
 
 We assess these performance indicators with the rubric in @tbl-so2-rubric.
 
-```{r}
-#| label: tbl-so2-rubric
-#| tbl-cap: "Rubric to assess student outcome 2: Design"
-rubric_so2 <-  tribble(
-  ~`Indicator`, ~`Unsatisfactory`, ~`Developing`, ~`Meets Expectations`, ~`Exceeds Expectations`,
-  "Develop design criteria", "Little recognition of criteria or selection of irrelevant criteria.", "Partial recognition of relevant criteria.", "Thorough recognition of relevant criteria.", "Thorough recognition of relevant criteria, plus optional ones.",
-  "Select methods", "Poor matching of methods to problem.", "Partial selection or justification of relevant methods.", "Selection and justification of methods relevant to solving problem.", "Selection and justification of relevant methods, acknowledging limitations.",
-  "Recommend design", "No design, wrong design, or unjustified design.", "Partially acceptable design and justification.", "Acceptable design justified by methods and criteria.", "Acceptable, justified design chosen from multiple alternatives."
-)
-rubric_so2b <-  tibble(
-  Indicator = c("Public Health", "Safety", "Welfare", "Global", "Cultural", "Social", "Environmental", "Economic"),
-  `Unsatisfactory` = c("Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider", "Does not consider"),
-  `Meets Expectations` = c("Considers", "Considers", "Considers", "Considers", "Considers", "Considers", "Considers", "Considers"),
-)
-
-bind_rows(
-  rubric_so2, 
-  tibble(Indicator = "Consider factors", `Unsatisfactory` = "Unsatisfactory", `Meets Expectations` = "Meets Expectations"),
-  rubric_so2b
-) |>
-  mutate(across(everything(), ~replace_na(., ""))) |>
-kbl() |>
-  kable_styling(bootstrap_options = c("hover", "condensed", "responsive")) |>
-  row_spec(nrow(rubric_so2) + 1, bold = TRUE, hline_after = TRUE)
-
-
-```
+| Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
+|:---|:---|:---|:---|:---|
+| Develop design criteria | Little recognition of criteria or selection of irrelevant criteria. | Partial recognition of relevant criteria. | Thorough recognition of relevant criteria. | Thorough recognition of relevant criteria, plus optional ones. |
+| Select methods | Poor matching of methods to problem. | Partial selection or justification of relevant methods. | Selection and justification of methods relevant to solving problem. | Selection and justification of relevant methods, acknowledging limitations. |
+| Recommend design | No design, wrong design, or unjustified design. | Partially acceptable design and justification. | Acceptable design justified by methods and criteria. | Acceptable, justified design chosen from multiple alternatives. |
+| Consider factors | Unsatisfactory |  | Meets Expectations |  |
+| Public Health | Does not consider |  | Considers |  |
+| Safety | Does not consider |  | Considers |  |
+| Welfare | Does not consider |  | Considers |  |
+| Global | Does not consider |  | Considers |  |
+| Cultural | Does not consider |  | Considers |  |
+| Social | Does not consider |  | Considers |  |
+| Environmental | Does not consider |  | Considers |  |
+| Economic | Does not consider |  | Considers |  |
+: Rubric to assess student outcome 2: Design {#tbl-so2-rubric}
 
 
 ### Assessment {#sec-so2-assessment}
@@ -545,7 +491,7 @@ We evaluate this outcome based on three performance indicators. Students should:
 We assess these performance indicators with the rubric in @tbl-so4-rubric.
 
 | Indicator                  | Unsatisfactory                                                                | Developing                                                                           | Meets Expectations                                                             | Exceeds expectations                                                                                                                |
-|----------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+|:---------------------------|:------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
 | Recognize responsibilities | Does not recognize or identify professional responsibilities.                 | Recognizes some professional responsibilities, but misses at least one.              | Recognizes professional responsibilities towards all key stakeholders          | Demonstrates interest in and  motivation to serve society through the profession.                                                   |
 | Make judgments             | Does not identify ethical dilemmas, and or develops inappropriate resolutions | Misidentifies ethical dilemmas, and or develops inadequate resolutions.              |  Properly identifies ethical dilemmas and identifies appropriate resolutions.  | Actively considers ethical challenges that may arise in professional contexts and seeks to mitigate  them.                          |
 | Consider impacts           | Fails to identify impacts in any contexts.                                    | Identifies impacts in some contexts, but fails to identify likely impacts in others. | Identifies likely impacts in a variety  of contexts.                           | Actively seeks to consider the ethical impact of engineering situations in global, economic, environmental, and societal  contexts. |
@@ -626,7 +572,7 @@ We evaluate this outcome based on three performance indicators. Students should:
 We assess these performance indicators with the rubric in @tbl-so5-rubric.
 
 | Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
-|---|---|---|---|---|
+|:---|:---|:---|:---|:---|
 | 1. Accountability and service | Does not accomplish assigned tasks. | Accomplishes assigned tasks but is delayed or requires reminders. | Accomplishes tasks on time. | Accomplishes tasks on time, and helps team members accomplish their roles. |
 | 2. Contribute to team belonging | No or negative involvement in team activities. | Involved in team activities and makes some effort to engage others. | Actively involved in team activities and encourages engagement from others. | Drives team activities and motivates productive engagement from others. |
 | 3. Meet team objectives | Fails to identify reasonable goals or appropriate tasks. | Develops goals and tasks that are infeasible, or that required substantial revision. | Develops goals and a task plan that results in meeting the assignment expectations. | Develops goals and a resilient task plan that results in exceeding the assignment expectations. |
@@ -683,7 +629,7 @@ We evaluate this outcome based on four performance indicators. Students should:
 We assess these performance indicators with the rubric in @tbl-so6-rubric.
 
 | Indicator                | Unsatisfactory                                                                                                                     | Developing                                                                                                                                     | Meets Expectations                                                                                                                                   | Exceeds expectations                                                                                                                                                                                         |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:-------------------------|:-----------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |  Identify conditions   | Does not distinguish controls and variables; attempts multiple variables in one experiment                                         | Identifies some controls and variables                                                                                                         | Correctly identifies all controls and variables                                                                                                      | Correctly identifies all controls and variables as well as possible confounding conditions                                                                                                                   |
 |  Select methods        | Does not match methods to experiment                                                                                               | Selects some adequate methods, materials, or equipment                                                                                         | Selects adequate methods, materials, and equipment; can justify choice                                                                               | Selects adequate methods, materials, and equipment; can justify choice; may use standards                                                                                                                    |
 |  Conduct               | Careless setup or execution of experiment; little or no recordkeeping; inattentive to experiment                                   | Some problems in setup or execution; keeps some records                                                                                        | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors                                         | Carefully sets up and executes experiment; records include photos, notes, observations, and potential errors or limitations                                                                                  |
