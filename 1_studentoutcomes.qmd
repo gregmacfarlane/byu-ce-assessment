@@ -587,11 +587,37 @@ Students will demonstrate:
 > An ability to communicate effectively with a range of audiences.
 
 
-### Performance Indicators {.unnumbered}
-### Assessment {.unnumbered}
+### Performance Indicators 
+
+We evaluate this outcome based on four performance indicators. Students should: 
+1.	Write technical texts in clear and organized English 
+2.	Apply industry conventions for professional reports (typography, reference format, etc.) 
+3.	Use graphics to illustrate numeric data 
+4.	Present information in oral contexts 
+
+We assess these performance indicators with the rubric in @tbl-so3-rubric.
+
+| Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
+|:----------|:---------------|:-----------|:-------------------|:---------------------|
+| 1. Write | Unclear, disorganized, or incorrect writing interferes with understanding. | Writing has some incorrect or unclear elements. | Writing is clear and well-organized. | Writing is exceptionally clear, organized, and coherent. |
+| 2. Conventions | Does not apply industry conventions. | Applies some industry conventions. | Largely applies industry conventions. | Precisely applies industry conventions. |
+| 3. Graphics | Graphics are missing or poorly constructed. | Graphics have some construction or clarity issues. | Graphics are clear and well-made. | Graphics are exceptionally well-produced and informative. |
+| 4. Oral | Delivery is unclear or disorganized. | Delivery communicates basic ideas but lacks clarity or structure. | Delivery is clear, structured, and supports understanding. | Delivery is polished, concise, and highly effective. |
+: Student Outcome 3 Assessment Rubric {#tbl-so3-rubric}
+
+
+
+### Assessment Instruments
+
+
+### Data and Evaluation
+
+
 
 ## Ethics {#sec-so4}
-An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
+Students will demonstrate:
+
+> An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
 
 ### Performance Indicators {.unnumbered}
 
@@ -608,15 +634,9 @@ We assess these performance indicators with the rubric in @tbl-so4-rubric.
 | Recognize responsibilities | Does not recognize or identify professional responsibilities.                 | Recognizes some professional responsibilities, but misses at least one.              | Recognizes professional responsibilities towards all key stakeholders          | Demonstrates interest in and  motivation to serve society through the profession.                                                   |
 | Make judgments             | Does not identify ethical dilemmas, and or develops inappropriate resolutions | Misidentifies ethical dilemmas, and or develops inadequate resolutions.              |  Properly identifies ethical dilemmas and identifies appropriate resolutions.  | Actively considers ethical challenges that may arise in professional contexts and seeks to mitigate  them.                          |
 | Consider impacts           | Fails to identify impacts in any contexts.                                    | Identifies impacts in some contexts, but fails to identify likely impacts in others. | Identifies likely impacts in a variety  of contexts.                           | Actively seeks to consider the ethical impact of engineering situations in global, economic, environmental, and societal  contexts. |
-: Rubric to assess student outcome 4: Ethics {#tbl-so4-rubric}
+: Student Outcome 4 Assessment Rubric {#tbl-so4-rubric}
 
-### Assessment {.unnumbered}
-
-We assess this learning outcome in three courses: 
-
-  - CCE 102: Sustainable Infrastructure (Introductory)
-  - CE 291 R: Civil Engineering Seminar (Reinforcing)
-  - CE 472: Civil Engineering Capstone (Evaluation)
+### Assessment Instruments {.unnumbered}
 
 We evaluated this outcome most recently in Winter 2025. All graduating students take CE 472 in Winter semester. Students take CE 291 R each semester from their sophomore year onward. CCE 102 may be taken in Fall or Winter semesters, so this is approximately a 50% sample of the students in the program. CCE 102 also includes students who are in the CFM and the FM programs.
 
@@ -641,8 +661,45 @@ so4_clean <- so4 |>
     mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
 ```
 
-@fig-s04 shows the share of students at each performance level for each indicator for each course, 
-alongside the threshold of 75%. By taking CE 472, 75% of students meet the expectations for each indicator.
+
+We assess this student outcome in the following courses with the assessments listed in @tbl-so4-instruments.
+Complete instrument prompts are available in the program assessment folder.
+
+```{r}
+#| label: tbl-so4-instruments
+#| tbl-cap: Assessment Instruments for Student Outcome 2
+so4_instruments <- so4_clean |> 
+  group_by(course, indicator, description) |>
+  slice(1) |>
+  mutate(level = ifelse(course == "CE 472", "Summative", "Formative"))  |>
+  arrange(indicator, level, course) |>
+  ungroup() |>
+  select(indicator, level, course,  description) |> 
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+
+tt(so4_instruments)  |>
+  group_tt(i = indicator) |>
+  subset(select = -indicator)  |> 
+  style_tt(align = "l") |>
+  style_tt(
+    i = c(1, 4, 8),
+    color = "white",
+    background = "gray",
+    bold = TRUE)
+
+```
+
+
+### Data and Evaluation
+
+We evaluated this outcome most recently in Winter 2025. All graduating students
+take CE 472 in Winter semester. Students take CE 291 R each semester from their
+sophomore year onward. CCE 102 may be taken in Fall or Winter semesters, so this
+is approximately a 50% sample of the students in the program. CCE 102 also
+includes students who are in the CFM and the FM programs.  @fig-s04 shows the
+share of students at each performance level for each indicator for each course,
+alongside the threshold of 75%. By taking CE 472, 75% of students meet the
+expectations for each indicator.
 
 ```{r}
 #| label: fig-s04
@@ -670,6 +727,9 @@ for(i in 1:nrow(so4)) {
 
 ```
 
+The evaluation of this assessment data led the instructors of CCE 102 and CE 472 to make changes in the
+way that they taught and evaluated ethical dilemmas. The re-assessment of this
+outcome will occur in the 2027-2028 academic year.
 
 
 ## Teamwork {#sec-so5}
