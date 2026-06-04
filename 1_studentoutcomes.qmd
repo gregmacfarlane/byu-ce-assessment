@@ -2,6 +2,7 @@
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(tinytable)
 library(readxl)
 get_file <- function(url, outcome, indicator, course) {
   folder <- file.path("assessments", outcome, indicator) 
@@ -162,10 +163,10 @@ theme_set(theme_minimal())
 ```
 
 The program assesses each of its seven student outcomes using performance
-indicators and associated rubrics.
-
-
-Each academic year, we assess and evaluate student learning outcomes based on the schedule in @tbl-so-schedule. This rolling three-year schedule allows us to assess each student outcome twice during a six-year ABET evaluation cycle.
+indicators and associated rubrics.  Each academic year, we assess and evaluate
+student learning outcomes based on the schedule in @tbl-so-schedule. This
+rolling three-year schedule allows us to assess each student outcome twice
+during a six-year ABET evaluation cycle.
 
 
 | Outcome | 25 Winter | 25 Sp/Su | 25 Fall | 26 Winter | 26 Sp/Su | 26 Fall | 27 Winter | 27 Sp/Su | 27 Fall | 28 Winter | 28 Sp/Su |
@@ -180,23 +181,30 @@ Each academic year, we assess and evaluate student learning outcomes based on th
 | ABET Schedule |  |  |  |  | Self-study | Visit | Response |  |  |  |  |
 : Assessment Schedule {#tbl-so-schedule}
 
+The annual program stewardship report includes the present academic year's
+assessment and evaluation, as well as reports on actions taken related to the previous
+year's evaluations.
+
 We attempt to assess each student outcome at two levels:
 
   1. At a Formative level, in lower-division courses. There may be more than one formative assessment of a student outcome.
   3. At a Summative level, in an upper-division course as close to graduation as possible.
 
-A matrix mapping each student outcome to the courses is shown in @tbl-socourses.
+Summative assessments are given priority in program evaluation, but formative assessments can provide additional supportive data.
+@tbl-socourses lists which courses are used for formative and summative assessments.
 
 | Outcome | CCE102 | CCE103 | Software | Measurements | CCE203 | CE232 | CCE270 | CE291 | Breadth | Design | Capstone |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | 1. Complex problems |  | F |  |  | F |  |  |  | S |  |  |
 | 2. Design |  |  |  |  |  |  |  |  |  | F | S |
 | 3. Communication |  |  | F |  |  |  | F |  |  |  | S |
-| 4. Sthics | F |  |  |  |  |  |  | F |  |  | S |
+| 4. Ethics | F |  |  |  |  |  |  | F |  |  | S |
 | 5. Teamwork | F |  |  |  |  |  |  | F |  |  | S |
-| 6. Sxperiments and data |  |  |  |  |  | F | F |  | S* |  |  |
+| 6. Experiments and data |  |  |  |  |  | F | F |  | S* |  |  |
 | 7. Acquire knowledge |  |  | F |  |  |  |  | F |  |  | S |
 : Learning Outcomes Matrix {#tbl-socourses}
+
+
 
 ::: {.callout-note title="Assessment Practices" collapse="true"}
 The program assessment coordinator creates a Microsoft Forms survey for each student outcome. In the semester
@@ -217,7 +225,7 @@ The coordinator cleans the data as necessary to create the assessment figures an
 :::
 
 
-::: {.callout-note title="Best Practices for Instructors" collapse="false"}
+::: {.callout-important title="Best Practices for Instructors" collapse="false"}
 Activities used for student outcomes assessment should be clearly labeled on the
 syllabus; i.e., "HW 4.1. This problem is used to assess student outcome X in our
 program assessments." This accomplishes two things. First, it helps instructors
@@ -252,6 +260,9 @@ Doing this automates many features of collecting assessment data.
 :::
 
 ## Complex Problems {#sec-so1}
+
+Students will demonstrate:
+
 > An ability to identify, formulate, and solve complex engineering problems by
 > applying principles of engineering, science, and mathematics.​
 
@@ -265,7 +276,7 @@ The ABET definition of "Complex Problems" is
 > disciplines, or having significant consequences in a range of contexts.
 
 It is understood that just because a problem is "hard" does not mean it is complex. Similarly, a problem may have 
-many sub-steps, but if they are not integrated or coordinated, that does not make it complex.
+many sub-steps, but if the parts are not integrated or coordinated the problem would not be considered "complex."
 :::
 
 
@@ -286,7 +297,7 @@ We assess these performance indicators with the rubric in @tbl-so1-rubric.
 | Evaluate | Fails to evaluate alternative solutions. | Evaluates an alternative solution. | Evaluates alternative solutions. | Evaluates alternatives with a consideration of human needs. |
 : Rubric to assess student outcome 1: Complex Problems {#tbl-so1-rubric}
 
-### Assessment {#sec-so1-assessment}
+### Assessment Instruments {#sec-so1-assessment}
 
 We assess this student outcome in the following courses with the listed assessments:
 
@@ -323,10 +334,15 @@ Summative
     -	Evaluate: Pavement management homework
 
 
-We will assess this student outcome in the 2026-27 academic year.
+### Evaluation
+We will assess and evaluate this student outcome in the 2026-27 academic year.
 
-## Design {#sec-so2}
-> An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
+## Design and Contemporary Issues {#sec-so2}
+Students will demonstrate:
+
+> An ability to apply engineering design to produce solutions that meet
+> specified needs with consideration of public health, safety, and welfare as well
+> as global, cultural, social, environmental, and economic factors.
 
 
 :::{.callout-warning title="ABET Definition"}
@@ -345,12 +361,15 @@ The ABET definition of "Design" is
  > extensibility, functionality, interoperability, legal considerations,
  > maintainability, manufacturability, marketability, policy, regulations,
  > schedule, standards, sustainability, or usability.
+
+
 :::
 
+### Performance Indicators {#sec-so2-performance}
 We evaluate this outcome based on four performance indicators. Students should:
 
-1.	Develop the criteria against which the design will be judged. They may include safety requirements, performance expectations, or industry standards.
-2.	Select appropriate computational, experimental, or qualitative methods to develop the design, taking it from problem to solution. 
+1.	Develop the criteria against which the design will be judged. These criteria may include safety requirements, performance expectations, or industry standards.
+2.	Select appropriate computational, experimental, or qualitative methods to develop the design.
 3.	Justify the selection of a preferred solution from among multiple alternatives.
 4.	Consider public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
 
@@ -373,11 +392,23 @@ We assess these performance indicators with the rubric in @tbl-so2-rubric.
 : Rubric to assess student outcome 2: Design {#tbl-so2-rubric}
 
 
-### Assessment {#sec-so2-assessment}
+### Assessment Instruments {#sec-so2-assessment}
+
 
 ```{r so2-clean, include = FALSE}
 so2 <- read_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv")
-so2_factors <- read_factor_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv")
+so2_factors <- read_factor_assessment_data("data/Student Outcome 2_ Design(Sheet1).csv") |>
+  mutate(
+      course = case_when(
+      str_detect(course, "CE 421") ~ "CE 421",
+      str_detect(course, "CE 424") ~ "CE 424",
+      str_detect(course, "CE 472") ~ "CE 472",
+      str_detect(course, "CE 453") ~ "CE 453",
+      str_detect(course, "CE 461") ~ "CE 461",
+      str_detect(course, "CE 433") ~ "CE 433",
+    TRUE ~ NA_character_
+    )
+  )
 
 so2_clean <- so2 |> 
   pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
@@ -408,15 +439,6 @@ so2_clean <- so2 |>
 
 so2_factors_clean <- so2_factors |>
   mutate(
-    course = case_when(
-      str_detect(course, "CE 421") ~ "CE 421",
-      str_detect(course, "CE 424") ~ "CE 424",
-      str_detect(course, "CE 472") ~ "CE 472",
-      str_detect(course, "CE 453") ~ "CE 453",
-      str_detect(course, "CE 461") ~ "CE 461",
-      str_detect(course, "CE 433") ~ "CE 433",
-    TRUE ~ NA_character_
-    ),
     design_factor = factor(
       design_factor,
       levels = c("Public health", "Safety", "Welfare", "Global", "Cultural", "Social", "Environmental", "Economic")
@@ -440,6 +462,57 @@ so2_factors_clean <- so2_factors |>
   )
 ```
 
+We assess this student outcome in the following courses with the assessments listed in @tbl-so2-instruments.
+Complete instrument prompts are available in the program assessment folder.
+
+```{r}
+#| label: tbl-so2-instruments
+#| tbl-cap: Assessment Instruments for Student Outcome 2
+so2_instruments <- bind_rows(
+  so2_clean |> 
+  group_by(course, indicator, description) |>
+  slice(1) |>
+  mutate(level = ifelse(course == "CE 472", "Summative", "Formative"))  |>
+  arrange(indicator, level, course) |>
+  ungroup() |>
+  select(indicator, level, course,  description)  ,
+so2_factors |>
+  select(course, description) |>
+  group_by(course, description) |>
+  slice(1) |>
+  mutate(
+    indicator = "Consider Factors", 
+    level = ifelse(course == "CE 472", "Summative", "Formative")
+  )  
+) |>
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+
+tt(so2_instruments)  |>
+  group_tt(i = indicator) |>
+  subset(select = -indicator)  |> 
+  style_tt(align = "l") |>
+  style_tt(
+    i = c(1, 5, 12, 15),
+    color = "white",
+    background = "gray",
+    bold = TRUE)
+
+```
+
+
+
+### Data and Evaluation
+
+ @fig-s02 shows the share of students assessed at each performance level for each indicator in the relevant courses. The assessment is as follows:
+
+  - **Develop design criteria**: Two formative assessments (CE 421 and CE 424) and one summative assessment (CE 472) 
+  reveal that program students are meeting expectations at the 75% threshold level. 
+  - **Select methods**: One formative assessment (CE 421) and one summative assessment (CE 472) 
+  both assess 100% of students at the meeting expectations level.
+  - **Recommend design**: Five formative assessments and one summative assessment (CE 472) vary in their assessment of
+  program students. In CE 421 and 433, students are meeting expectations at the 75% threshold level. In the other courses --- especially in the summative assessment of CE 472 --- students are not meeting expectations at the 75% threshold.
+
+
 ```{r}
 #| label: fig-s02
 #| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 2
@@ -451,6 +524,8 @@ ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_manual("Performance", values = pal)
 ```
+
+@fig-so2-factors shows the share of students who consider the various design factors in the "Consider factors" performance indicator. In the formative assessment of CE 421, all students were assessed as considering the factors appropriately. In CE 472, students met the 75% expectations threshold for Safety, Environmental, and Economic factors but not for the Public Health, Welfare, Global, Cultural, or Social factors.
 
 ```{r}
 #| label: fig-s02-factors
@@ -469,10 +544,10 @@ ggplot(so2_factors_clean, aes(y = Percent, x = course, fill = Performance)) +
   )
 ```
 
+The committee recommends that more design courses develop activities that will instruct students in topics related to "Develop design criteria," "Select methods,"  and "Consider factors" indicators and assess the activities. 
 
 
 ## Communication {#sec-so3}
-An ability to communicate effectively with a range of audiences.
 
 ### Performance Indicators {.unnumbered}
 ### Assessment {.unnumbered}
