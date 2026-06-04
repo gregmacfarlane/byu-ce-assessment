@@ -210,6 +210,93 @@ par(old_par)
 
 ### Belonging and extracurricular involvement
 
+The survey asks students to evaluate several elements of belonging and to report
+the number of meaningful learning experiences they completed during their time
+at BYU.
+
+```{r}
+#| label: fig-exit-belonging
+#| fig-cap: Student agreement with belonging statements
+#| fig-width: 8
+#| fig-height: 6
+belonging_categories <- c(
+  belonging__1 = "Belonging in CE",
+  belonging__2 = "Faculty support",
+  belonging__3 = "Student support",
+  belonging__4 = "Civil engineer identity",
+  belonging__5 = "CE program connection",
+  belonging__6 = "Department connection",
+  belonging__7 = "College connection",
+  belonging__8 = "BYU connection",
+  belonging__9 = "Involvement opportunities",
+  belonging__10 = "Social connection"
+)
+
+agreement_levels <- c(
+  "Strongly disagree",
+  "Disagree",
+  "Neutral",
+  "Agree",
+  "Strongly agree"
+)
+
+belonging_counts <- survey_data |>
+  select(all_of(names(belonging_categories))) |>
+  mutate(across(everything(), as.numeric)) |>
+  pivot_longer(everything(), names_to = "element", values_to = "agreement") |>
+  filter(!is.na(agreement)) |>
+  mutate(
+    element = factor(
+      element,
+      levels = rev(names(belonging_categories)),
+      labels = rev(belonging_categories)
+    ),
+    agreement = factor(
+      agreement,
+      levels = 1:5,
+      labels = agreement_levels
+    )
+  ) |>
+  count(element, agreement) |>
+  complete(element, agreement, fill = list(n = 0))
+
+ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
+  geom_col(position = position_fill(reverse = TRUE), width = 0.75) +
+  coord_flip() +
+  labs(x = NULL, y = "Proportion of responses", fill = "Agreement") +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_brewer(type = "div", palette = "Blues") +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(nrow = 1))
+```
+
+```{r}
+#| label: fig-exit-learning-experiences
+#| fig-cap: Distribution of total learning experiences reported by students
+#| fig-width: 7
+learning_experience_categories <- c(
+  learning_experiences_1_1 = "Culminating learning experience",
+  learning_experiences_2_1 = "Field study/field work",
+  learning_experiences_3_1 = "Internship",
+  learning_experiences_4_1 = "Mentored research",
+  learning_experiences_5_1 = "Study abroad",
+  learning_experiences_6_1 = "Campus engagement"
+)
+
+learning_experience_totals <- survey_data |>
+  select(all_of(names(learning_experience_categories))) |>
+  mutate(across(everything(), ~ readr::parse_number(as.character(.x)))) |>
+  filter(if_any(everything(), ~ !is.na(.x))) |>
+  mutate(total_activities = rowSums(across(everything()), na.rm = TRUE)) |>
+  count(total_activities, name = "respondents")
+
+ggplot(learning_experience_totals, aes(x = total_activities, y = respondents)) +
+  geom_col(fill = "#2C7FB8", width = 0.8) +
+  labs(x = "Total learning experiences reported", y = "Number of respondents") +
+  scale_x_continuous(breaks = scales::breaks_width(2)) +
+  scale_y_continuous(breaks = scales::breaks_width(1))
+```
+
 ### Program Evaluation
 
 
