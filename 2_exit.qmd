@@ -21,6 +21,9 @@ survey_data <- read_sav("data/survey/2026+CE+Undergraduate+Exit+Survey_June+4%2C
 
 ```
 
+In Winter 2026, the committee streamlined and overhauled the survey to give more targeted answers
+and avoid duplication with surveys administered by BYU Alumni. `r nrow(survey_data)` students
+responded to the 2026 survey.
 
 ### Self-assessment of student outcomes
 
