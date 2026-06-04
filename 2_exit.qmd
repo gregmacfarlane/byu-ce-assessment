@@ -277,8 +277,7 @@ ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
   labs(x = NULL, y = "Proportion of responses", fill = "Agreement") +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_brewer(type = "div", palette = "Blues") +
-  theme(legend.position = "bottom") +
-  guides(fill = guide_legend(nrow = 1)) + theme_bw()
+  theme(legend.position = "bottom") +  theme_bw()
 ```
 
 
