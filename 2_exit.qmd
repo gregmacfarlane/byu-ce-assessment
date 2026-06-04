@@ -212,7 +212,17 @@ par(old_par)
 
 The survey asks students to evaluate several elements of belonging and to report
 the number of meaningful learning experiences they completed during their time
-at BYU.
+at BYU. 
+
+@fig-exit-belonging shows the distribution of students' responses to the belonging
+questions. Student generally report strong levels of agreement with the relevant
+statements. There are three statements however, where less than 75% percent of
+students report "Agree" or "Strongly agree":
+
+  2. I feel a connection to the Civil & Construction Engineering department.
+  2. I feel a connection to the College of Engineering.
+  2. The Civil Engineering program provided meaningful opportunities for involvement outside the classroom.
+
 
 ```{r}
 #| label: fig-exit-belonging
@@ -261,7 +271,8 @@ belonging_counts <- survey_data |>
   complete(element, agreement, fill = list(n = 0))
 
 ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
-  geom_col(position = position_fill(reverse = TRUE), width = 0.75) +
+  geom_col(position = "fill", width = 0.75) +
+  geom_hline(yintercept = 0.75, linetype = "dashed", color = "red") +
   coord_flip() +
   labs(x = NULL, y = "Proportion of responses", fill = "Agreement") +
   scale_y_continuous(labels = scales::percent_format()) +
@@ -269,6 +280,9 @@ ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
   theme(legend.position = "bottom") +
   guides(fill = guide_legend(nrow = 1))
 ```
+
+
+
 
 ```{r}
 #| label: fig-exit-learning-experiences
