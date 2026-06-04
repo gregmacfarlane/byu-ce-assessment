@@ -23,6 +23,79 @@ survey_data <- read_sav("data/survey/2026+CE+Undergraduate+Exit+Survey_June+4%2C
 
 ### Self-assessment of student outcomes
 
+The survey asks students to self-assess their preparedness on the student
+outcomes and related preparation categories described in @sec-so along a
+five-point scale from "Not at all prepared" to "Very well prepared." Two outcomes
+are divded into separate categories: SO3 Communication is divided into written and
+oral communication, and SO2 Design is divided into design solutions and design impacts 
+(as in the "consider factors" indicator).
+
+
+```{r}
+#| label: fig-exit-prepared-lo
+#| fig-cap: Student self-assessment response proportions by preparation category
+#| fig-width: 8
+prepared_lo_categories <- c(
+  prepared_lo_1 = "Complex problems",
+  prepared_lo_2 = "Design solutions",
+  prepared_lo_3 = "Design impacts",
+  prepared_lo_4 = "Written communication",
+  prepared_lo_5 = "Oral communication",
+  prepared_lo_6 = "Ethics",
+  prepared_lo_7 = "Teamwork",
+  prepared_lo_8 = "Data analysis",
+  prepared_lo_9 = "Learn independently",
+  prepared_lo_10 = "Overall preparation"
+)
+
+preparedness_levels <- c(
+  "1 - Not at all prepared",
+  "2 - Slightly prepared",
+  "3 - Moderately prepared",
+  "4 - Well prepared",
+  "5 - Very well prepared"
+)
+
+prepared_lo_counts <- survey_data |>
+  select(all_of(names(prepared_lo_categories))) |>
+  mutate(across(everything(), as.numeric)) |>
+  pivot_longer(everything(), names_to = "category", values_to = "preparedness") |>
+  filter(!is.na(preparedness)) |>
+  mutate(
+    category = factor(
+      category,
+      levels = names(prepared_lo_categories),
+      labels = prepared_lo_categories
+    ),
+    preparedness = factor(
+      preparedness,
+      levels = 1:5,
+      labels = preparedness_levels
+    )
+  ) |>
+  count(category, preparedness) |>
+  complete(category, preparedness, fill = list(n = 0)) |>
+  group_by(category) |>
+  mutate(proportion = n / sum(n)) |>
+  ungroup()
+
+ggplot(prepared_lo_counts, aes(x = category, y = proportion, fill = preparedness)) +
+  geom_col(width = 0.7) +
+  geom_hline(yintercept = 0.75, linetype = "dashed", color = "red") +
+  labs(x = "Preparation category", y = "Proportion of responses", fill = "Preparedness") +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    breaks = seq(0, 1, 0.25),
+    limits = c(0, 1)
+  ) +
+  scale_fill_brewer(type = "seq", palette = "Blues", direction = 1) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+In only one category (Learn independently) do at least 75% of students rate their
+preparation as "Well prepared" or higher. The categories with the most potential 
+for growth in this area are Compmlex Problems and Ethics.
+
 ### Prospective employment or graduate school plans
 
 ### Belonging and extracurricular involvement
