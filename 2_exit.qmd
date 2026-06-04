@@ -99,6 +99,112 @@ for growth in this area are Compmlex Problems and Ethics.
 
 ### Prospective employment or graduate school plans
 
+The survey asks students to report their immediate plans after graduation and,
+where applicable, their future graduate school plans. @fig-exit-plans-alluvial 
+shows the distribution students across these levels. More than half of the students
+suggest that they will pursue some form of graduate education in their future.
+
+```{r}
+#| label: fig-exit-plans-alluvial
+#| fig-cap: Prospective employment and graduate school plans
+#| fig-width: 9
+#| fig-height: 6
+graduate_degree_labels <- c(
+  graduate_which_1 = "MS/MEng CE",
+  graduate_which_2 = "PhD CE",
+  graduate_which_3 = "MBA",
+  graduate_which_4 = "Related field",
+  graduate_which_5 = "Different field",
+  graduate_which_6 = "Not sure"
+)
+
+graduate_degree_stage <- survey_data |>
+  select(all_of(names(graduate_degree_labels))) |>
+  mutate(across(everything(), ~ !is.na(.x))) |>
+  pmap_chr(function(...) {
+    selected <- names(graduate_degree_labels)[as.logical(c(...))]
+
+    if (length(selected) == 0) {
+      return("No degree")
+    }
+
+    if (length(selected) > 1) {
+      return("Multiple types")
+    }
+
+    unname(graduate_degree_labels[selected])
+  })
+
+prospective_flows <- survey_data |>
+  mutate(
+    plan_response = as.character(as_factor(plans)),
+    future_response = as.character(as_factor(graduate_future)),
+    where_response = as.character(as_factor(graduate_where)),
+    plan = case_when(
+      plan_response == "Work in civil engineering" ~ "Work in CE",
+      plan_response == "Graduate school, civil engineering" ~ "Grad school: CE",
+      plan_response == "Graduate school, other field" ~ "Grad school: other",
+      plan_response == "Other (please specify)" ~ "Other",
+      TRUE ~ NA_character_
+    ),
+    graduate_future = case_when(
+      str_detect(plan, "^Grad school") ~ "Immediate grad school",
+      !is.na(future_response) ~ future_response,
+      TRUE ~ "No response"
+    ),
+    graduate_degree = graduate_degree_stage,
+    graduate_where = case_when(
+      str_detect(where_response, "Here at BYU") ~ "BYU",
+      str_detect(where_response, "At another university") ~ "Another university",
+      str_detect(where_response, "Not sure") ~ "Not sure",
+      TRUE ~ "No location"
+    ),
+    plan = factor(plan, levels = c("Work in CE", "Grad school: CE", "Grad school: other", "Other")),
+    graduate_future = factor(
+      graduate_future,
+      levels = c("Immediate grad school", "Yes", "No", "Not sure yet", "No response")
+    ),
+    graduate_degree = factor(
+      graduate_degree,
+      levels = c(
+        "MS/MEng CE", "PhD CE", "MBA", "Related field", "Different field",
+        "Not sure", "Multiple types", "No degree"
+      )
+    ),
+    graduate_where = factor(
+      graduate_where,
+      levels = c("BYU", "Another university", "Not sure", "No location")
+    )
+  ) |>
+  filter(!is.na(plan)) |>
+  count(plan, graduate_future, graduate_degree, graduate_where, name = "n")
+
+plan_colors <- c(
+  "Work in CE" = "#2C7FB8",
+  "Grad school: CE" = "#31A354",
+  "Grad school: other" = "#756BB1",
+  "Other" = "#E6550D"
+)
+
+old_par <- par(no.readonly = TRUE)
+par(mar = c(2, 2, 3, 2), xpd = NA)
+alluvial::alluvial(
+  as.data.frame(prospective_flows[, c("plan", "graduate_future", "graduate_degree", "graduate_where")]),
+  freq = prospective_flows$n,
+  col = unname(plan_colors[as.character(prospective_flows$plan)]),
+  border = "white",
+  alpha = 0.75,
+  blocks = FALSE,
+  axis_labels = c("Immediate plan", "Future graduate study", "Degree type", "Graduate location"),
+  cex = 0.65,
+  cex.axis = 0.75
+)
+par(old_par)
+```
+
+
+
+
 ### Belonging and extracurricular involvement
 
 ### Program Evaluation
