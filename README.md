@@ -5,12 +5,17 @@ This repository contains a Quarto book project structured with chapters and a cu
 
 ## Project Structure
 
-- `_quarto.yml`: Configuration file for the Quarto book.
-- `index.qmd`: Main entry point for the book, containing the introduction.
-- `1_studentoutcomes.qmd`: where we describe performance expectations for each student outcome.
-- `2_exit.qmd`: where we describe the exit survey and how it is used to assess student outcomes.
-- `3_fe.qmd`: where we describe the FE exam and how it is used to assess student outcomes.
-- `README.md`: Documentation for the project.
+- `_quarto.yml`: Configuration file for the Quarto book, including chapter order and output settings.
+- `index.qmd`: Introduction and overview of the continuous improvement process.
+- `1_studentoutcomes.qmd`: Direct assessment of student outcomes, including performance indicators, rubrics, assessment instruments, data, and evaluation.
+- `2_exit.qmd`: Exit survey results and how they are used to assess student outcomes.
+- `3_fe.qmd`: FE exam results and how they are used to assess student outcomes.
+- `4_studentevals.qmd`: Student course evaluation results and interpretation.
+- `5_progress.qmd`: Program progress measures, including advisement and graduation data.
+- `data/`: Source data and figures used by the Quarto chapters.
+- `R/`: Shared R helper functions.
+- `apps/`: Supporting Shiny app files.
+- `scripts/`: Build and site-protection helper scripts.
 
 ## Building the Book
 
