@@ -3,6 +3,7 @@
 library(tidyverse)
 library(tinytable)
 library(haven)
+library(alluvial)
 ```
 
 ## Exit Surveys {#sec-survey}
