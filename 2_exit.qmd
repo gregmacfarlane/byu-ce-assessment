@@ -282,12 +282,17 @@ ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
 ```
 
 
+The university has a goal for students to complete at least two learning experiences 
+during their time at BYU. @fig-exit-learning-experiences shows the distribution of
+the number of learning experiences reported by students. Completing the capstone is a requirement
+of graduation, though some students did not mark having experienced this. 
 
 
 ```{r}
 #| label: fig-exit-learning-experiences
-#| fig-cap: Distribution of total learning experiences reported by students
-#| fig-width: 7
+#| fig-cap: Distribution of learning experiences reported by type
+#| fig-width: 8
+#| fig-height: 6
 learning_experience_categories <- c(
   learning_experiences_1_1 = "Culminating learning experience",
   learning_experiences_2_1 = "Field study/field work",
@@ -297,17 +302,31 @@ learning_experience_categories <- c(
   learning_experiences_6_1 = "Campus engagement"
 )
 
-learning_experience_totals <- survey_data |>
+learning_experience_counts <- survey_data |>
   select(all_of(names(learning_experience_categories))) |>
-  mutate(across(everything(), ~ readr::parse_number(as.character(.x)))) |>
-  filter(if_any(everything(), ~ !is.na(.x))) |>
-  mutate(total_activities = rowSums(across(everything()), na.rm = TRUE)) |>
-  count(total_activities, name = "respondents")
+  mutate(
+    across(everything(), ~ readr::parse_number(as.character(.x))),
+    across(everything(), ~ ifelse(is.na(.x), 0, .x))
+  )  |>
+  mutate(total_experiences = rowSums(across(everything()), na.rm = TRUE)) |>
+  pivot_longer(everything(), names_to = "experience_type", values_to = "experiences") |>
+  mutate(
+    experience_type = factor(
+      experience_type,
+      levels = c(names(learning_experience_categories), "total_experiences"),
+      labels = c(learning_experience_categories, "Total Experiences")
+    )
+  ) |> 
+  count(experience_type, experiences, name = "respondents") |>
+  mutate(
+    experiences = ifelse(experiences > 7, 7, experiences)
+  )
 
-ggplot(learning_experience_totals, aes(x = total_activities, y = respondents)) +
+ggplot(learning_experience_counts, aes(x = experiences, y = respondents)) +
   geom_col(fill = "#2C7FB8", width = 0.8) +
-  labs(x = "Total learning experiences reported", y = "Number of respondents") +
-  scale_x_continuous(breaks = scales::breaks_width(2)) +
+  facet_wrap(~ experience_type, ncol = 2) +
+  labs(x = "Experiences reported", y = "Number of respondents") +
+  scale_x_continuous(breaks = scales::breaks_width(1)) +
   scale_y_continuous(breaks = scales::breaks_width(1))
 ```
 
