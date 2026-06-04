@@ -559,7 +559,7 @@ ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
   scale_fill_manual("Performance", values = pal)
 ```
 
-@fig-so2-factors shows the share of students who consider the various design factors in the "Consider factors" performance indicator. In the formative assessment of CE 421, all students were assessed as considering the factors appropriately. In CE 472, students met the 75% expectations threshold for Safety, Environmental, and Economic factors but not for the Public Health, Welfare, Global, Cultural, or Social factors.
+@fig-s02-factors shows the share of students who consider the various design factors in the "Consider factors" performance indicator. In the formative assessment of CE 421, all students were assessed as considering the factors appropriately. In CE 472, students met the 75% expectations threshold for Safety, Environmental, and Economic factors but not for the Public Health, Welfare, Global, Cultural, or Social factors.
 
 ```{r}
 #| label: fig-s02-factors
@@ -735,7 +735,8 @@ outcome will occur in the 2027-2028 academic year.
 ## Teamwork {#sec-so5}
 An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.
 
-### Performance Indicators {.unnumbered}
+### Performance Indicators {#sec-so5-performance}
+
 We evaluate this outcome based on three performance indicators. Students should: 
 
 1. Show leadership through accountability and service.
@@ -751,6 +752,7 @@ We assess these performance indicators with the rubric in @tbl-so5-rubric.
 | 3. Meet team objectives | Fails to identify reasonable goals or appropriate tasks. | Develops goals and tasks that are infeasible, or that required substantial revision. | Develops goals and a task plan that results in meeting the assignment expectations. | Develops goals and a resilient task plan that results in exceeding the assignment expectations. |
 : Rubric to assess student outcome 5: Teamwork {#tbl-so5-rubric}
 
+### Assessment Instruments {#sec-so5-assessment}
 
 ```{r so5-clean, include = FALSE}
 so5 <- read_assessment_data("data/Student Outcome 5_ Teamwork(Sheet1).csv")
@@ -761,10 +763,16 @@ so5_clean <- so5 |>
   mutate(
     Performance = factor(Performance, levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
     labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")),
-    indicator = factor(indicator, labels = c("Accountability", "Belonging", "Objectives")),
+    indicator = case_when(
+      str_detect(indicator, "Accountability") ~ "Accountability",
+      str_detect(indicator, "Belonging") ~ "Belonging",
+      str_detect(indicator, "Objectives") ~ "Objectives",
+      TRUE ~ indicator
+    ),
+    indicator = factor(indicator, levels = c("Accountability", "Belonging", "Objectives")),
     course = case_when(
       str_detect(course, "CCE 102") ~ "CCE 102",
-      str_detect(course, "CE 291") ~ "CE 291",
+      str_detect(course, "CE 291") ~ "CE 291R",
       str_detect(course, "CE 472") ~ "CE 472",
       TRUE ~ NA_character_
     ) 
@@ -773,6 +781,48 @@ so5_clean <- so5 |>
     mutate(total = sum(Number)) |>
     mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
 ```
+
+We assess this student outcome in the following courses with the assessments listed in @tbl-so5-instruments.
+Complete instrument prompts are available in the program assessment folder.
+
+```{r}
+#| label: tbl-so5-instruments
+#| tbl-cap: Assessment Instruments for Student Outcome 5
+so5_instruments <- so5_clean |> 
+  group_by(course, indicator, description) |>
+  slice(1) |>
+  mutate(level = ifelse(course == "CE 472", "Summative", "Formative"))  |>
+  arrange(indicator, level, course) |>
+  ungroup() |>
+  select(indicator, level, course, description) |> 
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+
+so5_group_rows <- so5_instruments |>
+  count(indicator) |>
+  mutate(row = cumsum(lag(n, default = 0) + 1)) |>
+  pull(row)
+
+tt(so5_instruments)  |>
+  group_tt(i = indicator) |>
+  subset(select = -indicator)  |> 
+  style_tt(align = "l") |>
+  style_tt(
+    i = so5_group_rows,
+    color = "white",
+    background = "gray",
+    bold = TRUE)
+
+```
+
+### Data and Evaluation
+
+We evaluated this outcome most recently in Winter 2026. Current data include
+formative assessment in CCE 102 and summative assessment in CE 472. @fig-s05
+shows the share of students at each performance level for each indicator for
+each course, alongside the threshold of 75%. Students in CCE 102 met the
+threshold for all three indicators. Students in CE 472 were below the threshold
+for all three indicators, with 69 percent of students meeting or exceeding
+expectations for each indicator.
 
 ```{r}
 #| label: fig-s05
@@ -788,9 +838,13 @@ ggplot(so5_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
 
 
 ## Experiments and Data {#sec-so6}
-An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions
 
-### Performance Indicators {.unnumbered}
+Students will demonstrate:
+
+> An ability to develop and conduct appropriate experimentation, analyze and
+> interpret data, and use engineering judgment to draw conclusions.
+
+### Performance Indicators {#sec-so6-performance}
 
 We evaluate this outcome based on four performance indicators. Students should:
 
@@ -809,45 +863,98 @@ We assess these performance indicators with the rubric in @tbl-so6-rubric.
 |  Analyze and conclude  | Little or no analysis of data; incorrect analysis of data; no conclusion; concludes without data; concludes contradictory to data  | Shows some analysis by figures, equations, statistics, etc., though perhaps with mistakes; may conclude without data or contradictory to data  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions  | Demonstrates thorough analysis by figures, equations, statistics, etc.; concludes based on data and in accordance with data; recognizes assumptions; acknowledges civil engineering applications of results  |
 : Rubric to assess student outcome 6: Experiments and Data {#tbl-so6-rubric}
 
+### Assessment Instruments {#sec-so6-assessment}
 
-### Assessment {.unnumbered}
-We assess this learning outcome at three levels
+We assess this student outcome at three levels:
 
-  - CCE 270: Computer Methods (Introductory)
-  - CE 232: Fluid Mechanics (Reinforcing)
-  - CE Breadth classes (Evaluation):
-    - CCE 306: Civil Engineering Materials
-    - CE 341: Soil Mechanics
-    - CE 351: Environmental Engineering
+- CCE 270: Computer Methods (introductory)
+- CE 232: Fluid Mechanics (reinforcing)
+- CE Breadth classes (evaluation): CCE 306 Civil Engineering Materials, CE 341 Soil Mechanics, and CE 351 Environmental Engineering
 
 All CE students must take one of the three breadth classes where we assess this outcome, 
-though many will take more than one.  We evaluated this outcome most recently in Winter 2025. 
+though many will take more than one.
 
-
-```{r so6-clean}
+```{r so6-clean, include = FALSE}
 so6 <- read_assessment_data("data/Student Outcome 6_ Experiments and Data.csv")
 so6_clean <- so6 |>
-  select(course, indicator, exceeds:unsatisfactory) |>
-  pivot_longer(-c(course, indicator), values_to = "Percent", names_to = "Performance") |>
+  mutate(
+    course = str_squish(course),
+    assessment = na_if(str_squish(assessment), ""),
+    level = case_when(
+      course %in% c("CCE 270", "CE 232") ~ "Formative",
+      course %in% c("CCE 306", "CE 341", "CE 351") ~ "Summative",
+      TRUE ~ NA_character_
+    ),
+    course = factor(course, levels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351")),
+    indicator = case_when(
+      indicator == "identify" ~ "Identify Conditions",
+      indicator == "select" ~ "Select Methods",
+      indicator == "conduct" ~ "Conduct",
+      indicator == "analyze" ~ "Analyze and Conclude",
+      TRUE ~ indicator
+    ),
+    indicator = factor(
+      indicator,
+      levels = c("Identify Conditions", "Select Methods", "Conduct", "Analyze and Conclude")
+    )
+  ) |>
+  pivot_longer(exceeds:unsatisfactory, values_to = "Percent", names_to = "Performance") |>
   filter(!is.na(Percent)) |>
   mutate(
-    course = factor(course, 
-      levels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351"),
-      labels = c("CCE 270", "CE 232", "CCE 306", "CE 341", "CE 351")
-    ),
     Performance = factor(Performance, 
       levels = c("exceeds", "meets", "developing", "unsatisfactory"), 
       labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")
-    ),
-    indicator = factor(indicator, 
-      levels = c("identify", "select", "conduct", "analyze"),
-      labels = c("Identify Conditions", "Select Methods", 
-        "Conduct", "Analyze")
     )
   )
 ```
 
+We assess this student outcome in the following courses with the assessments listed in @tbl-so6-instruments.
+
 ```{r}
+#| label: tbl-so6-instruments
+#| tbl-cap: Assessment Instruments for Student Outcome 6
+so6_instruments <- so6_clean |>
+  group_by(course, indicator, assessment, level) |>
+  slice(1) |>
+  arrange(indicator, level, course) |>
+  ungroup() |>
+  mutate(Instrument = coalesce(assessment, "Assessment not specified")) |>
+  select(indicator, level, course, Instrument) |>
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument"))
+
+so6_group_rows <- so6_instruments |>
+  count(indicator) |>
+  mutate(row = cumsum(lag(n, default = 0) + 1)) |>
+  pull(row)
+
+tt(so6_instruments) |>
+  group_tt(i = indicator) |>
+  subset(select = -indicator) |>
+  style_tt(align = "l") |>
+  style_tt(
+    i = so6_group_rows,
+    color = "white",
+    background = "gray",
+    bold = TRUE)
+
+```
+
+### Data and Evaluation
+
+The current data include Winter 2025 assessments in CE 232 and the breadth
+courses and Winter 2026 assessment in CCE 270. @fig-s06 shows the share of
+students assessed at each performance level for each indicator in the relevant
+courses. The CE 232 formative assessment meets the threshold for all four
+indicators. The CCE 270 formative assessments are just below the threshold for
+Select Methods and Conduct. Summative breadth-course evidence is uneven: CCE 306
+and CE 341 meet the threshold for Conduct, CE 341 meets the threshold for
+Identify Conditions, and the remaining summative assessments are below the
+threshold.
+
+```{r}
+#| label: fig-s06
+#| fig-cap: Winter 2025 and Winter 2026 Assessment of Student Outcome 6
+#| fig-width: 7
 ggplot(so6_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
     geom_col() +
     labs(x = "Course", y = "Percent of students") +
@@ -857,9 +964,125 @@ ggplot(so6_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
 scale_fill_manual("Performance", values = pal)
 ```
 
+The committee recommends calibration among the breadth-course laboratory
+instructors, with particular attention to Select Methods and Analyze and
+Conclude, so that expectations and scoring are consistent across the courses
+used for summative assessment.
 
-## SO 7 Acquire Knowledge {#sec-so7}
-An ability to acquire and apply new knowledge as needed, using appropriate learning strategies.​
+## Acquire Knowledge {#sec-so7}
 
-### Performance Indicators {.unnumbered}
-### Assessment {.unnumbered}
+Students will demonstrate:
+
+> An ability to acquire and apply new knowledge as needed, using appropriate
+> learning strategies.
+
+### Performance Indicators {#sec-so7-performance}
+
+We evaluate this outcome based on three performance indicators. Students should:
+
+1. Effectively seek out appropriate resources to acquire knowledge and understanding of unfamiliar concepts.
+2. Critically evaluate sources for reputability and reliability.
+3. Appropriately apply newly acquired knowledge and skills to complete an analysis.
+
+We assess these performance indicators with the rubric in @tbl-so7-rubric.
+
+| Indicator | Unsatisfactory | Developing | Meets Expectations | Exceeds Expectations |
+|:---|:---|:---|:---|:---|
+| Seek resources | Relies exclusively on provided materials; shows little or no initiative in finding new resources. | Consults additional resources when prompted and demonstrates partial understanding of how the resources contribute to learning. | Independently identifies and uses credible, relevant resources that contribute meaningfully to understanding. | Seeks diverse, high-quality resources and synthesizes information from multiple sources to deepen understanding. |
+| Evaluate sources | Resources used, if any, are irrelevant, unreliable, or misinterpreted. | Uses resources with limited evaluation of quality or relevance. | Provides evidence of evaluating resource quality and applicability. | Critically analyzes the strengths and limitations of sources. |
+| Apply knowledge | Fails to apply newly acquired techniques, or applies them incorrectly, demonstrating misunderstanding or lack of effort to learn. | Attempts to use new techniques but with significant errors or incomplete understanding; requires guidance to complete the analysis. | Correctly applies newly learned techniques and practices to perform an appropriate analysis with minimal errors. | Applies new techniques accurately and efficiently, extending them beyond the basic requirements. |
+: Student Outcome 7 Assessment Rubric {#tbl-so7-rubric}
+
+### Assessment Instruments {#sec-so7-assessment}
+
+```{r so7-clean, include = FALSE}
+so7 <- read_assessment_data("data/Student Outcome 7_ Learning and Service(Sheet1).csv")
+
+so7_clean <- so7 |>
+  pivot_longer(exceeds:unsatisfactory, names_to = "Performance", values_to = "Number") |>
+  filter(!is.na(Number)) |>
+  mutate(
+    Performance = factor(
+      Performance,
+      levels = c("exceeds", "meets", "developing", "unsatisfactory"),
+      labels = c("Exceeds Expectations", "Meets Expectations", "Developing", "Unsatisfactory")
+    ),
+    indicator = case_when(
+      str_detect(str_to_lower(indicator), "seeks out") ~ "Seek Resources",
+      str_detect(str_to_lower(indicator), "evaluates sources") ~ "Evaluate Sources",
+      str_detect(str_to_lower(indicator), "applies newly acquired") ~ "Apply Knowledge",
+      TRUE ~ indicator
+    ),
+    indicator = factor(indicator, levels = c("Seek Resources", "Evaluate Sources", "Apply Knowledge")),
+    course = case_when(
+      str_detect(course, "CCE 113") ~ "CCE 113",
+      str_detect(course, "CCE 114") ~ "CCE 114",
+      str_detect(course, "CE 471") ~ "CE 471",
+      TRUE ~ NA_character_
+    ),
+    course = factor(course, levels = c("CCE 113", "CCE 114", "CE 471"))
+  ) |>
+  group_by(course, indicator) |>
+  mutate(total = sum(Number)) |>
+  mutate(Percent = if_else(total > 0, Number / total * 100, NA_real_))
+```
+
+We assess this student outcome in the following courses with the assessments listed in @tbl-so7-instruments.
+Complete instrument prompts are available in the program assessment folder.
+
+```{r}
+#| label: tbl-so7-instruments
+#| tbl-cap: Assessment Instruments for Student Outcome 7
+so7_instruments <- so7_clean |>
+  group_by(course, indicator, description) |>
+  slice(1) |>
+  mutate(level = ifelse(course == "CE 471", "Summative", "Formative")) |>
+  arrange(indicator, level, course) |>
+  ungroup() |>
+  select(indicator, level, course, description) |>
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument"))
+
+so7_group_rows <- so7_instruments |>
+  count(indicator) |>
+  mutate(row = cumsum(lag(n, default = 0) + 1)) |>
+  pull(row)
+
+tt(so7_instruments) |>
+  group_tt(i = indicator) |>
+  subset(select = -indicator) |>
+  style_tt(align = "l") |>
+  style_tt(
+    i = so7_group_rows,
+    color = "white",
+    background = "gray",
+    bold = TRUE)
+
+```
+
+### Data and Evaluation
+
+We evaluated this outcome most recently in Winter 2026. Current data include
+formative assessment in CCE 113 and CCE 114 and summative assessment in CE 471.
+@fig-s07 shows the share of students at each performance level for each
+indicator for each course, alongside the threshold of 75%. The CE 471 summative
+assessment meets the threshold for Seek Resources and Evaluate Sources. The
+current data file does not include a nonzero summative assessment for Apply
+Knowledge; formative assessment of Apply Knowledge in CCE 113 and CCE 114 is
+slightly below the threshold.
+
+```{r}
+#| label: fig-s07
+#| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 7
+#| fig-width: 7
+ggplot(so7_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
+  geom_col() +
+  labs(x = "Course", y = "Percent of students") +
+  facet_grid(~ indicator) +
+  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual("Performance", values = pal)
+```
+
+The committee recommends collecting complete summative evidence for all three
+Acquire Knowledge indicators in the next assessment cycle, with particular
+attention to Apply Knowledge.
