@@ -1,18 +1,35 @@
 # Exit Surveys and Interviews {#sec-exit}
-
+```{r setup, include=FALSE}
+library(tidyverse)
+library(tinytable)
+library(haven)
+```
 
 ## Exit Surveys {#sec-survey}
 Each December and April, the program sends a survey to all of our graduating
 students. The purpose of this survey is to collect data on the following items:
 
-  1. Student contact information for alumni tracking 
+  1. Self-assessment of student outcomes
   2. Prospective employment or graduate school plans
-  3. Demographic information used to classify other student responses
-  4. Self-assessment of student outcomes
+  3. Belonging and extracurricular involvement
+  4. Program Evaluation
 
-### Survey Questions
+```{r load-survey-data, include = FALSE}
+survey_data <- read_sav("data/survey/2026+CE+Undergraduate+Exit+Survey_June+4%2C+2026_15.14.sav") |>
+  mutate(year = lubridate::year(StartDate)) 
 
-### Results
+```
+
+
+### Self-assessment of student outcomes
+
+### Prospective employment or graduate school plans
+
+### Belonging and extracurricular involvement
+
+### Program Evaluation
+
+
 
 ## Exit Interviews {#sec-interview}
 
