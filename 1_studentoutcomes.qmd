@@ -329,7 +329,7 @@ We assess these performance indicators with the rubric in @tbl-so1-rubric.
 | Identify | Fails to identify given parameters. | Identifies some given parameters. | Identifies all provided parameters. | Identifies all parameters including unreasonable parameters or those requiring assumptions. |
 | Formulate | Fails to formulate a solution strategy. | Formulates a strategy with limitations. | Formulates a solution strategy based in accepted methods. | Formulates a strategy that adjusts for the weaknesses of existing techniques. |
 | Evaluate | Fails to evaluate alternative solutions. | Evaluates an alternative solution. | Evaluates alternative solutions. | Evaluates alternatives with a consideration of human needs. |
-: Rubric to assess student outcome 1: Complex Problems {#tbl-so1-rubric}
+: Student Outcome 1 Assessment Rubric {#tbl-so1-rubric}
 
 ### Assessment Instruments {#sec-so1-assessment}
 
@@ -423,7 +423,7 @@ We assess these performance indicators with the rubric in @tbl-so2-rubric.
 | Social | Does not consider |  | Considers |  |
 | Environmental | Does not consider |  | Considers |  |
 | Economic | Does not consider |  | Considers |  |
-: Rubric to assess student outcome 2: Design {#tbl-so2-rubric}
+: Student Outcome 2 Assessment Rubric {#tbl-so2-rubric}
 
 
 ### Assessment Instruments {#sec-so2-assessment}
