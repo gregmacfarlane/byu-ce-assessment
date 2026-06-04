@@ -278,14 +278,16 @@ ggplot(belonging_counts, aes(x = element, y = n, fill = agreement)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_brewer(type = "div", palette = "Blues") +
   theme(legend.position = "bottom") +
-  guides(fill = guide_legend(nrow = 1))
+  guides(fill = guide_legend(nrow = 1)) + theme_bw()
 ```
 
 
 The university has a goal for students to complete at least two learning experiences 
 during their time at BYU. @fig-exit-learning-experiences shows the distribution of
 the number of learning experiences reported by students. Completing the capstone is a requirement
-of graduation, though some students did not mark having experienced this. 
+of graduation, though some students did not mark having experienced this. These are the same 
+records as the students who report no learning experiences. The most common number of
+experiences is 7 or more.
 
 
 ```{r}
@@ -315,19 +317,20 @@ learning_experience_counts <- survey_data |>
       experience_type,
       levels = c(names(learning_experience_categories), "total_experiences"),
       labels = c(learning_experience_categories, "Total Experiences")
+    ),
+    experiences = factor(
+      pmin(experiences, 7),
+      levels = 0:7,
+      labels = c(0:6, "7+")
     )
   ) |> 
-  count(experience_type, experiences, name = "respondents") |>
-  mutate(
-    experiences = ifelse(experiences > 7, 7, experiences)
-  )
+  count(experience_type, experiences, name = "respondents")
 
 ggplot(learning_experience_counts, aes(x = experiences, y = respondents)) +
   geom_col(fill = "#2C7FB8", width = 0.8) +
   facet_wrap(~ experience_type, ncol = 2) +
   labs(x = "Experiences reported", y = "Number of respondents") +
-  scale_x_continuous(breaks = scales::breaks_width(1)) +
-  scale_y_continuous(breaks = scales::breaks_width(1))
+  scale_y_continuous(breaks = scales::breaks_width(5)) + theme_bw()
 ```
 
 ### Program Evaluation
