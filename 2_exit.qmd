@@ -421,16 +421,18 @@ Each April, the undergraduate committee samples graduating students and
 interviews them in personal conversation. The purpose of this interview is to
 qualitatively assess student-observed program strengths and weakness.
 
-The CE undergraduate coordinator assigns three to four graduating seniors to
+The CE undergraduate coordinator randomly assigns three to four graduating seniors to
 each member of the committee. The committee members arrange to speak privately
-with each student for fifteen to twenty minutes. The student should be invited
-to direct the discussion, but possible questions include: 
+with each student for fifteen to twenty minutes. Students may elect to not
+schedule the interview.  The student is invited
+to direct the discussion, but the committee member asks guiding questions such as: 
 
   - What are the most positive learning experiences you have had?
   - Have you had any less successful learning experiences?
 
-Each committee member makes notes of the student's responses. The assessmentcoordinator
-consolidates these notes into a coherent statment and posts it in the space below.
+Each committee member makes notes of the student's responses. The assessment coordinator
+consolidates these notes into a coherent statment with the aid of a Large
+Language Model and posts it in the space below.
 
 ::: {.panel-tabset}
 ### Class of 2026
