@@ -400,6 +400,17 @@ ggplot(learning_experience_counts, aes(x = experiences, y = respondents)) +
   scale_y_continuous(breaks = scales::breaks_width(5)) + theme_bw()
 ```
 
+The survey instructs students to count each experience once, even if it lasted
+multiple semesters or involved multiple activities. The question describes the
+experience categories as follows:
+
+- Culminating learning experience: senior capstone, design project, thesis, recital, or other major culminating academic experience.
+- Field study/field work: learning or work conducted in real-world settings outside the classroom, such as site visits or field-based projects.
+- Internship: structured work experience in a professional engineering or related setting.
+- Mentored research: faculty-mentored research, conference presentation, or publishing work.
+- Study abroad: academic experience in another country or culture.
+- Campus engagement: student organizations, clubs, competitions, leadership, department activities, or other meaningful involvement outside the classroom.
+
 ### Program Evaluation
 
 
