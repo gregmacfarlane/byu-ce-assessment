@@ -162,34 +162,53 @@ pal <- wes_palette("AsteroidCity1", 4)[c(3, 2, 1, 4)]
 theme_set(theme_minimal())
 ```
 
+The program has seven student outcomes, which describe abilities and skills
+that students should demonstrate upon graduation. 
 
-The primary assessment of student outcomes is a direct assessment of individual
-student work undertaken at multiple points in the program curriculum. Initial
-and intermediate assessments are considered “formative” assessments, and
-“summative” assessments are taken as close to graduation as practicable for the
-respective outcome. For each of the seven student outcomes, the program develops
-a set of performance indicators and an associated rubric that faculty apply to
-specific and selected student assessments. The levels of the rubric are
-Unsatisfactory, Developing, Meets Expectations, and Exceeds Expectations. The
-performance indicators and rubric apply to all levels of instruction, though the
-level of expected student performance increases as students grow and learn
-through the program. That is, performance that exceeds expectations in a
-100-level course might not meet expectations in a senior-level course. @tbl-socourses shows the
-courses whose assessments we use for summative and formative assessments of each
-outcome. Formative assessments may not assess all indicators of a student
+1. An ability to identify, formulate, and solve complex engineering problems by applying principles of engineering, science, and mathematics.
+2. An ability to apply engineering design to produce solutions that meet specified needs with consideration of public health, safety, and welfare as well as global, cultural, social, environmental, and economic factors.
+3. An ability to communicate effectively with a range of audiences.
+4. An ability to recognize ethical and professional responsibilities in engineering situations and make informed judgments, which must consider the impact of engineering solutions in global, economic, environmental, and societal contexts.
+5. An ability to function effectively on a team whose members together provide leadership, create a collaborative and inclusive environment, establish goals, plan tasks, and meet objectives.
+6. An ability to develop and conduct appropriate experimentation, analyze and interpret data, and use engineering judgment to draw conclusions.
+7. An ability to acquire and apply new knowledge as needed, using appropriate learning strategies.
+
+The primary assessment of these student outcomes is a direct assessment of
+individual student work undertaken at multiple points in the program curriculum.
+We attempt to formally assess each student outcome at two levels:
+
+  1. At a Formative level, in lower-division courses. There may be more than one formative assessment of a student outcome.
+  3. At a Summative level, in an upper-division course as close to graduation as possible.
+
+Summative assessments are given priority in program evaluation, but formative
+assessments can provide additional supportive data.  @tbl-socourses lists which
+courses are used for formative and summative assessments. 
+Formative assessments may not assess all indicators of a student
 outcome, but summative assessments cover all indicators. Additionally, formative
 assessments may include data collected from students in other programs.
 
-| Outcome | CCE102 | CCE103 | Software | Measurements | CCE203 | CE232 | CCE270 | CE291 | Breadth | Design | Capstone |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| 1. Complex problems |  | F |  |  | F |  |  |  | S |  |  |
-| 2. Design |  |  |  |  |  |  |  |  |  | F | S |
-| 3. Communication |  |  | F |  |  |  | F |  |  |  | S |
-| 4. Ethics | F |  |  |  |  |  |  | F |  |  | S |
-| 5. Teamwork | F |  |  |  |  |  |  | F |  |  | S |
-| 6. Experiments and data |  |  |  |  |  | F | F |  | S* |  |  |
-| 7. Acquire knowledge |  |  | F |  |  |  |  | F |  |  | S |
-: Student Outcome Assessment Locations {#tbl-socourses}
+```{r}
+#| label: tbl-socourses
+#| tbl-cap: Student Outcome Assessment Locations
+socourses <- tibble::tribble(
+  ~Outcome, ~CCE102, ~CCE103, ~Software, ~Measurements, ~CCE203, ~CE232, ~CCE270, ~CE291, ~Breadth, ~Design, ~Capstone,
+  "1. Complex problems",      "", "F", "", "", "F", "", "", "", "S",  "", "",
+  "2. Design",                "", "", "", "", "", "", "", "", "", "F", "S",
+  "3. Communication",         "", "", "F", "", "", "", "F", "", "", "", "S",
+  "4. Ethics",                "F", "", "", "", "", "", "", "F", "", "", "S",
+  "5. Teamwork",              "F", "", "", "", "", "", "", "F", "", "", "S",
+  "6. Experiments and data",  "", "", "", "", "", "F", "F", "", "S", "", "",
+  "7. Acquire knowledge",     "", "", "F", "", "", "", "", "F", "", "", "S"
+)
+
+tt(socourses, 
+notes = list( a = list(i = 6, j = 10, text = "Only selected breadth courses contribute to the summative assessment."))
+) |>
+  style_tt(align = "l") |>
+  theme_tt("default") 
+```
+
+
 
 
 We assess each outcome on a three-year schedule. @tbl-so-schedule shows two
@@ -203,20 +222,40 @@ description of the assessment (e.g., final exam question), a specific assessment
 instrument as given to students, and the number of students assessed at each
 level of the rubric. 
 
+```{r}
+#| label: tbl-so-schedule
+#| tbl-cap: Assessment Schedule
+
+so_schedule <- tibble::tribble(
+  ~Outcome, ~`25 Winter`, ~`25 Sp/Su`, ~`25 Fall`, ~`26 Winter`, ~`26 Sp/Su`, ~`26 Fall`, ~`27 Winter`, ~`27 Sp/Su`, ~`27 Fall`, ~`28 Winter`, ~`28 Sp/Su`,
+  "SO1: Complex Problems", "", "", "", "", "", "A", "E", "", "C", "", "",
+  "SO2: Design", "", "", "A", "A", "E", "C", "", "", "", "", "",
+  "SO3: Communications", "", "", "", "", "", "A", "E", "", "C", "", "",
+  "SO4: Ethics", "A", "E", "C", "", "", "", "", "", "", "A", "E",
+  "SO5: Teamwork", "", "", "A", "A", "E", "C", "", "", "", "", "",
+  "SO6: Experiments / Data", "A", "E", "C", "", "", "", "", "", "", "A", "E",
+  "SO7: Acquire Knowledge", "", "", "A", "A", "E", "C", "", "", "", "", "",
+  "ABET Schedule", "", "", "", "", "Self-study", "Visit", "Response", "", "", "", ""
+)
+
+tt(so_schedule, notes = "A: Assessment, E: Evaluation, C: Change") |>
+  style_tt(align = "l") 
+``` 
 
 
-| Outcome | 25 Winter | 25 Sp/Su | 25 Fall | 26 Winter | 26 Sp/Su | 26 Fall | 27 Winter | 27 Sp/Su | 27 Fall | 28 Winter | 28 Sp/Su |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| SO1: Complex Problems |  |  |  |  |  | A | E |  | C |  |  |
-| SO2: Design |  |  | A | A | E | C |  |  |  |  |  |
-| SO3: Communications |  |  |  |  |  | A | E |  | C |  |  |
-| SO4: Ethics | Assess | Evaluate | Change |  |  |  |  |  |  | A | E |
-| SO5: Teamwork |  |  | A | A | E | C |  |  |  |  |  |
-| SO6: Experiments / Data | Assess | Evaluate | Change |  |  |  |  |  |  | A | E |
-| SO7: Acquire Knowledge |  |  | A | A | E | C |  |  |  |  |  |
-| ABET Schedule |  |  |  |  | Self-study | Visit | Response |  |  |  |  |
-: Assessment Schedule {#tbl-so-schedule}
+For each of the seven student outcomes, the program develops a set of
+performance indicators and an associated rubric that faculty apply to specific
+and selected student assessments in the assessed courses. The levels of the
+rubric are
 
+  - Unsatisfactory 
+  - Developing 
+  - Meets Expectations
+  - Exceeds Expectations
+  
+The performance indicators and rubric apply to all levels of instruction, though
+the level of expected student performance increases as students grow and learn
+through the program. 
 
 For all indicators, the program goal is that 75 percent of students will
 demonstrate performance that meets or exceeds expectations by graduation. The
@@ -227,16 +266,7 @@ Specific assessment instruments are archived and available in the program assess
 
 The annual program stewardship report includes the present academic year's
 assessment and evaluation, as well as reports on actions taken related to the previous
-year's evaluations.
-
-We attempt to assess each student outcome at two levels:
-
-  1. At a Formative level, in lower-division courses. There may be more than one formative assessment of a student outcome.
-  3. At a Summative level, in an upper-division course as close to graduation as possible.
-
-Summative assessments are given priority in program evaluation, but formative assessments can provide additional supportive data.
-@tbl-socourses lists which courses are used for formative and summative assessments.
-
+year's recommended changes.
 
 
 
