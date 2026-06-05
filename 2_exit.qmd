@@ -3,7 +3,7 @@
 library(tidyverse)
 library(tinytable)
 library(haven)
-library(alluvial)
+library(plotly)
 ```
 
 ## Exit Surveys {#sec-survey}
@@ -112,6 +112,7 @@ suggest that they will pursue some form of graduate education in their future.
 #| fig-cap: Prospective employment and graduate school plans
 #| fig-width: 9
 #| fig-height: 6
+#| results: markup
 graduate_degree_labels <- c(
   graduate_which_1 = "MS/MEng CE",
   graduate_which_2 = "PhD CE",
@@ -189,20 +190,87 @@ plan_colors <- c(
   "Other" = "#E6550D"
 )
 
-old_par <- par(no.readonly = TRUE)
-par(mar = c(2, 2, 3, 2), xpd = NA)
-alluvial::alluvial(
-  as.data.frame(prospective_flows[, c("plan", "graduate_future", "graduate_degree", "graduate_where")]),
-  freq = prospective_flows$n,
-  col = unname(plan_colors[as.character(prospective_flows$plan)]),
-  border = "white",
-  alpha = 0.75,
-  blocks = FALSE,
-  axis_labels = c("Immediate plan", "Future graduate study", "Degree type", "Graduate location"),
-  cex = 0.65,
-  cex.axis = 0.75
+stage_nodes <- function(data, column, stage, x) {
+  observed <- unique(as.character(data[[column]]))
+  node <- levels(data[[column]])
+
+  tibble(
+    stage = stage,
+    node = node[node %in% observed],
+    key = paste(stage, node[node %in% observed], sep = ":"),
+    x = x
+  )
+}
+
+node_table <- bind_rows(
+  stage_nodes(prospective_flows, "plan", "plan", 0),
+  stage_nodes(prospective_flows, "graduate_future", "future", 0.33),
+  stage_nodes(prospective_flows, "graduate_degree", "degree", 0.66),
+  stage_nodes(prospective_flows, "graduate_where", "where", 1)
+) |>
+  mutate(
+    id = row_number() - 1,
+    label = as.character(node),
+    color = if_else(stage == "plan", plan_colors[label], "#D9D9D9")
+  )
+
+make_sankey_links <- function(data, source_stage, source_col, target_stage, target_col) {
+  data |>
+    transmute(
+      plan = as.character(plan),
+      source_key = paste(source_stage, as.character(.data[[source_col]]), sep = ":"),
+      target_key = paste(target_stage, as.character(.data[[target_col]]), sep = ":"),
+      value = n
+    ) |>
+    group_by(plan, source_key, target_key) |>
+    summarise(value = sum(value), .groups = "drop")
+}
+
+link_color <- function(hex, alpha = 0.45) {
+  rgb_values <- grDevices::col2rgb(hex)
+  sprintf(
+    "rgba(%s,%s,%s,%.2f)",
+    rgb_values[1, ], rgb_values[2, ], rgb_values[3, ], alpha
+  )
+}
+
+link_table <- bind_rows(
+  make_sankey_links(prospective_flows, "plan", "plan", "future", "graduate_future"),
+  make_sankey_links(prospective_flows, "future", "graduate_future", "degree", "graduate_degree"),
+  make_sankey_links(prospective_flows, "degree", "graduate_degree", "where", "graduate_where")
+) |>
+  mutate(color = link_color(plan_colors[plan])) |>
+  left_join(select(node_table, source_key = key, source = id), by = "source_key") |>
+  left_join(select(node_table, target_key = key, target = id), by = "target_key")
+
+plot_ly(
+  type = "sankey",
+  arrangement = "snap",
+  node = list(
+    pad = 18,
+    thickness = 16,
+    line = list(color = "rgba(80,80,80,0.5)", width = 0.5),
+    label = node_table$label,
+    color = node_table$color,
+    x = node_table$x
+  ),
+  link = list(
+    source = link_table$source,
+    target = link_table$target,
+    value = link_table$value,
+    color = link_table$color
+  )
+) |>
+  layout(
+    font = list(size = 12),
+    margin = list(l = 10, r = 10, t = 40, b = 10),
+    annotations = list(
+      list(x = 0, y = 1.08, text = "Immediate plan", showarrow = FALSE, xref = "paper", yref = "paper"),
+      list(x = 0.33, y = 1.08, text = "Future graduate study", showarrow = FALSE, xref = "paper", yref = "paper"),
+      list(x = 0.66, y = 1.08, text = "Degree type", showarrow = FALSE, xref = "paper", yref = "paper"),
+      list(x = 1, y = 1.08, text = "Graduate location", showarrow = FALSE, xref = "paper", yref = "paper")
+    )
 )
-par(old_par)
 ```
 
 
