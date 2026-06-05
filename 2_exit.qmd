@@ -413,6 +413,95 @@ experience categories as follows:
 
 ### Program Evaluation
 
+The survey asks students to identify the CE or CCE course that contributed most
+to their learning and the course that contributed least to their learning.
+Because these are open-ended responses, @fig-exit-program-course-mentions counts
+course mentions using course numbers and common course-name phrases. Responses
+that identify more than one course contribute one mention to each course.
+
+```{r}
+#| label: fig-exit-program-course-mentions
+#| fig-cap: Courses mentioned as contributing most or least to student learning
+#| fig-width: 8
+#| fig-height: 6
+course_patterns <- tribble(
+  ~course, ~pattern,
+  "CCE/CE 101 Introduction", r"(\b(cce|ce)\s*101\b|101 introduction class)",
+  "CCE/CE 102 Sustainable Infrastructure", r"(\b(cce|ce)\s*102\b|sustainable infrastructure)",
+  "CCE/CE 203 Mechanics of Materials", r"(\b(cce|ce)\s*203\b|mechanics of materials)",
+  "CE 291R Seminar", r"(\bce\s*291\s*r?\b|seminar)",
+  "CE 304/306 Materials", r"(\bce\s*304\b|\bce\s*306\b|\b304\b|\b306\b)",
+  "CE 321 Structural Analysis", r"(\bce\s*321\b|structural analysis)",
+  "CE 341 Geotechnical Engineering", r"(\bce\s*341\b|geotechnical engineering|soil mechanics)",
+  "CE 351 Water Treatment", r"(\bce\s*351\b|water treatment)",
+  "CE 361 Transportation Engineering", r"(\bce\s*361\b|transportation|traffic engineering)",
+  "CE 421 Steel Design", r"(\bce\s*421\b|steel design|\bsteel\b)",
+  "CE 424 Reinforced Concrete Design", r"(\bce\s*424\b|reinforced concrete|concrete design)",
+  "CE 433 Hydraulic Engineering", r"(\bce\s*433\b|hydraulic engineering)",
+  "CE 461 Geometric Design of Highways", r"(\bce\s*461\b|geometric design of highways)",
+  "CE 471 Civil Engineering Writing", r"(\bce\s*471\b|capstone 1 writing|civil engineering writing|writing capstone|capstone writing)",
+  "CE 535 Hydraulic Design of Channels", r"(\bce\s*535\b|hydraulic design of channels)",
+  "CE 540 Geo-Environmental Engineering", r"(\bce\s*540\b|geo-?environmental)",
+  "CE 563", r"(\bce\s*563\b)",
+  "CE 594R Data Science", r"(\bce\s*594\s*r?\b|data science)",
+  "Geomatics", r"(\bgeomatics\b)",
+  "Statics", r"(\bstatics\b)",
+  "CFM Project Management", r"(\bcfm\b|project management)",
+  "Design courses", r"(\bdesign courses\b)"
+)
+
+course_mentions <- survey_data |>
+  select(program_most, program_least) |>
+  mutate(response_id = row_number()) |>
+  pivot_longer(
+    c(program_most, program_least),
+    names_to = "question",
+    values_to = "response"
+  ) |>
+  mutate(
+    response = str_to_lower(str_squish(response)),
+    helpfulness = recode(
+      question,
+      program_most = "Most helpful",
+      program_least = "Least helpful"
+    )
+  ) |>
+  filter(!is.na(response), response != "") |>
+  crossing(course_patterns) |>
+  filter(str_detect(response, pattern)) |>
+  distinct(response_id, helpfulness, course) |>
+  count(course, helpfulness, name = "mentions") |>
+  complete(
+    course,
+    helpfulness = c("Most helpful", "Least helpful"),
+    fill = list(mentions = 0)
+  ) |>
+  group_by(course) |>
+  mutate(total_mentions = sum(mentions)) |>
+  ungroup() |>
+  filter(total_mentions > 0) |>
+  mutate(
+    signed_mentions = if_else(helpfulness == "Most helpful", mentions, -mentions),
+    helpfulness = factor(helpfulness, levels = c("Most helpful", "Least helpful")),
+    course = fct_reorder(course, total_mentions)
+  )
+
+ggplot(course_mentions, aes(x = course, y = signed_mentions, fill = helpfulness)) +
+  geom_col(width = 0.75) +
+  geom_hline(yintercept = 0, linewidth = 0.3) +
+  coord_flip() +
+  labs(x = NULL, y = "Mentions", fill = NULL) +
+  scale_y_continuous(
+    labels = abs,
+    breaks = scales::breaks_width(1)
+  ) +
+  scale_fill_manual(
+    values = c("Most helpful" = "#2C7FB8", "Least helpful" = "#D95F02")
+  ) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
 
 
 ## Exit Interviews {#sec-interview}
