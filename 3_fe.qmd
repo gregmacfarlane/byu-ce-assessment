@@ -2,6 +2,7 @@
 ```{r setup-fe, include=FALSE}
 library(tidyverse)
 library(readxl)
+library(tinytable)
 
 knitr::opts_chunk$set(echo = FALSE)
 semester_to_date <- function(semester) {
@@ -25,11 +26,28 @@ The Fundamentals of Engineering (FE) examination provides important external
 evidence of our program's effectiveness in training competent civil engineering
 professionals. University policies prohibit us from requiring students to take
 the exam before graduation, but we strongly recommend that our students do so
-and offer an FE preparation course to help them.
+and offer an FE preparation course to help them.  @tbl-attempts shows the 
+number of students and recent graduates who attempted the FE in each of the last few years,
+as well as the number of BS degrees awarded by the program in each year. We do
+not have complete FE exam data for 2022, leading to the apparent low number of attempts in that year. 
 
 ```{r fe}
+#| label: tbl-attempts
+#| tbl-cap: FE Exam Attempts 
 fe <- readxl::read_xlsx("data/fe.xlsx", sheet = "raw_total") |>
     mutate( period = semester_to_date(period))
+
+degrees <- readxl::read_xlsx("data/graduation/degrees.xlsx") 
+
+fe |>
+  filter(category == "Taking") |>
+  mutate(Year = lubridate::year(period))  |>
+  group_by(Year) |>
+  summarise(`Taken FE` = sum(`BYU-Civil`))  |>
+  left_join(degrees |> select(Year, `BS Awarded` = BS), by = "Year")  |>
+  mutate(`Pct Attempting` = `Taken FE` / `BS Awarded` * 100) |>
+  tt(digits = 1)
+
 ```
 
 The share of students passing the FE exam is shown in @fig-fe-exam. BYU students
