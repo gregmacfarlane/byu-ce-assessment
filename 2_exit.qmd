@@ -425,30 +425,34 @@ that identify more than one course contribute one mention to each course.
 #| fig-width: 8
 #| fig-height: 6
 course_patterns <- tribble(
-  ~course, ~pattern,
-  "CCE/CE 101 Introduction", r"(\b(cce|ce)\s*101\b|101 introduction class)",
-  "CCE/CE 102 Sustainable Infrastructure", r"(\b(cce|ce)\s*102\b|sustainable infrastructure)",
-  "CCE/CE 203 Mechanics of Materials", r"(\b(cce|ce)\s*203\b|mechanics of materials)",
-  "CE 291R Seminar", r"(\bce\s*291\s*r?\b|seminar)",
-  "CE 304/306 Materials", r"(\bce\s*304\b|\bce\s*306\b|\b304\b|\b306\b)",
-  "CE 321 Structural Analysis", r"(\bce\s*321\b|structural analysis)",
-  "CE 341 Geotechnical Engineering", r"(\bce\s*341\b|geotechnical engineering|soil mechanics)",
-  "CE 351 Water Treatment", r"(\bce\s*351\b|water treatment)",
-  "CE 361 Transportation Engineering", r"(\bce\s*361\b|transportation|traffic engineering)",
-  "CE 421 Steel Design", r"(\bce\s*421\b|steel design|\bsteel\b)",
-  "CE 424 Reinforced Concrete Design", r"(\bce\s*424\b|reinforced concrete|concrete design)",
-  "CE 433 Hydraulic Engineering", r"(\bce\s*433\b|hydraulic engineering)",
-  "CE 461 Geometric Design of Highways", r"(\bce\s*461\b|geometric design of highways)",
-  "CE 471 Civil Engineering Writing", r"(\bce\s*471\b|capstone 1 writing|civil engineering writing|writing capstone|capstone writing)",
-  "CE 535 Hydraulic Design of Channels", r"(\bce\s*535\b|hydraulic design of channels)",
-  "CE 540 Geo-Environmental Engineering", r"(\bce\s*540\b|geo-?environmental)",
-  "CE 563", r"(\bce\s*563\b)",
-  "CE 594R Data Science", r"(\bce\s*594\s*r?\b|data science)",
-  "Geomatics", r"(\bgeomatics\b)",
-  "Statics", r"(\bstatics\b)",
-  "CFM Project Management", r"(\bcfm\b|project management)",
-  "Design courses", r"(\bdesign courses\b)"
+  ~course, ~course_order, ~pattern,
+  "CCE/CE 101 Introduction", 101, r"(\b(cce|ce)\s*101\b|101 introduction class)",
+  "CCE/CE 102 Sustainable Infrastructure", 102, r"(\b(cce|ce)\s*102\b|sustainable infrastructure)",
+  "CCE 103 Statics", 103, r"(\bcce\s*103\b|\bstatics\b)",
+  "CCE 114 Geomatics", 114, r"(\bcce\s*114\b|\bgeomatics\b)",
+  "CCE/CE 203 Mechanics of Materials", 203, r"(\b(cce|ce)\s*203\b|mechanics of materials)",
+  "CE 291R Seminar", 291, r"(\bce\s*291\s*r?\b|seminar)",
+  "CE 304/306 Materials", 304, r"(\bce\s*304\b|\bce\s*306\b|\b304\b|\b306\b)",
+  "CE 321 Structural Analysis", 321, r"(\bce\s*321\b|structural analysis)",
+  "CE 341 Geotechnical Engineering", 341, r"(\bce\s*341\b|geotechnical engineering|soil mechanics)",
+  "CE 351 Water Treatment", 351, r"(\bce\s*351\b|water treatment)",
+  "CE 361 Transportation Engineering", 361, r"(\bce\s*361\b|transportation|traffic engineering)",
+  "CE 421 Steel Design", 421, r"(\bce\s*421\b|steel design|\bsteel\b)",
+  "CE 424 Reinforced Concrete Design", 424, r"(\bce\s*424\b|reinforced concrete|concrete design)",
+  "CE 433 Hydraulic Engineering", 433, r"(\bce\s*433\b|hydraulic engineering)",
+  "CE 461 Geometric Design of Highways", 461, r"(\bce\s*461\b|geometric design of highways)",
+  "CE 471 Civil Engineering Writing", 471, r"(\bce\s*471\b|capstone 1 writing|civil engineering writing|writing capstone|capstone writing)",
+  "CE 535 Hydraulic Design of Channels", 535, r"(\bce\s*535\b|hydraulic design of channels)",
+  "CE 540 Geo-Environmental Engineering", 540, r"(\bce\s*540\b|geo-?environmental)",
+  "CE 563 Pavement Design", 563, r"(\bce\s*563\b|pavement design)",
+  "CE 594R Data Science", 594, r"(\bce\s*594\s*r?\b|data science)",
+  "CFM Project Management", 900, r"(\bcfm\b|project management)",
+  "Design courses", 901, r"(\bdesign courses\b)"
 )
+
+course_levels <- course_patterns |>
+  arrange(desc(course_order)) |>
+  pull(course)
 
 course_mentions <- survey_data |>
   select(program_most, program_least) |>
@@ -469,10 +473,10 @@ course_mentions <- survey_data |>
   filter(!is.na(response), response != "") |>
   crossing(course_patterns) |>
   filter(str_detect(response, pattern)) |>
-  distinct(response_id, helpfulness, course) |>
-  count(course, helpfulness, name = "mentions") |>
+  distinct(response_id, helpfulness, course, course_order) |>
+  count(course, course_order, helpfulness, name = "mentions") |>
   complete(
-    course,
+    nesting(course_order, course),
     helpfulness = c("Most helpful", "Least helpful"),
     fill = list(mentions = 0)
   ) |>
@@ -483,7 +487,7 @@ course_mentions <- survey_data |>
   mutate(
     signed_mentions = if_else(helpfulness == "Most helpful", mentions, -mentions),
     helpfulness = factor(helpfulness, levels = c("Most helpful", "Least helpful")),
-    course = fct_reorder(course, total_mentions)
+    course = factor(course, levels = course_levels)
   )
 
 ggplot(course_mentions, aes(x = course, y = signed_mentions, fill = helpfulness)) +
@@ -502,7 +506,8 @@ ggplot(course_mentions, aes(x = course, y = signed_mentions, fill = helpfulness)
   theme(legend.position = "bottom")
 ```
 
-
+Sustainable Infrastructure and Civil Engineering Writing are the two courses with the most negative mentions, 
+which is unsurprising as these are new courses and under active development. 
 
 ## Exit Interviews {#sec-interview}
 
