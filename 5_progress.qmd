@@ -112,27 +112,31 @@ The university has asked us to track courses and students that earn a D, E, or W
 
 ## Time to graduation {#sec-stats}
 
-The University tracks time to graduation for each student in number of enrollments, or the number of 
-semesters and terms that a student enrolls in courses. This controls for mission deferments but not for
-transfers. The relevant statistic is the share of students who graduate within twelve enrollments.
+The University tracks time to graduation for each student in number of
+enrollments, or the number of semesters and terms that a student enrolls in
+courses. This controls for mission deferments but not for transfers from other
+institutions. The university target is for 75 percent of students to graduate within twelve enrollments, though
+the university total of 61 percent is less than this target.
 
 @fig-graduation shows the share of CE program students who graduate within the
 specified numer of enrollments. This includes all students who entered the
-university in the 2017-18 through 2021-22 school years. This time period is defined
-as five years of entering students, four complete academic years ago. 
+university in the 2017-18 through 2021-22 school years, meaning  a cohort of
+five years of entering students, with the most recent students in the cohort entering four
+complete academic years prior to the present.
 
-![Enrollments to graduation for CE program students. Cohorts entering from 2017-18 through 2021-22 school years.](data/graduation/graduation-2017-2022.png){#fig-graduation}
+![Enrollments to graduation for CE program students. Cohort entering BYU from 2017-18 through 2021-22 school years.](data/graduation/graduation-2017-2022.png){#fig-graduation}
 
 For this period, 273 of 435 total students graduated within twelve enrollments,
 for a share of **63 percent**. The time to graduation for each student is not
 given to us by the university. But we can track the aggregate statistic over
 time. @fig-graduation-longitudinal shows the share of CE program students who
-graduate within twelve enrollments for five year aggregated cohorts. This number
-is a modest increase over the previous year, but there is an overall negative trend.
+graduate within twelve enrollments for rolling five year aggregated cohorts. The most
+recent 63% rate is a modest increase over the previous year, but there is an
+overall negative trend.
 
 ```{r}
 #| label: fig-graduation-longitudinal
-#| fig-cap: Percent graduated within twelve enrollments, five year aggregated cohorts in year ending.
+#| fig-cap: Percent of CE students graduating within twelve enrollments, five year rolling enrollment cohorts.
 #| fig-width: 7
 #| fig-height: 4
 #| out-width: 100%
