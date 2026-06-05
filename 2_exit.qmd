@@ -98,7 +98,7 @@ ggplot(prepared_lo_counts, aes(x = category, y = proportion, fill = preparedness
 
 In only one category (Learn independently) do at least 75% of students rate their
 preparation as "Well prepared" or higher. The categories with the most potential 
-for growth in this area are Compmlex Problems and Ethics.
+for growth in this area are Complex Problems and Ethics.
 
 ### Prospective employment or graduate school plans
 
