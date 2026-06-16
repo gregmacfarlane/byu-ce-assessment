@@ -30,7 +30,7 @@ responded to the 2026 survey.
 The survey asks students to self-assess their preparedness on the student
 outcomes and related preparation categories described in @sec-so along a
 five-point scale from "Not at all prepared" to "Very well prepared." Two outcomes
-are divded into separate categories: SO3 Communication is divided into written and
+are divided into separate categories: SO3 Communication is divided into written and
 oral communication, and SO2 Design is divided into design solutions and design impacts 
 (as in the "consider factors" indicator).
 
@@ -525,7 +525,7 @@ to direct the discussion, but the committee member asks guiding questions such a
   - Have you had any less successful learning experiences?
 
 Each committee member makes notes of the student's responses. The assessment coordinator
-consolidates these notes into a coherent statment with the aid of a Large
+consolidates these notes into a coherent statement with the aid of a Large
 Language Model and posts it in the space below.
 
 ::: {.panel-tabset}
