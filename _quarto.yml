@@ -33,3 +33,6 @@ format:
     documentclass: book
     toc: true
     number-sections: true
+    include-in-header:
+      text: |
+        \usepackage{fullpage}
