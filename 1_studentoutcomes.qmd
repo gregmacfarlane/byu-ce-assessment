@@ -157,6 +157,15 @@ read_factor_assessment_data <- function(file, ...) {
     filter(!is.na(total), !is.na(meets))
 }
 
+format_table_for_output <- function(data) {
+  if (!knitr::is_latex_output()) {
+    return(data)
+  }
+
+  data |>
+    mutate(across(where(is.character), ~ str_replace_all(.x, fixed("#"), "No. ")))
+}
+
 library(wesanderson)
 pal <- wes_palette("AsteroidCity1", 4)[c(3, 2, 1, 4)]
 theme_set(theme_minimal())
@@ -549,7 +558,8 @@ so2_factors |>
     level = ifelse(course == "CE 472", "Summative", "Formative")
   )  
 ) |>
-  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) |>
+  format_table_for_output()
 
 tt(so2_instruments)  |>
   group_tt(i = indicator) |>
@@ -705,7 +715,8 @@ so4_instruments <- so4_clean |>
   arrange(indicator, level, course) |>
   ungroup() |>
   select(indicator, level, course,  description) |> 
-  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) |>
+  format_table_for_output()
 
 tt(so4_instruments)  |>
   group_tt(i = indicator) |>
@@ -827,7 +838,8 @@ so5_instruments <- so5_clean |>
   arrange(indicator, level, course) |>
   ungroup() |>
   select(indicator, level, course, description) |> 
-  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) 
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) |>
+  format_table_for_output()
 
 so5_group_rows <- so5_instruments |>
   count(indicator) |>
@@ -952,7 +964,8 @@ so6_instruments <- so6_clean |>
   ungroup() |>
   mutate(Instrument = coalesce(assessment, "Assessment not specified")) |>
   select(indicator, level, course, Instrument) |>
-  setNames(c("indicator", "Assessment Level", "Course", "Instrument"))
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) |>
+  format_table_for_output()
 
 so6_group_rows <- so6_instruments |>
   count(indicator) |>
@@ -1072,7 +1085,8 @@ so7_instruments <- so7_clean |>
   arrange(indicator, level, course) |>
   ungroup() |>
   select(indicator, level, course, description) |>
-  setNames(c("indicator", "Assessment Level", "Course", "Instrument"))
+  setNames(c("indicator", "Assessment Level", "Course", "Instrument")) |>
+  format_table_for_output()
 
 so7_group_rows <- so7_instruments |>
   count(indicator) |>

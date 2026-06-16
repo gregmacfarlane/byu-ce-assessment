@@ -243,7 +243,7 @@ link_table <- bind_rows(
   left_join(select(node_table, source_key = key, source = id), by = "source_key") |>
   left_join(select(node_table, target_key = key, target = id), by = "target_key")
 
-plot_ly(
+plans_sankey <- plot_ly(
   type = "sankey",
   arrangement = "snap",
   node = list(
@@ -271,6 +271,120 @@ plot_ly(
       list(x = 1, y = 1.08, text = "Graduate location", showarrow = FALSE, xref = "paper", yref = "paper")
     )
 )
+
+if (knitr::is_html_output()) {
+  plans_sankey
+} else {
+  stage_positions <- c(plan = 1, future = 2, degree = 3, where = 4)
+  stage_labels <- c(
+    plan = "Immediate plan",
+    future = "Future graduate study",
+    degree = "Degree type",
+    where = "Graduate location"
+  )
+
+  node_counts <- bind_rows(
+    prospective_flows |>
+      count(node = as.character(plan), wt = n, name = "total") |>
+      mutate(stage = "plan"),
+    prospective_flows |>
+      count(node = as.character(graduate_future), wt = n, name = "total") |>
+      mutate(stage = "future"),
+    prospective_flows |>
+      count(node = as.character(graduate_degree), wt = n, name = "total") |>
+      mutate(stage = "degree"),
+    prospective_flows |>
+      count(node = as.character(graduate_where), wt = n, name = "total") |>
+      mutate(stage = "where")
+  )
+
+  static_nodes <- node_table |>
+    left_join(node_counts, by = c("stage", "node")) |>
+    mutate(
+      stage_x = unname(stage_positions[stage]),
+      stage = factor(stage, levels = names(stage_positions)),
+      label = stringr::str_wrap(label, width = 14)
+    ) |>
+    arrange(stage, id) |>
+    group_by(stage) |>
+    mutate(
+      ymin = cumsum(total) - total,
+      ymax = cumsum(total),
+      ymid = (ymin + ymax) / 2
+    ) |>
+    ungroup()
+
+  static_links <- link_table |>
+    mutate(link_id = row_number()) |>
+    left_join(
+      static_nodes |>
+        transmute(source_key = key, source_x = stage_x, source_ymin = ymin),
+      by = "source_key"
+    ) |>
+    left_join(
+      static_nodes |>
+        transmute(target_key = key, target_x = stage_x, target_ymin = ymin),
+      by = "target_key"
+    )
+
+  static_links <- static_links |>
+    arrange(source_key, target_key, plan) |>
+    group_by(source_key) |>
+    mutate(source_y = source_ymin + cumsum(value) - value / 2) |>
+    ungroup() |>
+    arrange(target_key, source_key, plan) |>
+    group_by(target_key) |>
+    mutate(target_y = target_ymin + cumsum(value) - value / 2) |>
+    ungroup()
+
+  stage_titles <- tibble(
+    stage_x = unname(stage_positions),
+    label = unname(stage_labels),
+    y = sum(prospective_flows$n) + 1.5
+  )
+
+  ggplot() +
+    geom_curve(
+      data = static_links,
+      aes(
+        x = source_x + 0.08, xend = target_x - 0.08,
+        y = source_y, yend = target_y,
+        linewidth = value, color = plan
+      ),
+      curvature = 0.18,
+      alpha = 0.35,
+      lineend = "round"
+    ) +
+    geom_rect(
+      data = static_nodes,
+      aes(xmin = stage_x - 0.08, xmax = stage_x + 0.08, ymin = ymin, ymax = ymax, fill = color),
+      color = "white",
+      linewidth = 0.2
+    ) +
+    geom_text(
+      data = static_nodes,
+      aes(x = stage_x + 0.12, y = ymid, label = label),
+      hjust = 0,
+      size = 2.8
+    ) +
+    geom_text(
+      data = stage_titles,
+      aes(x = stage_x, y = y, label = label),
+      fontface = "bold",
+      size = 3
+    ) +
+    scale_color_manual(values = plan_colors, guide = "none") +
+    scale_fill_identity() +
+    scale_linewidth(range = c(0.8, 8), guide = "none") +
+    scale_x_continuous(limits = c(0.85, 4.85), breaks = NULL) +
+    scale_y_continuous(expand = expansion(mult = c(0.02, 0.08))) +
+    labs(x = NULL, y = "Students") +
+    theme_void() +
+    theme(
+      plot.margin = margin(5.5, 30, 5.5, 5.5),
+      axis.title.y = element_text(angle = 90, margin = margin(r = 8))
+    )
+}
 ```
 
 

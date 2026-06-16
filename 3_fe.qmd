@@ -31,7 +31,7 @@ number of students and recent graduates who attempted the FE in each of the last
 as well as the number of BS degrees awarded by the program in each year. We do
 not have complete FE exam data for 2022, leading to the apparent low number of attempts in that year. 
 
-```{r fe}
+```{r}
 #| label: tbl-attempts
 #| tbl-cap: FE Exam Attempts 
 fe <- readxl::read_xlsx("data/fe.xlsx", sheet = "raw_total") |>
@@ -78,10 +78,40 @@ comparator mean in some categories for some periods. These include the "Ethics a
 
 ::: {#fig-fe-subscores}
 ```{r fe-shiny}
+#| fig-width: 8
+#| fig-height: 10
 if(knitr::is_html_output()){
   knitr::include_app("https://019d4550-8785-50dd-0b75-24fc8358dff6.share.connect.posit.cloud/", height = "600px")
 } else {
+  fe_subs <- readr::read_csv("apps/data.csv", show_col_types = FALSE) |>
+    mutate(
+      period = semester_to_date(period),
+      category = factor(category, levels = sort(unique(category)))
+    )
 
+  fe_subs |>
+    ggplot(aes(x = period)) +
+    geom_ribbon(
+      aes(ymin = abet - abet_se, ymax = abet + abet_se, fill = "ABET SE"),
+      alpha = 0.18
+    ) +
+    geom_line(aes(y = institution, color = "BYU CE"), linewidth = 0.35) +
+    geom_line(aes(y = abet, color = "ABET Comparator"), linewidth = 0.35) +
+    facet_wrap(~ category, scales = "free_y", ncol = 2) +
+    scale_color_manual(
+      name = NULL,
+      values = c("BYU CE" = pal[2], "ABET Comparator" = pal[1])
+    ) +
+    scale_fill_manual(name = NULL, values = c("ABET SE" = pal[1])) +
+    labs(
+      x = "Period of Examination [six months ending]",
+      y = "Subscore"
+    ) +
+    theme_bw() +
+    theme(
+      legend.position = "bottom",
+      strip.text = element_text(size = 7.5)
+    )
 }
 ```
 
