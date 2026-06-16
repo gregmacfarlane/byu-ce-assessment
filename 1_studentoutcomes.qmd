@@ -196,6 +196,13 @@ Formative assessments may not assess all indicators of a student
 outcome, but summative assessments cover all indicators. Additionally, formative
 assessments may include data collected from students in other programs.
 
+```{=latex}
+\let\quartoRegularTable\table
+\let\endquartoRegularTable\endtable
+\let\table\sidewaystable
+\let\endtable\endsidewaystable
+```
+
 ```{r}
 #| label: tbl-socourses
 #| tbl-cap: Student Outcome Assessment Locations
@@ -210,11 +217,18 @@ socourses <- tibble::tribble(
   "7. Acquire knowledge",     "", "", "F", "", "", "", "", "F", "", "", "S"
 )
 
-tt(socourses, 
-notes = list( a = list(i = 6, j = 10, text = "Only selected breadth courses contribute to the summative assessment."))
+socourses_table <- tt(socourses, 
+  notes = list(a = list(i = 6, j = 10, text = "Only selected breadth courses contribute to the summative assessment."))
 ) |>
   style_tt(align = "l") |>
   theme_tt("default") 
+
+socourses_table
+```
+
+```{=latex}
+\let\table\quartoRegularTable
+\let\endtable\endquartoRegularTable
 ```
 
 
@@ -230,6 +244,13 @@ the semester, instructors are invited to complete a form that requires a brief
 description of the assessment (e.g., final exam question), a specific assessment
 instrument as given to students, and the number of students assessed at each
 level of the rubric. 
+
+```{=latex}
+\let\quartoRegularTable\table
+\let\endquartoRegularTable\endtable
+\let\table\sidewaystable
+\let\endtable\endsidewaystable
+```
 
 ```{r}
 #| label: tbl-so-schedule
@@ -247,9 +268,16 @@ so_schedule <- tibble::tribble(
   "ABET Schedule", "", "", "", "", "Self-study", "Visit", "Response", "", "", "", ""
 )
 
-tt(so_schedule, notes = "A: Assessment, E: Evaluation, C: Change") |>
+so_schedule_table <- tt(so_schedule, notes = "A: Assessment, E: Evaluation, C: Change") |>
   style_tt(align = "l") 
-``` 
+
+so_schedule_table
+```
+
+```{=latex}
+\let\table\quartoRegularTable
+\let\endtable\endquartoRegularTable
+```
 
 
 For each of the seven student outcomes, the program develops a set of

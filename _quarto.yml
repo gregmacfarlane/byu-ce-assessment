@@ -36,3 +36,6 @@ format:
     include-in-header:
       text: |
         \usepackage{fullpage}
+        \usepackage{rotating}
+        \usepackage{etoolbox}
+        \pretocmd{\section}{\clearpage}{}{}
