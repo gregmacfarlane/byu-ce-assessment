@@ -619,11 +619,13 @@ tt(so2_instruments)  |>
 #| label: fig-s02
 #| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 2
 #| fig-width: 7
-ggplot(so2_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
-  geom_col() + 
-  labs(x = "Course", y = "Percent of students") +  facet_grid(~ indicator) + 
-  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+ggplot(so2_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) + 
+  geom_bar(stat = "identity") +
+  labs(y = "Course", x = "Percent of students") +  
+  facet_grid(~ indicator) + 
+  geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
   scale_fill_manual("Performance", values = pal)
 ```
 
