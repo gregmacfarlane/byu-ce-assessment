@@ -635,13 +635,14 @@ ggplot(so2_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) +
 #| label: fig-s02-factors
 #| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 2 design factors.
 #| fig-width: 7
-ggplot(so2_factors_clean, aes(y = Percent, x = course, fill = Performance)) +
+ggplot(so2_factors_clean, aes(x = Percent, y = course, fill = Performance)) +
   geom_col() + 
-  labs(x = "Course", y = "Percent of students") +
-  facet_grid(~ design_factor) +
-  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(y = "Course", x = "Percent of students") +
+  facet_wrap( ~ design_factor) +
+  geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+  scale_x_continuous(labels = scales::percent_format(scale = 1)) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
   scale_fill_manual(
     "Performance",
     values = c("Unsatisfactory" = pal[1], "Meets Expectations" = pal[3])
@@ -776,12 +777,13 @@ expectations for each indicator.
 #| label: fig-s04
 #| fig-cap: Winter 2025 Assessment of Student Outcome 4
 #| fig-width: 7
-ggplot(so4_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+ggplot(so4_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) + 
   geom_col() + 
-  labs(x = "Course", y = "Percent of students") +
+  labs(y = "Course", x = "Percent of students") +
   facet_grid(~ indicator) + 
-  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
   scale_fill_manual("Performance", values = pal)
 ```
 
@@ -902,11 +904,12 @@ expectations for each indicator.
 #| label: fig-s05
 #| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 5
 #| fig-width: 7
-ggplot(so5_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) + 
+ggplot(so5_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) + 
   geom_col() + 
-  labs(x = "Course", y = "Percent of students") +  facet_grid(~ indicator) + 
-  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(y = "Course", x = "Percent of students") +  facet_grid(~ indicator) + 
+  geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
   scale_fill_manual("Performance", values = pal)
 ```
 
@@ -1030,13 +1033,14 @@ threshold.
 #| label: fig-s06
 #| fig-cap: Winter 2025 and Winter 2026 Assessment of Student Outcome 6
 #| fig-width: 7
-ggplot(so6_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
+ggplot(so6_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) +
     geom_col() +
-    labs(x = "Course", y = "Percent of students") +
+    labs(y = "Course", x = "Percent of students") +
     facet_grid(~indicator) +
-    geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-scale_fill_manual("Performance", values = pal)
+    geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+    theme_bw() +
+    theme(legend.position = "bottom") +
+    scale_fill_manual("Performance", values = pal)
 ```
 
 The committee recommends calibration among the breadth-course laboratory
@@ -1150,12 +1154,13 @@ slightly below the threshold.
 #| label: fig-s07
 #| fig-cap: Fall 2025 and Winter 2026 Assessment of Student Outcome 7
 #| fig-width: 7
-ggplot(so7_clean, aes(y = Percent, x = course, fill = fct_rev(Performance))) +
+ggplot(so7_clean, aes(x = Percent, y = course, fill = fct_rev(Performance))) +
   geom_col() +
-  labs(x = "Course", y = "Percent of students") +
+  labs(y = "Course", x = "Percent of students") +
   facet_grid(~ indicator) +
-  geom_hline(yintercept = 75, linetype = "dashed", color = "red") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  geom_vline(xintercept = 75, linetype = "dashed", color = "red") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
   scale_fill_manual("Performance", values = pal)
 ```
 
