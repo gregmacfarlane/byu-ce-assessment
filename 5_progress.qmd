@@ -140,7 +140,6 @@ overall negative trend.
 #| fig-width: 7
 #| fig-height: 4
 #| out-width: 100%
-#| out-height: 100%
 
 # read in the data
 graduation <- read_csv("data/graduation/cohorts_in_12.csv") 
